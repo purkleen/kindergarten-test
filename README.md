@@ -77,6 +77,10 @@ point (`?role=parent` or `?role=teacher` skips straight in).
 | Teacher | Learning journal approvals, announcements, children roster with live search and group filter, profile |
 | Create flows | Add observation (camera → form), post class update, create event — forms validate and publish to a detail screen |
 
+On Vercel the site root redirects to `/proto/` (see `vercel.json`), so the
+deployed URL opens the prototype; the original Sprout app is still at
+`/index.html`.
+
 Icons and photos are the exported Figma assets in `public/proto/img/`
 (photos resized). Everything is one plain HTML file with no build step. State
 lives in memory and resets on reload.
