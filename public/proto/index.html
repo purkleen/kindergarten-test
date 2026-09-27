@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunshine Kindergarten · Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+/* ---------------------------------------------------------------------------
+   Tokens — named from the Figma file (Dashboard › Version 04).
+--------------------------------------------------------------------------- */
+:root {
+  --cream:       #FBF7F0;   /* Surface/Cream App      */
+  --card:        #FFFFFF;
+  --card-warm:   #FFFEFB;
+  --ink:         #2B2540;   /* Ink/900 Primary        */
+  --ink-900:     #20182B;   /* color/neutral/900      */
+  --ink-body:    #3B354D;
+  --ink-2:       #746B7D;   /* color/neutral/600      */
+  --muted:       #8A83A0;   /* ink/muted              */
+  --muted-2:     #9A93A8;   /* Ink/400 Muted          */
+  --tag-ink:     #352D40;
+  --line:        #E4E0EC;   /* border/hairline        */
+  --line-2:      #ECE7F3;
+  --line-3:      #DED8E4;
+  --line-4:      #BEB4C8;   /* color/neutral/300      */
+  --n100:        #F0EDF3;   /* color/neutral/100      */
+
+  --purple:      #7C3AED;   /* color/purple/500       */
+  --purple-600:  #6927D8;
+  --purple-sec:  #6946C9;   /* color/source/secondary */
+  --purple-50:   #F4EEFF;
+  --violet-tint: #F1ECFA;
+  --switch:      #5B4FF5;
+  --rose:        #E14372;   /* illustration-rose      */
+  --orange:      #F5993B;
+  --orange-bg:   #FFF0DE;
+  --yellow:      #FFF3B8;
+  --yellow-cta:  #FFD84D;
+  --green:       #37B87C;
+  --green-bg:    #E9F1E6;
+  --green-ink:   #3F6955;
+  --sky:         #E7F3F6;
+  --peach:       #FCE9DD;
+  --blush:       #F6E7E7;
+  --bubble-me:   #246BFD;
+  --bubble-them: #ECEFF3;
+
+  --r-control: 16px; --r-lg: 24px; --r-card: 20px;
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; text-align: inherit; }
+img { display: block; }
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background: #2c2c2c;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+  padding: 28px 16px;
+}
+
+/* --- role switch above the device -------------------------------------- */
+.proto-bar { display: flex; align-items: center; gap: 12px; color: #d9d4e2; font-size: 13px; }
+.seg { display: inline-flex; background: #3b3842; border-radius: 999px; padding: 4px; }
+.seg button { padding: 7px 16px; border-radius: 999px; color: #d9d4e2; font-weight: 600; font-size: 13px; }
+.seg button.on { background: var(--purple); color: #fff; }
+.proto-bar .restart { text-decoration: underline; color: #b9b2c6; }
+
+/* --- device --------------------------------------------------------------- */
+.device {
+  position: relative; width: 402px; height: 874px; flex: none;
+  border-radius: 62px; overflow: hidden; background: var(--cream);
+  box-shadow: 0 0 0 10px #111, 0 30px 80px rgba(0,0,0,.5);
+  isolation: isolate;
+}
+@media (max-width: 520px) {
+  body { padding: 0; background: var(--cream); }
+  .proto-bar { display: none; }
+  .device { width: 100vw; height: 100dvh; border-radius: 0; box-shadow: none; }
+}
+
+/* --- icons: the Figma SVGs used as masks so they take currentColor -------- */
+.ic { display: inline-block; flex: none; width: 24px; height: 24px; background: currentColor;
+      -webkit-mask: var(--i) center / contain no-repeat; mask: var(--i) center / contain no-repeat; }
+.ic.s16 { width: 16px; height: 16px; } .ic.s18 { width: 18px; height: 18px; } .ic.s20 { width: 20px; height: 20px; }
+.ic.s40 { width: 40px; height: 40px; }
+
+/* --- screen scaffold ------------------------------------------------------ */
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--cream); }
+.screen.enter { animation: enter .22s ease-out; }
+.screen.enter-back { animation: enter-back .22s ease-out; }
+@keyframes enter { from { transform: translateX(28px); opacity: .4; } }
+@keyframes enter-back { from { transform: translateX(-28px); opacity: .4; } }
+
+.top { flex: none; padding: 19px 16px 0; display: flex; flex-direction: column; gap: 12px; height: 106px; }
+.status { display: flex; align-items: center; justify-content: space-between; padding: 0 14px; }
+.status .time { font-family: 'Nunito', var(--font); font-weight: 700; font-size: 16px; color: var(--ink); width: 71px; }
+.status .island { width: 120px; height: 35px; border-radius: 22px; background: #12101C; }
+.status .ind { width: 71px; display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+.status .ind img:nth-child(1) { width: 18px; height: 11px; }
+.status .ind img:nth-child(2) { width: 16px; height: 11px; }
+.status .ind img:nth-child(3) { width: 25px; height: 12px; }
+.dark .status .time { color: #fff; }
+
+.titlebar { display: flex; align-items: center; justify-content: space-between; min-height: 40px; }
+.titlebar h1 { font-size: 24px; line-height: 32px; font-weight: 600; color: var(--ink-900); white-space: nowrap; }
+.titlebar .side { width: 89px; display: flex; align-items: center; gap: 9px; }
+.titlebar .side.r { justify-content: flex-end; }
+.titlebar .side.wide { width: auto; flex: 1; }
+.round-btn { width: 32px; height: 32px; border-radius: 999px; background: var(--purple-sec); color: #fff;
+             display: grid; place-items: center; }
+.round-btn.fab { background: var(--purple); }
+.back-btn { width: 40px; height: 40px; color: #000; display: grid; place-items: center; }
+.text-btn { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--purple-sec); }
+
+.body { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 24px 16px; display: flex; flex-direction: column; gap: 24px; scrollbar-width: none; }
+.body::-webkit-scrollbar { display: none; }
+.body.tight { padding-top: 16px; gap: 23px; }
+.body.gap16 { gap: 16px; }
+
+.homebar { flex: none; height: 34px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px; }
+.homebar i, .tabbar .hi { width: 135px; height: 5px; border-radius: 999px; background: #2E2545; opacity: .22; }
+
+/* --- tab bar -------------------------------------------------------------- */
+.tabbar { flex: none; background: #fff; border-top: 1px solid var(--line); padding: 9px 0 10px;
+          display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.tabbar .tabs { width: 100%; display: flex; align-items: center; padding: 0 8px; }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0;
+       font-size: 10px; font-weight: 800; color: var(--ink-900); }
+.tab.on { color: var(--purple); }
+.tab-fab { flex: 1; display: flex; justify-content: center; }
+.tab-fab button { width: 52px; height: 52px; border-radius: 999px; background: var(--purple); color: #fff;
+                  display: grid; place-items: center; box-shadow: 0 3px 8px rgba(53,20,99,.1); transition: transform .15s; }
+.tab-fab button:active { transform: scale(.94); }
+
+/* --- shared building blocks ---------------------------------------------- */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 999px;
+       background: var(--n100); border: 1px solid var(--line-3); font-size: 10px; line-height: 14px; font-weight: 600; color: var(--tag-ink); white-space: nowrap; }
+.tag.purple { background: var(--purple-50); border-color: transparent; }
+.tag.solid { background: var(--purple-600); color: #fff; border-color: transparent; height: 20px; }
+.tag.yellow { background: var(--yellow); border-color: transparent; }
+.tag.green { background: var(--green-bg); border-color: transparent; color: var(--green-ink); height: auto; padding: 4px 8px; }
+.tag.cal { background: #FFF0B3; border-color: transparent; height: 20px; }
+
+.section-title { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px;
+                 color: var(--purple-sec); font-weight: 600; }
+.section-title .h { font-size: 16px; line-height: 24px; }
+.section-title .h.sm { font-size: 12px; line-height: 16px; font-weight: 400; }
+.section-title .link { font-size: 14px; line-height: 20px; text-decoration: underline; }
+.section-title .link.plain { text-decoration: none; }
+.divider { height: 1px; background: var(--line); }
+
+.ev-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; width: 100%; }
+.ev-row + .ev-row { border-top: 1px solid var(--line); }
+.date-chip { width: 44px; height: 44px; flex: none; border-radius: 12px; background: var(--violet-tint);
+             display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; }
+.date-chip .m { font-size: 9px; font-weight: 800; color: var(--rose); line-height: 12px; }
+.date-chip .d { font-size: 16px; color: #2E2545; line-height: 18px; }
+.date-chip.big { width: 52px; height: 52px; }
+.date-chip.big .m { font-size: 10px; } .date-chip.big .d { font-size: 22px; line-height: 26px; }
+.ev-copy { flex: 1; min-width: 0; }
+.ev-copy .t { font-size: 16px; line-height: 24px; font-weight: 600; color: #2E2545; }
+.ev-copy .s { font-size: 12px; line-height: 16px; color: var(--muted); }
+
+.btn { height: 52px; border-radius: var(--r-control); display: flex; align-items: center; justify-content: center;
+       padding: 0 18px; font-size: 14px; line-height: 20px; font-weight: 600; width: 100%; flex: none; transition: transform .1s, filter .15s; }
+.btn:active { transform: scale(.98); }
+.btn.primary { background: var(--purple); color: #fff; box-shadow: 0 2px 8px rgba(36,27,46,.04); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn.outline { border: 1px solid var(--line-4); color: var(--ink-900); background: transparent; }
+.btn.yellow { background: var(--yellow-cta); color: var(--ink-900); height: 44px; font-size: 12px; }
+.btn.link { height: auto; text-decoration: underline; color: var(--ink-900); font-size: 12px; }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+
+.pills { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; flex: none; }
+.pills::-webkit-scrollbar { display: none; }
+.pill { height: 34px; padding: 0 16px; border-radius: 999px; border: 2px solid var(--line-2); background: #fff;
+        display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--ink-900); white-space: nowrap; flex: none; }
+.pill.on { background: var(--orange-bg); border-color: var(--orange); }
+.pill.tall { height: 50px; padding-left: 10px; }
+.pill.tall.txt { padding-left: 16px; }
+.pill img { width: 32px; height: 32px; border-radius: 999px; object-fit: cover; }
+.chip { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--purple-50); font-size: 12px; color: var(--tag-ink); white-space: nowrap; flex: none; display: inline-flex; align-items: center; }
+.chip.on { background: var(--purple-600); color: #fff; }
+
+.switch { display: flex; gap: 8px; flex: none; }
+.switch button { flex: 1; text-align: center; height: 44px; border-radius: 10px; border: 1px solid #CAC6D8; background: #fff; font-size: 14px; font-weight: 500; color: #2D2939; }
+.switch button.on { background: var(--switch); border-color: var(--switch); color: #fff; }
+
+.avatar { border-radius: 999px; object-fit: cover; flex: none; }
+
+/* fields */
+.field { display: flex; flex-direction: column; gap: 7px; flex: none; }
+.field > label, .field > .lbl { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--tag-ink); }
+.field.light > label { font-weight: 400; }
+.input { height: 52px; border: 1px solid var(--line-3); background: #fff; border-radius: var(--r-control);
+         padding: 0 16px; font-size: 16px; color: var(--ink-900); width: 100%; outline: none; transition: border-color .15s; }
+.input.sm { font-size: 14px; }
+.input::placeholder, textarea::placeholder { color: var(--ink-2); }
+.input:focus, textarea.input:focus { border: 2px solid var(--purple); padding: 0 15px; }
+textarea.input { height: auto; min-height: 120px; padding: 12px 16px; line-height: 24px; resize: none; }
+textarea.input:focus { padding: 11px 15px; }
+.select-wrap { position: relative; }
+.select-wrap select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+.select-wrap .ic { position: absolute; right: 16px; top: 18px; color: var(--ink-2); pointer-events: none; }
+.row2 { display: flex; gap: 12px; } .row2 > * { flex: 1; min-width: 0; }
+.counter { font-size: 10px; color: var(--muted-2); text-align: right; margin-top: -30px; margin-right: 12px; pointer-events: none; height: 20px; }
+
+/* toast */
+.toast { position: absolute; left: 16px; right: 16px; bottom: 110px; z-index: 50; background: var(--ink-900); color: #fff;
+         border-radius: 14px; padding: 14px 16px; font-size: 14px; font-weight: 500; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+         animation: toast 2.4s ease forwards; pointer-events: none; }
+@keyframes toast { 0% { opacity: 0; transform: translateY(10px); } 10%, 85% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+/* sheet */
+.scrim { position: absolute; inset: 0; background: rgba(0,0,0,.5); z-index: 30; animation: fade .2s ease; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; background: var(--cream); border-radius: 30px 30px 0 0;
+         padding: 31px 18px 34px; display: flex; flex-direction: column; gap: 12px; animation: up .25s cubic-bezier(.2,.8,.2,1); }
+.sheet::before { content: ''; position: absolute; top: 12px; left: 50%; margin-left: -20px; width: 40px; height: 5px; border-radius: 999px; background: #DDD6E6; }
+.sheet-opt { background: #fff; border-radius: 20px; padding: 16px; display: flex; gap: 14px; align-items: center;
+             filter: drop-shadow(0 2px 4px rgba(43,37,64,.1)); width: 100%; }
+.sheet-opt .t { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--ink); }
+.sheet-opt .s { font-size: 14px; line-height: 20px; color: var(--muted-2); }
+.sheet .close { height: 52px; font-size: 14px; font-weight: 600; text-decoration: underline; color: var(--ink-900); text-align: center; }
+@keyframes fade { from { opacity: 0; } }
+@keyframes up { from { transform: translateY(100%); } }
+
+/* --- role picker + login -------------------------------------------------- */
+.login { background: #F8F7FA; }
+.login .body { padding: 18px 24px; justify-content: space-between; gap: 34px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; letter-spacing: -.17px; color: #201A26; }
+.brand img { width: 44px; height: 44px; }
+.welcome h2 { font-size: 32px; line-height: 38px; font-weight: 700; letter-spacing: -.64px; color: #201A26; }
+.welcome p { font-size: 15px; line-height: 22px; color: #6C6572; margin-top: 8px; }
+.role-card { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line-3); border-radius: 20px; padding: 16px;
+             width: 100%; transition: border-color .15s, box-shadow .15s; }
+.role-card:hover { border-color: var(--purple); box-shadow: 0 8px 24px rgba(43,37,64,.06); }
+.role-card .badge { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; flex: none; }
+.role-card .t { font-size: 17px; font-weight: 600; color: var(--ink); }
+.role-card .s { font-size: 13px; line-height: 18px; color: var(--ink-2); margin-top: 2px; }
+.role-card .ic { color: var(--muted); margin-left: auto; }
+.pw { position: relative; }
+.pw .eye { position: absolute; right: 12px; top: 4px; width: 44px; height: 44px; display: grid; place-items: center; color: #352D40; }
+.forgot { font-size: 14px; font-weight: 600; color: var(--purple); text-decoration: underline; text-align: right; display: block; margin-top: 10px; }
+.acct { text-align: center; font-size: 15px; color: #6C6572; }
+.acct a { font-size: 14px; font-weight: 600; color: var(--purple); margin-left: 6px; }
+
+/* --- dashboard ----------------------------------------------------------- */
+.announce { background: var(--purple-50); border-radius: var(--r-lg); padding: 16px; position: relative; flex: none; box-shadow: 0 2px 10px rgba(43,37,64,.04); }
+.announce .k { font-size: 10px; font-weight: 600; letter-spacing: .2px; color: var(--tag-ink); text-transform: uppercase; }
+.announce .t { font-size: 14px; font-weight: 600; color: var(--ink-900); margin-top: 12px; }
+.announce .b { font-size: 14px; line-height: 20px; color: var(--ink-2); margin-top: 4px; padding-right: 8px; }
+.announce .x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; display: grid; place-items: center; color: #000; }
+.announce .dots { display: flex; gap: 5px; margin-top: 12px; }
+.announce .dots i { width: 6px; height: 6px; border-radius: 99px; background: #D8CDF2; }
+.announce .dots i.on { background: var(--purple); width: 16px; }
+
+.services { background: var(--card-warm); border-radius: var(--r-lg); padding: 16px; display: flex; flex-direction: column; gap: 16px;
+            box-shadow: 0 1px 4px rgba(12,12,13,.05); flex: none; }
+.services h3 { font-size: 21px; line-height: 32px; font-weight: 600; color: var(--ink-900); }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile { min-height: 118px; border-radius: var(--r-control); padding: 12px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px;
+        font-size: 20px; line-height: 24px; font-weight: 600; color: var(--ink-900); transition: transform .12s; }
+.tile:active { transform: scale(.97); }
+.tile .ib { width: 36px; height: 36px; border-radius: 999px; background: #fff; display: grid; place-items: center; }
+.tile.full { grid-column: 1 / -1; }
+
+.mgmt { display: flex; flex-direction: column; gap: 12px; flex: none; }
+.opt { background: #fff; border: 1px solid #E3DDE8; border-radius: var(--r-card); padding: 16px; display: flex; flex-direction: column; gap: 12px; width: 100%; transition: border-color .15s; }
+.opt:hover { border-color: #cfc3e6; }
+.opt.hl { border: 2px solid var(--purple); box-shadow: 0 8px 24px rgba(43,37,64,.05); padding: 15px; }
+.opt .head { display: flex; align-items: center; justify-content: space-between; }
+.opt .tg { display: flex; align-items: center; gap: 11px; }
+.opt .badge { width: 40px; height: 40px; border-radius: 12px; background: var(--n100); display: grid; place-items: center; color: #2B2540; }
+.opt.hl .badge { background: var(--purple-50); color: var(--purple); }
+.opt .t { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--ink); }
+.opt .st { font-size: 12px; line-height: 16px; color: var(--ink-2); display: flex; align-items: center; gap: 4px; }
+.opt.hl .st { color: var(--purple-600); }
+.opt .st .red { width: 8px; height: 8px; border-radius: 99px; background: #E50000; }
+.opt .desc { font-size: 12px; line-height: 16px; color: var(--ink-2); }
+.opt .arrow { color: #746B7D; } .opt.hl .arrow { color: var(--purple); }
+
+.feed-post { padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+.feed-post + .feed-post { border-top: 1px solid var(--line); }
+.feed-post .a { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: #2E2545; }
+.feed-post .p { font-size: 14px; line-height: 20px; color: #6B6480; }
+.feed-post .m { font-size: 12px; line-height: 16px; color: var(--muted); }
+
+/* --- posts / observations ------------------------------------------------ */
+.post { background: #fff; border: 1px solid var(--line-2); border-radius: var(--r-control); padding: 16px; display: flex; flex-direction: column; gap: 11px; flex: none; }
+.post .hd { display: flex; align-items: center; justify-content: space-between; }
+.post .who { display: flex; align-items: center; gap: 11px; }
+.post .who img { width: 42px; height: 42px; }
+.post .nm { display: flex; align-items: center; gap: 7px; font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 15.5px; color: var(--ink); }
+.post .ago { font-size: 12px; line-height: 16px; color: var(--muted-2); }
+.post .txt { font-size: 16px; line-height: 24px; color: var(--ink-body); }
+.post .ph { height: 230px; border-radius: 18px; object-fit: cover; width: 100%; }
+.post .acts { display: flex; gap: 12px; align-items: center; font-size: 14px; color: var(--ink); }
+.post .acts button { display: inline-flex; align-items: center; gap: 2px; }
+.post .acts button.liked { color: var(--rose); }
+.post .child { display: flex; align-items: center; justify-content: space-between; }
+.post .child .c { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.post .child .c b { display: block; font-weight: 600; color: var(--ink-900); line-height: 18px; }
+.post .child .c span { color: var(--ink-2); line-height: 20px; }
+.post .sep { height: 1px; background: var(--line-2); }
+.post .decide { display: flex; gap: 11px; padding-top: 24px; }
+.post.leaving { animation: leave .3s ease forwards; }
+@keyframes leave { to { opacity: 0; transform: scale(.96); } }
+
+.obs { background: var(--card-warm); border-radius: var(--r-lg); overflow: hidden; box-shadow: 0 5px 18px rgba(59,38,48,.05); flex: none; }
+.obs > img { width: 100%; height: 166px; object-fit: cover; }
+.obs .in { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.obs .kid { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.obs .kid b { display: block; font-weight: 600; color: var(--ink-900); line-height: 18px; }
+.obs .kid span { color: var(--ink-2); }
+.obs .meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--ink-2); }
+.obs .meta > div { display: flex; gap: 12px; align-items: center; }
+.obs .txt { font-size: 16px; line-height: 24px; color: var(--ink-body); }
+.obs .by { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.obs .by img { width: 32px; height: 32px; background: #FFE9A8; }
+
+/* --- lists: chat, notifications, menu, children ------------------------- */
+.list { border: 1px solid var(--line); border-radius: var(--r-control); overflow: hidden; box-shadow: 0 1px 4px rgba(12,12,13,.05); flex: none; }
+.li { background: #fff; display: flex; align-items: center; gap: 16px; padding: 18px 12px; min-height: 88px; width: 100%; transition: background .12s; }
+.li:hover { background: #fdfcff; }
+.li + .li { border-top: 1px solid var(--line); }
+.li .av { width: 52px; height: 52px; }
+.li .c { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.li .r1 { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.li .r1 > div { display: flex; align-items: center; gap: 8px; }
+.li .n { font-size: 14px; font-weight: 600; color: #241A3A; white-space: nowrap; }
+.li .time { font-size: 12px; color: #81758F; white-space: nowrap; }
+.li .msg { font-size: 14px; line-height: 20px; color: #241A3A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.li .msg.b { font-weight: 600; }
+.li .r2 { display: flex; align-items: center; gap: 8px; } .li .r2 .msg { flex: 1; }
+.unread { background: var(--green); color: #fff; font-size: 10px; font-weight: 600; height: 17px; min-width: 16px; border-radius: 10px; display: grid; place-items: center; padding: 0 4px; }
+
+.notif { background: #fff; border-radius: var(--r-control); padding: 14px 12px; display: flex; gap: 11px; flex: none; }
+.notif img { width: 36px; height: 36px; }
+.notif .t { font-size: 14px; line-height: 20px; color: var(--ink-900); }
+.notif .t b { font-weight: 600; }
+.notif .s { font-size: 14px; line-height: 20px; color: var(--ink-2); }
+.notif .a { font-size: 12px; color: var(--muted-2); margin-top: 4px; }
+
+.menu { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; flex: none; }
+.menu button { display: flex; align-items: center; gap: 12px; padding: 12px 16px; width: 100%; font-size: 14px; line-height: 20px; font-weight: 600; color: #2E2545; }
+.menu button + button { border-top: 1px solid var(--line); }
+.menu button:hover { background: #fdfcff; }
+
+.contact { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #fff; width: 100%; }
+.contact + .contact { border-top: 1px solid var(--line); }
+.contact img { width: 32px; height: 32px; }
+.contact .n { font-size: 16px; font-weight: 600; color: var(--ink-900); display: flex; align-items: center; gap: 8px; }
+.contact .s { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.overline { font-size: 12px; font-weight: 700; letter-spacing: .6px; color: var(--ink-900); }
+
+.kids-group { border: 1px solid var(--line); border-radius: var(--r-card); overflow: hidden; flex: none; }
+.kids-group .letter { background: #EFE7FC; padding: 8px 16px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.kid-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fff; }
+.kid-row + .kid-row { border-top: 1px solid var(--line); }
+.initials { width: 42px; height: 42px; border-radius: 999px; display: grid; place-items: center; font-size: 14px; font-weight: 600; color: var(--ink-900); flex: none; }
+.kid-row .n { font-size: 16px; font-weight: 600; color: var(--ink-900); }
+.kid-row .s { font-size: 12px; line-height: 16px; color: var(--ink-2); }
+.stat { flex: 1; background: #fff; border: 1px solid var(--line); border-radius: var(--r-control); padding: 12px 12px 14px; }
+.stat b { font-size: 24px; font-weight: 600; color: var(--ink-900); display: block; }
+.stat span { font-size: 12px; color: var(--ink-2); }
+.panel { background: #fff; border: 1px solid #E3DDE8; border-radius: var(--r-card); padding: 16px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 8px 24px rgba(43,37,64,.05); flex: none; }
+.hint { display: flex; gap: 7px; align-items: center; font-size: 12px; color: var(--ink-2); }
+.empty { text-align: center; color: var(--ink-2); font-size: 14px; padding: 40px 12px; }
+
+/* --- chat ---------------------------------------------------------------- */
+.bubbles { display: flex; flex-direction: column; gap: 16px; }
+.bub { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.bub .b { width: 273.6px; max-width: 80%; background: var(--bubble-me); color: #fff; font-size: 14px; line-height: 20px; padding: 12px 16px; border-radius: 18px 4px 18px 18px; }
+.bub.them { align-items: flex-start; } .bub.them .b { background: var(--bubble-them); color: #18202A; border-radius: 4px 18px 18px 18px; }
+.bub .b.img { padding: 4px; border-radius: 16px 4px 16px 16px; } .bub .b.img img { width: 100%; height: 168px; object-fit: cover; border-radius: 12px; }
+.bub .mt { font-size: 11px; color: #81758F; }
+.bub.new { animation: pop .2s ease-out; } @keyframes pop { from { opacity: 0; transform: translateY(6px); } }
+.composer { flex: none; background: #fff; border-top: 1px solid var(--line); padding: 9px 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.composer form { display: flex; gap: 8px; width: 100%; }
+.composer input { flex: 1; height: 52px; border-radius: 999px; border: 1px solid #E5D6FF; padding: 0 16px; font-size: 16px; outline: none; }
+.composer input:focus { border-color: var(--purple); }
+.composer .send { width: 52px; height: 52px; flex: none; border-radius: 999px; background: var(--purple); color: #fff; font-size: 20px; font-weight: 600;
+                  display: grid; place-items: center; padding-left: 3px; line-height: 1; }
+.chat-head { display: flex; align-items: center; gap: 10px; }
+.chat-head img { width: 44px; height: 44px; }
+.chat-head .n { font-size: 16px; font-weight: 600; color: #241A3A; display: flex; align-items: center; gap: 8px; }
+.chat-head .s { font-size: 12px; color: #747A75; }
+
+/* --- calendar ------------------------------------------------------------ */
+.month { background: #fff; border-radius: var(--r-lg); padding: 20px 16px 16px; box-shadow: 0 2px 10px rgba(43,37,64,.04); flex: none; }
+.month .mh { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.month .mh b { font-size: 24px; font-weight: 600; color: var(--ink-900); display: block; }
+.month .mh span { font-size: 12px; color: var(--ink-2); }
+.month .nav { display: flex; gap: 8px; }
+.month .nav button { width: 36px; height: 36px; border-radius: 12px; background: #F0EDF3; display: grid; place-items: center; color: #000; }
+.grid7 { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 6px; text-align: center; }
+.grid7 .wd { font-size: 11px; color: var(--ink-2); padding-bottom: 8px; }
+.day { height: 44px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; color: var(--ink-900); position: relative; gap: 3px; margin: 0 2px; }
+.day.out { color: #B8B1C3; }
+.day.today { border: 1px solid var(--purple); background: var(--purple-50); }
+.day.sel { background: #6C4FF0; color: #fff; }
+.day i { width: 4px; height: 4px; border-radius: 9px; background: var(--purple); position: absolute; bottom: 6px; }
+.day.sel i { background: #FFD84D; }
+.cal-ev { background: #fff; border-radius: var(--r-card); padding: 14px 16px; display: flex; gap: 16px; align-items: center; flex: none; box-shadow: 0 2px 10px rgba(43,37,64,.03); }
+.cal-ev .tags { display: flex; gap: 6px; margin-bottom: 4px; }
+
+/* --- detail + journey stats --------------------------------------------- */
+.hero { width: 100%; border-radius: var(--r-control); object-fit: cover; flex: none; }
+.big-title { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -.64px; color: var(--ink-900); }
+.byline { display: flex; gap: 8px; align-items: center; font-size: 14px; color: #241A3A; }
+.byline img { width: 40px; height: 40px; }
+.byline span { display: block; color: var(--ink-2); font-weight: 600; }
+.when { display: flex; gap: 8px; align-items: center; font-size: 14px; font-weight: 600; color: #000; }
+.prose { font-size: 16px; line-height: 24px; color: #000; }
+.prose.dim { color: #282039; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.jstat { border-radius: var(--r-control); padding: 16px; min-height: 118px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.jstat .ib { width: 36px; height: 36px; border-radius: 999px; background: #fff; display: grid; place-items: center; }
+.jstat b { font-size: 22px; line-height: 28px; font-weight: 700; color: var(--ink-900); }
+.jstat span { font-size: 12px; color: var(--ink-2); display: flex; gap: 8px; align-items: center; }
+.cta-card { background: var(--purple-50); border-radius: var(--r-lg); padding: 24px; display: flex; flex-direction: column; gap: 16px; flex: none; }
+.cta-card .ib { width: 48px; height: 48px; border-radius: 16px; background: #fff; display: grid; place-items: center; color: var(--purple); }
+.cta-card h3 { font-size: 24px; line-height: 32px; font-weight: 600; color: var(--ink-900); }
+.cta-card p { font-size: 14px; line-height: 20px; color: #453C4B; }
+.child-card { display: flex; gap: 12px; align-items: center; padding: 16px; border-radius: var(--r-lg); background: var(--card-warm); border: 1px solid #E8E0D7; width: 100%; filter: drop-shadow(0 5px 9px rgba(59,38,48,.05)); }
+.child-card.on { background: #F7F1FF; border: 2px solid var(--purple); padding: 15px; }
+.child-card img { width: 58px; height: 58px; }
+.child-card b { font-size: 16px; font-weight: 600; color: var(--ink-900); display: block; }
+.child-card span { font-size: 14px; line-height: 20px; color: var(--ink-2); display: block; }
+.child-card small { font-size: 12px; color: var(--ink-2); }
+.h2 { font-size: 24px; line-height: 32px; font-weight: 600; color: var(--ink-900); }
+.sub { font-size: 14px; line-height: 20px; color: var(--ink-2); }
+
+.photo-drop { height: 114px; border: 1px solid var(--line-3); background: #fff; border-radius: var(--r-control); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--ink-900); width: 100%; overflow: hidden; }
+.photo-drop.filled { height: 127px; border: 0; padding: 0; }
+.photo-drop.filled img { width: 100%; height: 100%; object-fit: cover; }
+
+.camera { background: #12101C; color: #fff; }
+.camera .vf { flex: 1; margin: 0 8px; border-radius: 20px; background: radial-gradient(120% 80% at 50% 40%, #3a3f86 0%, #1c1d3d 60%, #151430 100%);
+              display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; font-size: 13px; line-height: 18px; color: #b9b6e0; text-align: center; padding: 0 60px; }
+.camera .modes { display: flex; gap: 24px; justify-content: center; font-size: 12px; font-weight: 700; letter-spacing: 1px; padding: 16px 0 12px; color: #aaa; }
+.camera .modes .on { color: #FFD84D; }
+.camera .ctrl { display: flex; align-items: center; justify-content: space-around; padding: 0 32px 24px; }
+.camera .shutter { width: 72px; height: 72px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 4px #12101C, 0 0 0 7px #fff; }
+.camera .lib { width: 44px; height: 44px; border-radius: 10px; overflow: hidden; border: 2px solid #fff; }
+.camera .lib img { width: 100%; height: 100%; object-fit: cover; }
+.camera .flip { width: 44px; height: 44px; border-radius: 999px; background: #3a3842; display: grid; place-items: center; font-size: 18px; }
+.camera .x { width: 28px; height: 28px; border-radius: 99px; background: #3a3842; display: grid; place-items: center; font-size: 14px; }
+/* --- photo editor (stories-style) --------------------------------------- */
+.editor { background: #000; color: #fff; }
+.canvas { position: absolute; inset: 0; overflow: hidden; container-type: size; }
+.canvas > img.bg { width: 100%; height: 100%; object-fit: cover; }
+.ov { position: absolute; transform: translate(-50%, -50%); touch-action: none; user-select: none; -webkit-user-select: none;
+      cursor: grab; white-space: pre; text-align: center; line-height: 1.15; }
+.ov.dragging { cursor: grabbing; }
+.ov.emoji { font-size: 15cqw; filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
+.ov.text { font-size: 7.5cqw; font-weight: 700; letter-spacing: -.01em; text-shadow: 0 1px 8px rgba(0,0,0,.35); }
+.ov.text.bg { text-shadow: none; padding: .18em .45em; border-radius: .3em; }
+.ov.sticker { font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 5.6cqw; padding: .4em .85em; border-radius: 999px;
+              box-shadow: 0 6px 16px rgba(0,0,0,.2); transform: translate(-50%, -50%) rotate(-4deg); }
+.ov.sel { outline: 2px dashed rgba(255,255,255,.95); outline-offset: 6px; border-radius: 10px; }
+.ov.sticker.sel, .ov.text.bg.sel { border-radius: 999px; }
+.ov-del { position: absolute; top: -18px; right: -18px; width: 26px; height: 26px; border-radius: 99px; background: #fff; color: #12101C;
+          font-size: 12px; font-weight: 700; display: grid; place-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.3); font-family: var(--font); text-shadow: none; }
+.ed-top { position: absolute; left: 0; right: 0; top: 0; z-index: 2; padding: 19px 16px 24px; pointer-events: none;
+          background: linear-gradient(rgba(0,0,0,.45), transparent); }
+.ed-top .status .time { color: #fff; }
+.ed-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 12px; pointer-events: auto; }
+.ed-tools { display: flex; flex-direction: column; gap: 12px; }
+.ed-btn { width: 44px; height: 44px; border-radius: 999px; background: rgba(18,16,28,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+          color: #fff; display: grid; place-items: center; font-size: 18px; font-weight: 700; text-align: center; transition: transform .12s, background .15s; }
+.ed-btn:active { transform: scale(.92); }
+.ed-btn.on { background: #fff; color: #12101C; }
+.ed-btn[disabled] { opacity: .35; pointer-events: none; }
+.ed-bottom { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 40px 16px 34px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+             background: linear-gradient(transparent, rgba(0,0,0,.5)); }
+.ed-hint { font-size: 12px; line-height: 16px; color: rgba(255,255,255,.85); }
+.ed-next { width: auto; padding: 0 28px; flex: none; }
+.ed-scrim { position: absolute; inset: 0; z-index: 5; background: rgba(0,0,0,.35); animation: fade .15s ease; }
+.tray { position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; background: rgba(24,21,34,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        border-radius: 28px 28px 0 0; padding: 28px 16px 40px; animation: up .22s cubic-bezier(.2,.8,.2,1); }
+.tray::before { content: ''; position: absolute; top: 10px; left: 50%; margin-left: -20px; width: 40px; height: 5px; border-radius: 999px; background: rgba(255,255,255,.3); }
+.tray h4 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); margin-bottom: 14px; }
+.tray .emojis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.tray .emojis button { font-size: 34px; height: 54px; border-radius: 14px; text-align: center; transition: background .12s; }
+.tray .emojis button:hover { background: rgba(255,255,255,.1); }
+.tray .stickers { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.tray .stickers button { font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 17px; padding: 9px 16px; border-radius: 999px; }
+.ed-text { position: absolute; inset: 0; z-index: 6; background: rgba(0,0,0,.6); display: flex; flex-direction: column; animation: fade .15s ease; }
+.ed-text .row { display: flex; justify-content: space-between; align-items: center; padding: 72px 16px 0; }
+.ed-text .done { font-size: 16px; font-weight: 700; color: #fff; padding: 8px 4px; }
+.ed-text .mid { flex: 1; display: grid; place-items: center; padding: 0 24px; container-type: inline-size; }
+.ed-input { display: inline-block; min-width: 20px; max-width: 100%; outline: none; text-align: center; white-space: pre-wrap; word-break: break-word;
+            font-size: 30px; font-weight: 700; line-height: 1.15; caret-color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.35); }
+.ed-input.bg { padding: .18em .45em; border-radius: .3em; text-shadow: none; }
+.ed-input:empty::before { content: attr(data-ph); color: rgba(255,255,255,.55); }
+.ed-swatches { display: flex; gap: 10px; align-items: center; justify-content: center; padding: 0 16px 48px; }
+.ed-swatches .sw { width: 28px; height: 28px; border-radius: 99px; border: 2px solid rgba(255,255,255,.9); transition: transform .12s; }
+.ed-swatches .sw.on { transform: scale(1.25); box-shadow: 0 0 0 2px rgba(0,0,0,.4); }
+.ed-swatches .bgbtn { width: 34px; height: 34px; border-radius: 10px; border: 2px solid #fff; color: #fff; font-weight: 800; font-size: 16px; text-align: center; margin-right: 6px; }
+.ed-swatches .bgbtn.on { background: #fff; color: #12101C; }
+
+/* the finished photo, shown back on the form */
+.story-col { display: flex; flex-direction: column; gap: 12px; align-items: center; flex: none; }
+.story-actions { display: flex; gap: 8px; justify-content: center; }
+.story-actions .btn { height: 40px; width: auto; padding: 0 16px; }
+.btn.outline.danger { color: #C0264F; border-color: #EBC3CF; }
+.story { position: relative; height: 300px; flex: none; border-radius: 16px; overflow: hidden; container-type: size; box-shadow: 0 8px 24px rgba(43,37,64,.12); }
+.story img.bg { width: 100%; height: 100%; object-fit: cover; }
+.story .ov { cursor: default; pointer-events: none; }
+
+.webview { flex: 1; display: grid; place-items: center; font-size: 24px; font-weight: 700; color: var(--ink-900); }
+</style>
+</head>
+<body>
+
+<div class="proto-bar">
+  <span>Viewing as</span>
+  <div class="seg" id="roleSeg">
+    <button data-role="parent">Parent</button>
+    <button data-role="teacher">Teacher</button>
+  </div>
+  <button class="restart" data-act="restart">Restart</button>
+</div>
+
+<div class="device" id="device"></div>
+
+<script>
+/* ===========================================================================
+   Data
+=========================================================================== */
+const IMG = 'img/';
+const ic = (name, cls = '') => `<i class="ic ${cls}" style="--i:url(${IMG}${name}.svg)"></i>`;
+
+const EVENTS = [
+  { m: 'MAY', d: '17', t: 'Spring Family Picnic', s: 'Sat · 11:00 AM · Sunflower Garden' },
+  { m: 'MAY', d: '30', t: 'Sports Day',           s: 'Fri · 9:30 AM · School Field' },
+  { m: 'JUN', d: '04', t: 'Parent evening',       s: 'Thu · 6:00 PM · Main Hall' },
+];
+const ANNOUNCEMENTS = [
+  { t: 'Closed Monday 26 May',   b: 'Little Sprouts is closed for staff training. Normal hours resume Tuesday.' },
+  { t: 'Photo day this Thursday', b: 'Class photos will be taken in the morning. Please send children in by 9:00.' },
+  { t: 'Forest School is back',   b: 'Pack wellies and a waterproof coat — we head out every Wednesday afternoon.' },
+];
+const FEED = [
+  { a: 'Ms. Parker', p: 'Sensory bins were a huge hit today! We scooped, poured and explored rice and beans.', m: 'Emma · 2h ago' },
+  { a: 'Mr. Diaz',   p: 'Liam led clean-up time and did a wonderful job keeping everyone on track.',       m: 'Liam · Yesterday' },
+];
+const EASEL = 'Emma spent 20 minutes at the easel today and proudly named every single colour she painted with! 🎨';
+const LOREM = 'Phasellus viverra lobortis neque sit amet consequat. Donec in enim aliquam, consequat orci eget, tincidunt tortor. Ut a lacus aliquam, pulvinar lorem accumsan, faucibus nunc. Cras ac egestas nibh. Proin neque dui, fermentum vitae facilisis a, semper ac enim. Donec eros arcu, imperdiet nec diam suscipit, sollicitudin tempus massa. Nulla sodales purus vitae erat faucibus hendrerit.';
+const CHILDREN = {
+  emma:        { name: 'Emma', full: 'Emma Smith', room: 'Sunflower room', term: 'Acorn room · Autumn term', obs: 8, upd: 'Updated 2 days ago', avatar: 'avatar-emma-round.png' },
+  christopher: { name: 'Christopher', full: 'Christopher Smith', room: 'Sunflower room', term: 'Sunflower room · Autumn term', obs: 5, upd: 'Updated today', avatar: 'avatar-christopher-round.png' },
+};
+const CONTACTS = [
+  { id: 'aaliyah', n: 'Aaliyah Brown', s: 'Acorns · Alice Brown (mother), Frank Brown (father)', seal: true },
+  { id: 'javier',  n: 'Javier Diaz',   s: 'Sunflower room · Emma’s teacher', tag: 'Teacher', av: 'avatar-javier.jpg' },
+  { id: 'claire',  n: 'Claire McKay',  s: 'Acorn room · Liam’s teacher',     tag: 'Teacher', av: 'avatar-claire.jpg' },
+];
+const ROSTER = [
+  { n: 'Aaliyah Brown',   g: 'Acorns',     s: 'Alice Brown (mother), Frank Brown (father)', c: '#FBE3EA' },
+  { n: 'Amelia Chen',     g: 'Sunflowers', s: 'Steve Chen (father)',                        c: '#E4F5EC' },
+  { n: 'Arjun Patel',     g: 'Acorns',     s: 'Lisa Patel (mother)',                        c: '#FBE3EA' },
+  { n: 'Benjamin Brooks', g: 'Sunflowers', s: 'Maya Brooks (mother), David Brooks (father)', c: '#FFF3C4' },
+  { n: 'Brielle Carter',  g: 'Acorns',     s: 'Priya Carter (mother)',                      c: '#EFE7FC' },
+  { n: 'Bryson Mitchell', g: 'Sunflowers', s: 'Jordan Mitchell (father), Sarah Mitchell (mother)', c: '#E3F0FB' },
+  { n: 'Chloe Adams',     g: 'Bluebells',  s: 'Rachel Adams (mother)',                      c: '#E4F5EC' },
+  { n: 'Daniel Okafor',   g: 'Bluebells',  s: 'Grace Okafor (mother)',                      c: '#FFF3C4' },
+];
+
+/* Mutable prototype state — lives only for the session. */
+const S = {
+  role: null,              // 'parent' | 'teacher'
+  stack: [],               // [{ name, p }]
+  dir: 'fwd',
+  sheet: false,
+  annIdx: 0, annHidden: false,
+  classroomFilter: 'All groups',
+  learnChild: 'emma', learnRoom: 'Sunflower room',
+  pending: 3, approved: 0,
+  journalTab: 'pending', annTab: 'current',
+  rosterQ: '', rosterG: 'All groups',
+  msgFilter: 'All messages', notifFilter: 'All messages',
+  calChild: 'all', calMonth: 9, calYear: 2026, calSel: 15,
+  liked: {},
+  threads: {
+    claire: [
+      { me: 1, t: 'Hi Ms. Johnson, I wanted to touch base about the upcoming parent-teacher conference. Is there anything specific you\'d like to discuss about Emma\'s progress?', at: '10:42 AM' },
+      { me: 0, t: 'Yes, thank you for reaching out. Emma has been doing wonderfully in class. I\'d love to hear more about her reading comprehension and any areas where she might need a bit more support at home.', at: '10:43 AM' },
+      { me: 1, t: 'That sounds great. I\'ve noticed she\'s really taken to the new reading program. I can send over some additional resources for you to work on with her over the weekend if you\'d like.', at: '10:42 AM' },
+      { me: 1, img: 'photo-cafe.jpg', at: '10:51 AM' },
+    ],
+    javier: [], aaliyah: [],
+  },
+  draft: {},               // form drafts for create flows
+  created: null,           // last announcement / event created
+  toast: null,
+};
+
+/* ===========================================================================
+   Building blocks
+=========================================================================== */
+const statusBar = () => `
+  <div class="status">
+    <div class="time">9:41</div><div class="island"></div>
+    <div class="ind"><img src="${IMG}sb-signal.svg" alt=""><img src="${IMG}sb-wifi.svg" alt=""><img src="${IMG}sb-battery.svg" alt=""></div>
+  </div>`;
+
+/* Tab-level header: title left, bell + more right. */
+const topMain = (title, right = null) => `
+  <div class="top">${statusBar()}
+    <div class="titlebar"><h1>${title}</h1>
+      <div class="side r">${right ?? `
+        <button class="round-btn" data-go="notifications" aria-label="Notifications">${ic('bell', 's20')}</button>
+        <button class="round-btn" data-go="profile" aria-label="Profile">${ic('more', 's20')}</button>`}
+      </div>
+    </div>
+  </div>`;
+
+/* Pushed-screen header: back arrow, centred title. */
+const topBack = (title, right = '') => `
+  <div class="top">${statusBar()}
+    <div class="titlebar">
+      <div class="side"><button class="back-btn" data-act="back" aria-label="Back">${ic('back', 's40')}</button></div>
+      <h1>${title}</h1>
+      <div class="side r">${right}</div>
+    </div>
+  </div>`;
+
+/* Modal-form header: purple "Cancel" left. */
+const topCancel = (title) => `
+  <div class="top">${statusBar()}
+    <div class="titlebar">
+      <div class="side"><button class="text-btn" data-act="back">Cancel</button></div>
+      <h1 style="font-size:${title.length > 14 ? 20 : 24}px">${title}</h1>
+      <div class="side"></div>
+    </div>
+  </div>`;
+
+const TABS = [
+  { id: 'dashboard',  label: 'Dashboard',  icon: 'tab-home' },
+  { id: 'classrooms', label: 'Classrooms', icon: 'tab-classrooms' },
+  { id: '+' },
+  { id: 'learning',   label: 'Learning',   icon: 'tab-learning' },
+  { id: 'chat',       label: 'Chat',       icon: 'tab-chat' },
+];
+const tabBar = (active) => `
+  <nav class="tabbar"><div class="tabs">${TABS.map(t => t.id === '+'
+    ? `<div class="tab-fab"><button data-act="sheet" aria-label="Create">${ic('plus')}</button></div>`
+    : `<button class="tab ${t.id === active ? 'on' : ''}" data-tab="${t.id}">${ic(t.icon)}${t.label}</button>`).join('')}
+  </div><i class="hi"></i></nav>`;
+const homeBar = () => `<div class="homebar"><i></i></div>`;
+
+const eventsCard = () => `
+  <section class="card" style="flex:none">
+    <div class="section-title"><span class="h">EVENTS</span><button class="link" data-go="calendar">View calendar</button></div>
+    <div class="divider"></div>
+    ${EVENTS.map((e, i) => `
+      <button class="ev-row" data-go="event" data-p='${i}'>
+        <div class="date-chip"><span class="m">${e.m}</span><span class="d">${e.d}</span></div>
+        <div class="ev-copy"><div class="t">${e.t}</div><div class="s">${e.s}</div></div>
+        ${ic('chevron-right', 's16')}
+      </button>`).join('')}
+  </section>`;
+
+const classPost = (id, { name = 'TSK', tag = 'Home office', avatar = 'seal.svg', text = EASEL, photo = 'photo-blocks.jpg', counts = false } = {}) => {
+  const liked = S.liked[id];
+  return `
+  <article class="post">
+    <div class="hd">
+      <div class="who"><img class="avatar" src="${IMG}${avatar}" alt="">
+        <div><div class="nm">${name} <span class="tag">${tag}</span></div><div class="ago">3h ago</div></div>
+      </div>
+      <button aria-label="More">${ic('dots')}</button>
+    </div>
+    <p class="txt">${text}</p>
+    <img class="ph" src="${IMG}${photo}" alt="">
+    <div class="acts">
+      <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${id}">${ic('heart')}${counts ? (2 + (liked ? 1 : 0)) : ''}</button>
+      <button>${ic('comment')}${counts ? 6 : ''}</button>
+    </div>
+  </article>`;
+};
+
+const observation = ({ child = 'emma', pending = true, showKid = true } = {}) => {
+  const c = CHILDREN[child];
+  return `
+  <article class="obs">
+    <img src="${IMG}photo-easel.jpg" alt="">
+    <div class="in">
+      ${showKid ? `<div class="kid"><img class="avatar" src="${IMG}${c.avatar}" width="32" height="32" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>` : ''}
+      <div class="meta"><div><span class="tag green">OBSERVATION</span>${pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending</span>` : ''}</div>2 days ago</div>
+      <p class="txt">${child === 'emma' ? EASEL : EASEL.replace('Emma', 'Christopher').replace(' she ', ' he ')} Duis malesuada, turpis a placerat</p>
+      <div class="by"><img class="avatar" src="${IMG}avatar-joanne.jpg" alt="">Observed by Joanne · Teacher</div>
+    </div>
+  </article>`;
+};
+
+const childPills = (sel, act, withAll = true) => `
+  <div class="pills">
+    ${withAll ? `<button class="pill tall txt ${sel === 'all' ? 'on' : ''}" data-act="${act}" data-p="all">All children</button>` : ''}
+    ${Object.entries(CHILDREN).map(([k, c]) => `
+      <button class="pill tall ${sel === k ? 'on' : ''}" data-act="${act}" data-p="${k}"><img src="${IMG}${c.avatar}" alt="">${c.name}</button>`).join('')}
+  </div>`;
+
+const selectField = (label, opts, value, attrs = '') => `
+  <div class="field"><label>${label}</label>
+    <div class="select-wrap"><select class="input" ${attrs}>${opts.map(o => `<option ${o === value ? 'selected' : ''}>${o}</option>`).join('')}</select>${ic('chevron-down', 's16')}</div>
+  </div>`;
+
+/* ===========================================================================
+   Screens — each returns { html, tab?, cls? }
+=========================================================================== */
+const screens = {
+
+  /* ---------- entry: choose role ---------- */
+  roles() {
+    return { cls: 'login', html: `
+      <div class="top" style="height:auto;padding-bottom:0">${statusBar()}</div>
+      <div class="body">
+        <div style="display:flex;flex-direction:column;gap:34px">
+          <div class="brand"><img src="${IMG}seal.svg" alt="">The Sunshine Kindergarten</div>
+          <div class="welcome"><h2>Who’s signing in?</h2><p>Choose how you use the app. You can switch at any time.</p></div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <button class="role-card" data-act="pick" data-p="parent">
+              <div class="badge" style="background:var(--peach);color:#C4622D">${ic('heart-handshake')}</div>
+              <div><div class="t">I’m a parent</div><div class="s">Follow your child’s learning, events and messages.</div></div>
+              ${ic('chevron-right', 's20')}
+            </button>
+            <button class="role-card" data-act="pick" data-p="teacher">
+              <div class="badge" style="background:var(--purple-50);color:var(--purple)">${ic('book-heart')}</div>
+              <div><div class="t">I’m a teacher</div><div class="s">Post updates, review observations and manage your class.</div></div>
+              ${ic('chevron-right', 's20')}
+            </button>
+          </div>
+        </div>
+        <p class="acct">Don’t have login credentials?<a href="#" data-act="noop">Contact us</a></p>
+      </div>${homeBar()}` };
+  },
+
+  login() {
+    const email = S.role === 'teacher' ? 'claire.mckay@sunshine.school' : 'siobhan@example.com';
+    return { cls: 'login', html: `
+      <div class="top" style="height:auto;padding-bottom:0">${statusBar()}</div>
+      <form class="body" data-form="login">
+        <div style="display:flex;flex-direction:column;gap:34px">
+          <div class="brand"><button type="button" data-act="back" aria-label="Back" style="margin-left:-8px">${ic('back', 's40')}</button><img src="${IMG}seal.svg" alt="">The Sunshine Kindergarten</div>
+          <div class="welcome"><h2>Welcome back</h2><p>Log in to continue to your ${S.role} account.</p></div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="field light"><label style="font-size:13px">Email</label><input class="input sm" type="email" value="${email}" placeholder="you@example.com"></div>
+            <div>
+              <div class="field light pw"><label style="font-size:13px">Password</label>
+                <input class="input sm" type="password" value="sunshine01" id="pw">
+                <button type="button" class="eye" data-act="peek" style="top:31px" aria-label="Show password">${ic('eye', 's20')}</button>
+              </div>
+              <a class="forgot" href="#" data-act="noop">Forgot password?</a>
+            </div>
+            <button class="btn primary" type="submit">Log in</button>
+          </div>
+        </div>
+        <p class="acct">Don’t have login credentials?<a href="#" data-act="noop">Contact us</a></p>
+      </form>${homeBar()}` };
+  },
+
+  /* ---------- dashboards ---------- */
+  dashboard() {
+    if (S.role === 'teacher') return { tab: 'dashboard', html: `
+      ${topMain('Hi, Siobhan!')}
+      <div class="body">
+        <div class="mgmt">
+          <button class="opt hl" data-go="journal">
+            <div class="head"><div class="tg"><div class="badge">${ic('book-heart', 's20')}</div>
+              <div><div class="t">Learning journal</div><div class="st">${S.pending ? `${S.pending} observation${S.pending > 1 ? 's' : ''} need review <i class="red"></i>` : 'All caught up'}</div></div></div>
+              <span class="arrow">${ic('arrow-up-right', 's18')}</span></div>
+            <div class="desc">Approve family observations and revisit your own notes.</div>
+          </button>
+          <button class="opt" data-go="announcements">
+            <div class="head"><div class="tg"><div class="badge">${ic('megaphone', 's20')}</div>
+              <div><div class="t">Announcements</div><div class="st">2 current announcements</div></div></div>
+              <span class="arrow">${ic('arrow-up-right', 's18')}</span></div>
+            <div class="desc">Manage current and past notices.</div>
+          </button>
+          <button class="opt" data-go="roster">
+            <div class="head"><div class="tg"><div class="badge">${ic('contact-round', 's20')}</div>
+              <div><div class="t">Children</div><div class="st">18 children across 3 groups</div></div></div>
+              <span class="arrow">${ic('arrow-up-right', 's18')}</span></div>
+            <div class="desc">Search your roster and narrow it down by group.</div>
+          </button>
+        </div>
+        ${eventsCard()}
+      </div>${tabBar('dashboard')}` };
+
+    const a = ANNOUNCEMENTS[S.annIdx];
+    return { tab: 'dashboard', html: `
+      ${topMain('Hi, Siobhan!')}
+      <div class="body">
+        ${S.annHidden ? '' : `
+        <section class="announce">
+          <div class="k">Announcement ${S.annIdx + 1}/${ANNOUNCEMENTS.length}</div>
+          <button class="x" data-act="ann-dismiss" aria-label="Dismiss"><i class="ic" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i></button>
+          <div class="t">${a.t}</div><p class="b">${a.b}</p>
+          <div class="dots">${ANNOUNCEMENTS.map((_, i) => `<i class="${i === S.annIdx ? 'on' : ''}"></i>`).join('')}</div>
+        </section>`}
+        <section class="services">
+          <h3>Services</h3>
+          <div class="tiles">
+            <button class="tile" style="background:var(--purple-50)" data-go="term-dates"><span class="ib">${ic('svc-term')}</span>Term dates</button>
+            <button class="tile" style="background:var(--sky)" data-go="webview" data-p="Uniform"><span class="ib">${ic('svc-uniform')}</span>Uniform</button>
+            <button class="tile" style="background:var(--green-bg)" data-go="late-club"><span class="ib">${ic('svc-lateclub')}</span>Late Club</button>
+            <button class="tile" style="background:var(--peach)" data-go="webview" data-p="Bus"><span class="ib">${ic('svc-transport')}</span>Transport</button>
+            <button class="tile full" style="background:var(--blush)" data-go="important-contacts"><span class="ib">${ic('svc-contacts')}</span>Contacts</button>
+          </div>
+        </section>
+        ${eventsCard()}
+        <section class="card" style="flex:none">
+          <div class="section-title"><span class="h sm">CHILDREN FEED</span><button class="link plain" data-tab="learning">Open feed ›</button></div>
+          <div class="divider"></div>
+          ${FEED.map(f => `<div class="feed-post"><div class="a">${f.a} <span class="tag purple">TEACHER</span></div><p class="p">${f.p}</p><div class="m">${f.m}</div></div>`).join('')}
+        </section>
+      </div>${tabBar('dashboard')}` };
+  },
+
+  /* ---------- classrooms ---------- */
+  classrooms() {
+    const groups = ['All groups', 'Sunflower room', 'Acorn room'];
+    const posts = S.classroomFilter === 'Acorn room'
+      ? [classPost('c3', { name: 'Ms. Parker', tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg', text: LOREM.slice(0, 118) + '…', photo: 'photo-autumn.jpg' })]
+      : [classPost('c1'), classPost('c2', { photo: 'photo-lateclub.jpg', text: 'Ball pit adventures in the Late Club room this afternoon — lots of giggles! 🟡🔴🔵' })];
+    return { tab: 'classrooms', html: `
+      ${topMain('Classrooms')}
+      <div class="body">
+        <div class="pills">${groups.map(g => `<button class="pill ${g === S.classroomFilter ? 'on' : ''}" data-act="classroom" data-p="${g}">${g}</button>`).join('')}</div>
+        ${posts.join('')}
+      </div>${tabBar('classrooms')}` };
+  },
+
+  /* ---------- learning ---------- */
+  learning() {
+    const sel = S.learnChild;
+    const kids = sel === 'all' ? ['emma', 'christopher', 'emma'] : [sel, sel];
+    return { tab: 'learning', html: `
+      ${topMain('Learning')}
+      <div class="body gap16">
+        ${S.role === 'teacher' ? selectField('', ['Sunflower room', 'Acorn room', 'Bluebells'], S.learnRoom, 'data-change="learn-room"').replace('<label></label>', '') : ''}
+        ${childPills(sel, 'learn-child')}
+        ${kids.map((k, i) => observation({ child: k, pending: i === 0 && S.role === 'parent' })).join('')}
+      </div>${tabBar('learning')}` };
+  },
+
+  /* ---------- chat ---------- */
+  chat() {
+    const f = S.msgFilter;
+    const rows = [
+      { id: 'javier', n: 'Javier Diaz', tag: 'Teacher', av: 'avatar-javier.jpg', at: '11:45', m: 'Perfect. The little ones loved story circle today.', grp: 'Homeroom teacher' },
+      { id: 'claire', n: 'Claire McKay', tag: 'Teacher', av: 'avatar-claire.jpg', at: 'Yesterday', m: 'A new weekly learning summary is ready to review.', unread: 2, grp: 'Homeroom teacher' },
+      { id: 'aaliyah', n: 'Office', tag: 'Admin office', seal: true, at: '2 days ago', m: 'Please confirm next week’s parent meeting time.', grp: 'Admin office' },
+    ].filter(r => f === 'All messages' || r.grp === f);
+    return { tab: 'chat', html: `
+      ${topMain('Messages', `<button class="round-btn fab" data-go="contacts" aria-label="New message">${ic('plus')}</button>`)}
+      <div class="body tight">
+        <div class="pills">${['All messages', 'Homeroom teacher', 'Admin office', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="msg-filter" data-p="${c}">${c}</button>`).join('')}</div>
+        ${rows.length ? `<div class="list">${rows.map(r => `
+          <button class="li" data-go="thread" data-p="${r.id}">
+            <img class="avatar av" src="${IMG}${r.seal ? 'seal.svg' : r.av}" alt="">
+            <div class="c">
+              <div class="r1"><div><span class="n">${r.n}</span><span class="tag purple">${r.tag}</span></div><span class="time">${r.at}</span></div>
+              ${r.unread ? `<div class="r2"><span class="msg b">${r.m}</span><span class="unread">${r.unread}</span></div>` : `<span class="msg">${r.m}</span>`}
+            </div>
+          </button>`).join('')}</div>` : `<p class="empty">No conversations here yet.</p>`}
+      </div>${tabBar('chat')}` };
+  },
+
+  contacts() {
+    return { html: `
+      ${topBack('Contacts')}
+      <div class="body tight" style="gap:16px">
+        <input class="input sm" placeholder="Search facility or teacher" data-input="contact-q">
+        <div class="overline">SCHOOL CONTACTS</div>
+        <div class="list" id="contactList">${contactRows()}</div>
+      </div>${homeBar()}` };
+  },
+
+  thread(id) {
+    const c = CONTACTS.find(x => x.id === id) || CONTACTS[2];
+    const msgs = S.threads[id] || [];
+    return { html: `
+      <div class="top">${statusBar()}
+        <div class="chat-head">
+          <button class="back-btn" data-act="back" aria-label="Back">${ic('back', 's40')}</button>
+          <img class="avatar" src="${IMG}${c.seal ? 'seal.svg' : c.av}" alt="">
+          <div><div class="n">${c.id === 'aaliyah' ? 'Office' : c.n} <span class="tag solid">${c.tag || 'Admin office'}</span></div><div class="s">${c.id === 'aaliyah' ? 'School office' : c.s}</div></div>
+        </div>
+      </div>
+      <div class="body tight" id="thread">
+        <div class="bubbles">${msgs.map(bubble).join('')}</div>
+      </div>
+      <div class="composer">
+        <form data-form="send" data-p="${id}"><input placeholder="Write a message…" autocomplete="off"><button class="send" aria-label="Send">➤</button></form>
+        <i class="hi" style="width:135px;height:5px;border-radius:999px;background:#2E2545;opacity:.22"></i>
+      </div>` };
+  },
+
+  /* ---------- notifications ---------- */
+  notifications() {
+    const f = S.notifFilter;
+    const items = [0, 1, 2, 3, 4, 5].map(i => i % 2
+      ? { k: 'announcement', s: 'Kindergarten close day due to renovation.', g: 'Admin office' }
+      : { k: 'observation', s: 'First day of Autumn', g: 'Homeroom teacher' })
+      .filter(n => f === 'All messages' || n.g === f);
+    return { html: `
+      ${topBack('Notifications')}
+      <div class="body tight" style="gap:12px">
+        <div class="pills" style="margin-bottom:4px">${['All messages', 'Homeroom teacher', 'Admin office', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="notif-filter" data-p="${c}">${c}</button>`).join('')}</div>
+        ${items.length ? items.map(n => `
+          <button class="notif" data-go="${n.k === 'observation' ? 'learning-tab' : 'announcement'}">
+            <img src="${IMG}seal.svg" alt="">
+            <div><div class="t"><b>TSK</b> added <b>new ${n.k}</b></div><div class="s">${n.s}</div><div class="a">2h ago</div></div>
+          </button>`).join('') : `<p class="empty">Nothing here yet.</p>`}
+      </div>${homeBar()}` };
+  },
+
+  /* ---------- profile ---------- */
+  profile() {
+    if (S.role === 'teacher') return { html: `
+      ${topBack('Your profile')}
+      <div class="body tight">
+        <section class="card" style="border-radius:16px;border-color:var(--line-3);padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;flex:none">
+          <div style="position:relative"><img class="avatar" src="${IMG}avatar-claire.jpg" width="88" height="88" alt="">
+            <span class="round-btn fab" style="position:absolute;right:-6px;bottom:-6px">${ic('plus')}</span></div>
+          <div style="text-align:center"><div class="h2">Claire McKay</div><span class="tag" style="margin-top:4px">Homeroom teacher</span></div>
+        </section>
+        <div class="mgmt">
+          <button class="opt hl" data-go="journal"><div class="head"><div class="tg"><div class="badge">${ic('book-heart', 's20')}</div><div><div class="t">Learning journal</div><div class="st">${S.pending} observations need review <i class="red"></i></div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Approve family observations and revisit your own notes.</div></button>
+          <button class="opt" data-go="announcements"><div class="head"><div class="tg"><div class="badge">${ic('megaphone', 's20')}</div><div><div class="t">Announcements</div><div class="st">2 current announcements</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Manage current and past notices.</div></button>
+          <button class="opt" data-go="roster"><div class="head"><div class="tg"><div class="badge">${ic('contact-round', 's20')}</div><div><div class="t">Children</div><div class="st">18 children across 3 groups</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Search your roster and narrow it down by group.</div></button>
+        </div>
+        ${accountMenu(['Notifications', 'Calendar', 'Password management', 'Advanced settings', 'Log out'])}
+      </div>${homeBar()}` };
+
+    return { html: `
+      ${topBack('Your profile')}
+      <div class="body tight">
+        <div style="display:flex;flex-direction:column;gap:12px;flex:none">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between"><div><div class="h2">Your children</div><div class="sub">Tap a profile to switch what you see.</div></div><small class="sub" style="font-size:12px">2 profiles</small></div>
+          ${Object.entries(CHILDREN).map(([k, c], i) => `
+            <button class="child-card ${i === 0 ? 'on' : ''}" data-go="child" data-p="${k}">
+              <img class="avatar" src="${IMG}${c.avatar}" alt="">
+              <div><b>${c.name}</b><span>${c.term}</span><small>${c.obs} observations · ${c.upd}</small></div>
+            </button>`).join('')}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;flex:none"><div class="h2">Your account</div>
+          ${accountMenu(['Notifications settings', 'Calendar', 'Family members', 'Password management', 'Advanced settings', 'Log out'])}</div>
+      </div>${homeBar()}` };
+  },
+
+  child(k = 'emma') {
+    const c = CHILDREN[k];
+    return { html: `
+      ${topBack(c.name, `<button class="round-btn" data-act="new-obs" aria-label="Add">${ic('plus', 's20')}</button><button class="round-btn" data-go="thread" data-p="${k === 'emma' ? 'javier' : 'claire'}" aria-label="Message teacher">${ic('chat-white', 's20')}</button>`)}
+      <div class="body" style="padding-top:32px;gap:23px">
+        <div style="display:flex;gap:16px;align-items:center;flex:none"><img class="avatar" src="${IMG}${c.avatar}" width="58" height="58" alt=""><div><div class="h2">${c.full}</div><div class="sub">${c.room} · Autumn term</div></div></div>
+        <section class="services" style="gap:16px">
+          <div><div class="h2">Learning Journey</div><div class="sub">A gentle snapshot of ${c.name}’s learning so far.</div></div>
+          <div class="stats">
+            <button class="jstat" style="background:var(--purple-50)" data-tab="learning"><span class="ib">${ic('notebook-pen', 's18')}</span><b>${c.obs}</b><span>Observations ${ic('chevron-right', 's16')}</span></button>
+            <div class="jstat" style="background:var(--sky)"><span class="ib">${ic('clock3', 's18')}</span><b>2 days ago</b><span>Last observation</span></div>
+            <button class="jstat" style="background:var(--peach)" data-act="new-obs"><span class="ib">${ic('heart-handshake', 's18')}</span><b>2</b><span>Your contributions ${ic('chevron-right', 's16')}</span></button>
+            <div class="jstat" style="background:var(--green-bg)"><span class="ib">${ic('sprout', 's18')}</span><b>5</b><span>Milestones observed ${ic('chevron-right', 's16')}</span></div>
+          </div>
+        </section>
+        ${eventsCard()}
+        <div class="h2">Recent observations</div>
+        ${observation({ child: k, showKid: false })}${observation({ child: k, showKid: false, pending: false })}
+        <section class="cta-card">
+          <span class="ib">${ic('sparkles')}</span>
+          <div><h3>Add a moment from home</h3><p style="margin-top:8px">Share something ${c.name} enjoyed, tried or talked about. It helps ${k === 'emma' ? 'her' : 'his'} educators see the whole picture.</p></div>
+          <button class="btn primary" data-act="new-obs">Add parent contribution</button>
+        </section>
+      </div>${homeBar()}` };
+  },
+
+  /* ---------- teacher: journal, announcements, roster ---------- */
+  journal() {
+    const pend = S.journalTab === 'pending';
+    const cards = pend
+      ? Array.from({ length: S.pending }, (_, i) => `
+        <article class="post" data-card="${i}">
+          <div class="child"><div class="c"><img class="avatar" src="${IMG}avatar-emma-round.png" width="32" height="32" alt=""><div><b>Emma Smith</b><span>Sunflower room</span></div></div>
+            <span class="tag yellow">${ic('clock-pending', 's16')}Observation pending</span></div>
+          <div class="sep"></div>
+          <div class="hd"><div class="who"><img class="avatar" src="${IMG}avatar-joanne.jpg" style="background:#FFE9A8" alt="">
+            <div><div class="nm">Ms. Parker <span class="tag">Homeroom teacher</span></div><div class="ago">3h ago</div></div></div>${ic('dots')}</div>
+          <p class="txt">${EASEL}</p>
+          <img class="ph" src="${IMG}photo-blocks.jpg" alt="">
+          <div class="acts"><button>${ic('heart')}</button><button>${ic('comment')}</button></div>
+          <div class="decide"><button class="btn outline" data-act="decide" data-p="decline">Decline</button><button class="btn primary" data-act="decide" data-p="approve">Approve</button></div>
+        </article>`).join('') || `<p class="empty">You’re all caught up — no observations waiting.</p>`
+      : Array.from({ length: S.approved + 2 }, () => observation({ pending: false })).join('');
+    return { html: `
+      ${topBack('Learning journey')}
+      <div class="body tight">
+        <div class="panel">
+          <div class="field light"><label>Search children</label><input class="input sm" placeholder="Search by child or carer name"></div>
+          ${selectField('Group', ['All groups', 'Sunflowers', 'Acorns', 'Bluebells'], 'All groups').replace('<label>', '<label style="font-weight:400">')}
+          <div class="hint">${ic('info', 's16')}Showing all children · sorted A–Z</div>
+        </div>
+        <div class="switch"><button class="${pend ? 'on' : ''}" data-act="journal-tab" data-p="pending">Pending (${S.pending})</button><button class="${pend ? '' : 'on'}" data-act="journal-tab" data-p="past">Past</button></div>
+        ${cards}
+      </div>${homeBar()}` };
+  },
+
+  announcements() {
+    const cur = S.annTab === 'current';
+    return { html: `
+      ${topBack('Announcements')}
+      <div class="body tight">
+        <div class="switch"><button class="${cur ? 'on' : ''}" data-act="ann-tab" data-p="current">Current</button><button class="${cur ? '' : 'on'}" data-act="ann-tab" data-p="past">Past</button></div>
+        ${cur
+          ? classPost('a1', { name: 'Ms. Parker', tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg', text: EASEL + ' Duis malesuada, turpis a pl…', counts: true }) + classPost('a2', { name: 'Ms. Parker', tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg', text: EASEL + ' Duis malesuada, turpis a pl…', counts: true, photo: 'photo-lateclub.jpg' })
+          : classPost('a3', { name: 'Mr. Diaz', tag: 'Homeroom teacher', avatar: 'avatar-diaz.jpg', text: 'First day of Autumn — thanks to everyone who joined our leaf walk!', photo: 'photo-autumn.jpg', counts: true })}
+      </div>${homeBar()}` };
+  },
+
+  roster() {
+    return { html: `
+      ${topBack('Children list')}
+      <div class="body tight">
+        <div style="display:flex;gap:12px;flex:none"><div class="stat"><b>18</b><span>children enrolled</span></div><div class="stat"><b>3</b><span>active groups</span></div></div>
+        <div class="panel">
+          <div class="field light"><label>Search children</label><input class="input sm" placeholder="Search by child or carer name" value="${S.rosterQ}" data-input="roster-q"></div>
+          ${selectField('Group', ['All groups', 'Sunflowers', 'Acorns', 'Bluebells'], S.rosterG, 'data-change="roster-g"').replace('<label>', '<label style="font-weight:400">')}
+          <div class="hint">${ic('info', 's16')}<span id="rosterHint">Showing ${S.rosterG === 'All groups' ? 'all children' : S.rosterG} · sorted A–Z</span></div>
+        </div>
+        <div id="rosterList" style="display:flex;flex-direction:column;gap:23px">${rosterGroups()}</div>
+      </div>${homeBar()}` };
+  },
+
+  /* ---------- calendar ---------- */
+  calendar() {
+    const { calMonth: m, calYear: y, calSel: sel } = S;
+    const first = new Date(y, m, 1), lead = (first.getDay() + 6) % 7;
+    const days = new Date(y, m + 1, 0).getDate(), prevDays = new Date(y, m, 0).getDate();
+    const dots = new Set([2, 7, 10, 18, 22, 29]);
+    const cells = [];
+    for (let i = lead; i > 0; i--) cells.push(`<div class="day out">${prevDays - i + 1}</div>`);
+    for (let d = 1; d <= days; d++) cells.push(`<button class="day ${d === sel ? 'sel' : ''} ${d === 13 && m === 9 && y === 2026 ? 'today' : ''}" data-act="cal-day" data-p="${d}">${d}${dots.has(d) || d === sel ? '<i></i>' : ''}</button>`);
+    for (let d = 1; cells.length % 7; d++) cells.push(`<div class="day out">${d}</div>`);
+    const monthName = first.toLocaleString('en-GB', { month: 'long' });
+    const label = new Date(y, m, sel).toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    const mon = monthName.slice(0, 3).toUpperCase();
+    const kids = S.calChild === 'all' ? ['Emma', 'Christopher', 'Emma'] : [CHILDREN[S.calChild].name, CHILDREN[S.calChild].name];
+    return { html: `
+      ${topBack('Calendar', S.role === 'teacher' ? `<button class="round-btn fab" data-go="new-event" aria-label="New event">${ic('plus')}</button>` : '')}
+      <div class="body tight" style="gap:16px">
+        ${S.role === 'parent' ? childPills(S.calChild, 'cal-child') : ''}
+        <section class="month">
+          <div class="mh"><div><b>${monthName} ${y}</b><span>${label}</span></div>
+            <div class="nav"><button data-act="cal-nav" data-p="-1" aria-label="Previous month">${ic('month-prev', 's16')}</button><button data-act="cal-nav" data-p="1" aria-label="Next month"><i class="ic s16" style="--i:url(${IMG}month-prev.svg);transform:scaleX(-1)"></i></button></div></div>
+          <div class="grid7">${['M', 'T', 'W', 'T', 'F', 'S', 'S'].map(w => `<div class="wd">${w}</div>`).join('')}${cells.join('')}</div>
+        </section>
+        ${kids.map(k => `
+          <button class="cal-ev" data-go="event" data-p="0">
+            <div class="date-chip big"><span class="m">${mon}</span><span class="d">${sel}</span></div>
+            <div class="ev-copy"><div class="tags"><span class="tag cal">Grasshoppers</span><span class="tag cal">${k}</span></div><div class="t">Spring family picnic</div><div class="s">Sat · 11:00 AM · Sunflower Garden</div></div>
+          </button>`).join('')}
+      </div>${homeBar()}` };
+  },
+
+  event(i = 0) {
+    const e = S.created?.kind === 'event' && i === 'new' ? S.created : { ...EVENTS[i] || EVENTS[0], title: (EVENTS[i] || EVENTS[0]).t };
+    return detailScreen('Event details', { title: e.title, when: e.when || `${e.d} ${e.m === 'MAY' ? 'May' : 'June'}, 2026; ${(e.s || '').split('·')[1]?.trim() || '13:00'}`, photo: e.photo ?? 'photo-autumn.jpg', body: e.body || LOREM }, S.role === 'teacher' ? 'Edit event' : null, S.role === 'teacher');
+  },
+
+  announcement() {
+    const a = S.created?.kind === 'announcement' ? S.created : { title: 'First day of Autumn', when: '23 September, 2026; 13:00', photo: 'photo-autumn.jpg', body: LOREM };
+    return detailScreen('Announcement', a, S.role === 'teacher' ? 'Edit announcement' : null, false);
+  },
+
+  /* ---------- services ---------- */
+  'term-dates'() {
+    const terms = [['Term 1', 'Wednesday 02 Sep to Thursday 15 Oct 2026'], ['Term 2', 'Sunday 25 Oct to Thursday 17 Dec 2026'], ['Term 3', 'Sunday 10 Jan to Thursday 04 Mar 2027'], ['Term 4', 'Sunday 14 Mar to Thursday 15 Apr 2027'], ['Term 5', 'Sunday 25 Apr to Thursday 03 Jun 2027']];
+    return { html: `
+      ${topBack('Term dates')}
+      <div class="body" style="gap:24px">
+        <div><div style="font-size:18px;color:var(--ink-900)">Key term dates</div><div style="font-size:36px;font-weight:700;letter-spacing:-.5px;color:var(--ink-900)">2026-2027</div></div>
+        <div class="card" style="border-radius:12px;flex:none">${terms.map(([t, d]) => `<div class="kid-row" style="flex-direction:column;align-items:flex-start;gap:2px;padding:12px 16px"><b style="font-size:12px;font-weight:600">${t}</b><span class="s" style="font-size:11px">${d}</span></div>`).join('')}</div>
+        <button class="btn yellow" data-act="toast" data-p="Term dates added to your calendar">Add to my calendar</button>
+        <button class="btn link" data-go="calendar">See full events calendar</button>
+      </div>${homeBar()}` };
+  },
+  'late-club'() {
+    return { html: `
+      ${topBack('Late club')}
+      <div class="body" style="padding-top:32px;gap:23px">
+        <img class="hero" src="${IMG}photo-lateclub.jpg" style="height:240px;border:1px solid var(--line-4)" alt="">
+        <div class="big-title">Late club</div>
+        <p class="prose dim">Fusce sollicitudin tincidunt odio a mollis. Nullam consectetur est ut nunc imperdiet, ut ullamcorper ante cursus. Nunc ultrices vitae urna non mattis. Cras gravida auctor orci a consectetur. Fusce auctor velit ac libero convallis maximus. Mauris purus lacus, egestas quis efficitur mollis, volutpat eget mi.</p>
+        <button class="btn primary" data-act="toast" data-p="You’re registered for Late Club 🎉" style="margin-top:auto">Register to late club</button>
+      </div>${homeBar()}` };
+  },
+  'important-contacts'() {
+    return { html: `${topBack('Contacts')}
+      <div class="body" style="gap:16px"><div class="big-title" style="font-size:24px">Important contacts</div><div class="list">${contactRows()}</div></div>${homeBar()}` };
+  },
+  webview(title = 'Uniform') {
+    return { html: `${topBack(title)}<div class="webview">Web view</div>${homeBar()}` };
+  },
+
+  /* ---------- create flows ---------- */
+  camera() {
+    return { cls: 'camera dark', html: `
+      <div class="top" style="height:auto;padding-bottom:12px">${statusBar()}
+        <div class="titlebar"><button class="x" data-act="back" aria-label="Close">✕</button><b style="font-size:14px">New post</b></div></div>
+      <div class="vf"><span style="font-size:34px">📷</span>Point at the moment, then tap the shutter — or pick from your library</div>
+      <div class="modes"><span class="on">PHOTO</span><span>VIDEO</span></div>
+      <div class="ctrl">
+        <button class="lib" data-act="snap" aria-label="Library"><img src="${IMG}photo-capes.jpg" alt=""></button>
+        <button class="shutter" data-act="snap" aria-label="Take photo"></button>
+        <button class="flip" aria-label="Flip camera">⟳</button>
+      </div>` };
+  },
+
+  /* Stories-style editor between the camera and the observation form. */
+  'edit-photo'() {
+    const d = obsDraft(), tool = S.edTool;
+    const tray = tool === 'emoji' || tool === 'sticker' ? `
+      <div class="ed-scrim" data-act="ed-tool" data-p=""></div>
+      <div class="tray">${tool === 'emoji'
+        ? `<h4>Emoji</h4><div class="emojis">${EMOJI.map(e => `<button data-act="ed-add" data-p="emoji" data-v="${e}">${e}</button>`).join('')}</div>`
+        : `<h4>Stickers</h4><div class="stickers">${STICKERS.map((s, i) => `<button style="background:${s.bg};color:${s.fg}" data-act="ed-add" data-p="sticker" data-v="${i}">${s.v}</button>`).join('')}</div>`}
+      </div>` : '';
+    const t = S.edText;
+    const textEd = t ? `
+      <div class="ed-text">
+        <div class="row"><button class="done" data-act="ed-text-cancel">Cancel</button><button class="done" data-act="ed-text-done">Done</button></div>
+        <div class="mid"><span id="edText" class="ed-input ${t.bg ? 'bg' : ''}" contenteditable="true" data-ph="Type something…" style="${textStyle(t)}">${esc(t.v)}</span></div>
+        <div class="ed-swatches">
+          <button class="bgbtn ${t.bg ? 'on' : ''}" data-act="ed-bg" aria-label="Text background">A</button>
+          ${TEXT_COLORS.map(c => `<button class="sw ${c === t.color ? 'on' : ''}" style="background:${c}" data-act="ed-color" data-p="${c}" aria-label="Colour ${c}"></button>`).join('')}
+        </div>
+      </div>` : '';
+    return { cls: 'editor dark', html: `
+      <div class="canvas" id="canvas">
+        <img class="bg" src="${IMG}photo-capes.jpg" alt="" data-act="ed-deselect">
+        ${d.overlays.map(o => overlayHtml(o, true)).join('')}
+      </div>
+      <div class="ed-top">${statusBar()}
+        <div class="ed-bar">
+          <button class="ed-btn" data-act="back" aria-label="Retake">✕</button>
+          <div class="ed-tools">
+            <button class="ed-btn" data-act="ed-text-new" aria-label="Add text">${ic('ed-text', 's20')}</button>
+            <button class="ed-btn ${tool === 'sticker' ? 'on' : ''}" data-act="ed-tool" data-p="sticker" aria-label="Add sticker">${ic('ed-star', 's20')}</button>
+            <button class="ed-btn ${tool === 'emoji' ? 'on' : ''}" data-act="ed-tool" data-p="emoji" aria-label="Add emoji">${ic('ed-emoji', 's20')}</button>
+            <button class="ed-btn" data-act="ed-undo" aria-label="Undo" ${d.overlays.length ? '' : 'disabled'}>${ic('ed-undo', 's20')}</button>
+          </div>
+        </div>
+      </div>
+      <div class="ed-bottom">
+        <span class="ed-hint">${d.overlays.length ? 'Drag to move · tap to select' : 'Add text, stickers or emoji'}</span>
+        <button class="btn primary ed-next" data-act="ed-next">Next</button>
+      </div>
+      ${tray}${textEd}` };
+  },
+
+  'new-obs'() {
+    const d = obsDraft();
+    return { html: `
+      ${topBack('New observation')}
+      <form class="body" style="padding-top:32px;gap:23px" data-form="obs">
+        <div style="display:flex;flex-direction:column;gap:16px;flex:none">
+          ${S.role === 'teacher' ? selectField('Who is it for?*', ['Sunflowers room', 'Acorn room', 'Bluebells'], d.room, 'data-change="obs-room"') : ''}
+          <div class="field"><span class="lbl">Select child</span>${childPills(d.child, 'obs-child', false)}</div>
+        </div>
+        ${d.noPhoto ? `
+        <div class="field"><span class="lbl">Photo (optional)</span>
+          <button type="button" class="photo-drop" data-act="obs-retake">${ic('plus', 's20')}Tap to snap or upload</button></div>` : `
+        <div class="story-col">
+          <div class="story" style="aspect-ratio:${d.ratio}">
+            <img class="bg" src="${IMG}photo-capes.jpg" alt="">${d.overlays.map(o => overlayHtml(o, false)).join('')}
+          </div>
+          <div class="story-actions">
+            <button type="button" class="btn outline" data-act="obs-edit-photo">Edit photo</button>
+            <button type="button" class="btn outline danger" data-act="obs-remove-photo">Remove photo</button>
+          </div>
+        </div>`}
+        <div class="field"><label>Reflections</label><textarea class="input" rows="7" maxlength="240" placeholder="Write your reflections — what happened in this moment?" data-input="obs-text">${d.text}</textarea><div class="counter" id="obsCount">${d.text.length} / 240</div></div>
+        <div class="hint" style="color:var(--ink)">${ic('info', 's16')}Your observation needs to be ${S.role === 'teacher' ? 'reviewed' : 'improved by a teacher'} before it is posted in the learning journal.</div>
+        <button class="btn primary" type="submit">Submit to TSK</button>
+      </form>${homeBar()}` };
+  },
+
+  'new-announcement'() { return createForm('announcement'); },
+  'new-event'() { return createForm('event'); },
+};
+
+/* ---------- photo editor ---------- */
+const EMOJI = ['🎨', '🌟', '❤️', '😊', '🎉', '👏', '🌈', '🌻', '🐞', '🍎', '🦋', '🧩', '📚', '🎵', '🌿', '✨', '💜', '🏆'];
+const STICKERS = [
+  { v: 'Proud moment 🌟', bg: '#FFD84D', fg: '#20182B' },
+  { v: 'First time!',     bg: '#7C3AED', fg: '#FFFFFF' },
+  { v: 'Well done 👏',     bg: '#FFFFFF', fg: '#20182B' },
+  { v: 'Messy play',      bg: '#FCE9DD', fg: '#8A3B12' },
+  { v: 'Kind friend 💜',   bg: '#F4EEFF', fg: '#6927D8' },
+  { v: 'Outdoor fun 🌿',   bg: '#37B87C', fg: '#FFFFFF' },
+  { v: 'Big feelings',    bg: '#E14372', fg: '#FFFFFF' },
+  { v: 'Sunflower room',  bg: '#E7F3F6', fg: '#1F5A6B' },
+];
+const TEXT_COLORS = ['#FFFFFF', '#20182B', '#7C3AED', '#FFD84D', '#E14372', '#37B87C', '#4FA8E0'];
+
+function obsDraft() {
+  return S.draft.obs ||= { room: 'Sunflowers room', child: 'emma', text: '', overlays: [], ratio: '402 / 874' };
+}
+/* Text on a coloured block needs a contrasting ink; plain text just takes the colour. */
+function textStyle(t) {
+  if (!t.bg) return `color:${t.color}`;
+  const light = ['#FFFFFF', '#FFD84D'].includes(t.color);
+  return `background:${t.color};color:${light ? '#20182B' : '#FFFFFF'}`;
+}
+function overlayHtml(o, editable) {
+  const sel = editable && S.edSel === o.id;
+  const pos = `left:${o.x}%;top:${o.y}%;`;
+  const del = sel ? `<button class="ov-del" data-act="ed-del" data-p="${o.id}" aria-label="Remove">✕</button>` : '';
+  const attrs = editable ? `data-id="${o.id}"` : '';
+  if (o.type === 'emoji') return `<div class="ov emoji ${sel ? 'sel' : ''}" ${attrs} style="${pos}">${o.v}${del}</div>`;
+  if (o.type === 'sticker') { const s = STICKERS[o.v]; return `<div class="ov sticker ${sel ? 'sel' : ''}" ${attrs} style="${pos}background:${s.bg};color:${s.fg}">${esc(s.v)}${del}</div>`; }
+  return `<div class="ov text ${o.bg ? 'bg' : ''} ${sel ? 'sel' : ''}" ${attrs} style="${pos}${textStyle(o)}">${esc(o.v)}${del}</div>`;
+}
+
+/* ---------- helpers used by several screens ---------- */
+function bubble(m) {
+  return `<div class="bub ${m.me ? '' : 'them'} ${m.fresh ? 'new' : ''}">
+    <div class="b ${m.img ? 'img' : ''}">${m.img ? `<img src="${IMG}${m.img}" alt="">` : esc(m.t)}</div>
+    <div class="mt">${m.at} · Read</div></div>`;
+}
+function contactRows(q = '') {
+  const rows = CONTACTS.filter(c => (c.n + c.s).toLowerCase().includes(q.toLowerCase()));
+  return rows.map(c => `
+    <button class="contact" data-go="thread" data-p="${c.id}">
+      <img class="avatar" src="${IMG}${c.seal ? 'seal.svg' : c.av}" alt="">
+      <div style="min-width:0"><div class="n">${c.n}${c.tag ? `<span class="tag purple">${c.tag}</span>` : ''}</div><div class="s">${c.s}</div></div>
+    </button>`).join('') || `<p class="empty">No contacts match.</p>`;
+}
+function rosterGroups() {
+  const q = S.rosterQ.toLowerCase();
+  const rows = ROSTER.filter(r => (S.rosterG === 'All groups' || r.g === S.rosterG) && (r.n + r.s).toLowerCase().includes(q));
+  if (!rows.length) return `<p class="empty">No children match “${esc(S.rosterQ)}”.</p>`;
+  const by = {};
+  rows.forEach(r => (by[r.n[0]] ||= []).push(r));
+  return Object.entries(by).map(([l, rs]) => `
+    <div class="kids-group"><div class="letter">${l}</div>
+      ${rs.map(r => `<div class="kid-row"><span class="initials" style="background:${r.c}">${r.n.split(' ').map(w => w[0]).join('')}</span>
+        <div style="min-width:0"><div class="n">${r.n}</div><div class="s">${r.g} · ${r.s}</div></div></div>`).join('')}
+    </div>`).join('');
+}
+function accountMenu(items) {
+  const icons = { 'Notifications': 'menu-bell', 'Notifications settings': 'menu-bell', 'Calendar': 'menu-calendar', 'Family members': 'menu-family', 'Password management': 'menu-password', 'Advanced settings': 'menu-settings', 'Log out': 'menu-logout' };
+  const go = { 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'Log out': 'data-act="logout"' };
+  return `<div class="menu">${items.map(t => `<button ${go[t] || 'data-act="toast" data-p="Coming soon in the prototype"'}>${ic(icons[t], 's20')}${t}</button>`).join('')}</div>`;
+}
+function detailScreen(title, d, editLabel, canDelete) {
+  return { html: `
+    ${topCancel(title)}
+    <div class="body" style="padding-top:32px;gap:24px">
+      ${d.photo ? `<img class="hero" src="${IMG}${d.photo}" style="height:152px" alt="">` : ''}
+      <div class="big-title">${esc(d.title)}</div>
+      <div class="byline"><img class="avatar" src="${IMG}avatar-diaz.jpg" alt=""><div>Created by <b>Mr. Diaz</b><span>Homeroom teacher</span></div></div>
+      <div class="when">${ic('calendar-small')}${esc(d.when)}</div>
+      <p class="prose">${esc(d.body)}</p>
+      ${editLabel ? `<button class="btn outline" data-act="toast" data-p="Editing isn’t wired up in the prototype">${editLabel}</button>` : ''}
+      ${canDelete ? `<button class="btn link" data-act="delete-event">Delete event</button>` : ''}
+    </div>${homeBar()}` };
+}
+function createForm(kind) {
+  const d = S.draft[kind] ||= { group: 'Select group', title: '', date: '', time: '', place: '', photo: false, body: '' };
+  const ev = kind === 'event';
+  return { html: `
+    ${topCancel(ev ? 'New event' : 'New announcement')}
+    <form class="body" style="padding-top:32px;gap:16px" data-form="create" data-p="${kind}">
+      ${selectField('Who is it for?*', ['Select group', 'All groups', 'Sunflower room', 'Acorn room'], d.group, `data-bind="${kind}.group"`)}
+      <div class="field"><label>Title*</label><input class="input sm" value="${esc(d.title)}" data-bind="${kind}.title" placeholder="${ev ? 'e.g. Sports Day' : 'e.g. First day of Autumn'}"></div>
+      <div class="row2">
+        <div class="field"><label>Date${ev ? '*' : ' (optional)'}</label><input class="input sm" type="date" value="${d.date}" data-bind="${kind}.date"></div>
+        <div class="field"><label>Time${ev ? '*' : ' (optional)'}</label><input class="input sm" type="time" value="${d.time}" data-bind="${kind}.time"></div>
+      </div>
+      <div class="field"><label>Place (optional)</label><input class="input sm" value="${esc(d.place)}" data-bind="${kind}.place"></div>
+      <div class="field"><label>Cover photo (optional)</label>
+        <button type="button" class="photo-drop ${d.photo ? 'filled' : ''}" data-act="add-photo" data-p="${kind}">${d.photo ? `<img src="${IMG}photo-autumn.jpg" alt="">` : `${ic('plus', 's20')}Tap to snap or upload`}</button></div>
+      <div class="field"><label>Description*</label><textarea class="input" rows="4" maxlength="240" data-bind="${kind}.body" data-count="cnt-${kind}">${esc(d.body)}</textarea><div class="counter" id="cnt-${kind}">${d.body.length} / 240</div></div>
+      <button class="btn primary" type="submit" id="createBtn" ${formValid(kind) ? '' : 'disabled'}>${ev ? 'Upload event' : 'Create announcement'}</button>
+    </form>${homeBar()}` };
+}
+function formValid(kind) {
+  const d = S.draft[kind];
+  return d && d.group !== 'Select group' && d.title.trim() && d.body.trim() && (kind !== 'event' || (d.date && d.time));
+}
+function esc(s = '') { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function fmtWhen(date, time) {
+  if (!date) return 'Date to be confirmed';
+  const d = new Date(date + 'T' + (time || '00:00'));
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' }) + ', ' + d.getFullYear() + (time ? '; ' + time : '');
+}
+
+/* ===========================================================================
+   Router
+=========================================================================== */
+const device = document.getElementById('device');
+const cur = () => S.stack[S.stack.length - 1];
+
+function render() {
+  const { name, p } = cur();
+  const out = screens[name](p);
+  const anim = S.dir === 'none' ? '' : S.dir === 'back' ? 'enter-back' : 'enter';
+  device.innerHTML = `<div class="screen ${out.cls || ''} ${anim}">${out.html}</div>`
+    + (S.sheet ? sheetHtml() : '')
+    + (S.toast ? `<div class="toast">${S.toast}</div>` : '');
+  S.dir = 'none';
+  S.toast = null;
+  document.querySelectorAll('#roleSeg button').forEach(b => b.classList.toggle('on', b.dataset.role === S.role));
+  const t = device.querySelector('#thread'); if (t) t.scrollTop = t.scrollHeight;
+  const ed = device.querySelector('#edText');
+  if (ed) { ed.focus(); const r = document.createRange(); r.selectNodeContents(ed); r.collapse(false); getSelection().removeAllRanges(); getSelection().addRange(r); }
+}
+function go(name, p) { S.stack.push({ name, p }); S.dir = 'fwd'; S.sheet = false; render(); }
+function back() { if (S.stack.length > 1) { S.stack.pop(); S.dir = 'back'; } S.sheet = false; render(); }
+function tab(name) { S.stack = [{ name }]; S.dir = 'none'; S.sheet = false; render(); }
+function toast(msg) { S.toast = msg; render(); }
+function signIn(role) { S.role = role; S.stack = [{ name: 'dashboard' }]; S.dir = 'fwd'; render(); }
+
+function sheetHtml() {
+  const opts = [
+    { act: 'new-obs', icon: 'binoculars', t: 'Add observation', s: 'Only parents of a specific child will see it' },
+    { act: 'new-announcement', icon: 'star', t: 'Post class update', s: 'All parents for this class will see it' },
+    { act: 'new-event', icon: 'calendar-add', t: 'Create event', s: 'All parents for this class will see it' },
+  ];
+  return `<div class="scrim" data-act="close-sheet"></div>
+    <div class="sheet" role="dialog" aria-label="Create">
+      ${opts.map(o => `<button class="sheet-opt" data-act="${o.act}">${ic(o.icon)}<div><div class="t">${o.t}</div><div class="s">${o.s}</div></div></button>`).join('')}
+      <button class="close" data-act="close-sheet">Close</button>
+    </div>`;
+}
+
+/* ===========================================================================
+   Events
+=========================================================================== */
+const actions = {
+  restart() { S.role = null; S.stack = [{ name: 'roles' }]; S.dir = 'back'; render(); },
+  pick(p) { S.role = p; go('login'); },
+  logout() { actions.restart(); },
+  back, noop() {},
+  peek() { const pw = device.querySelector('#pw'); pw.type = pw.type === 'password' ? 'text' : 'password'; },
+  /* Parents can only add observations, so + skips the menu for them. */
+  sheet() { if (S.role === 'parent') return actions['new-obs'](); S.sheet = true; render(); },
+  'close-sheet'() { S.sheet = false; render(); },
+  'new-obs'() { S.draft.obs = null; go('camera'); },
+  'new-announcement'() { S.draft.announcement = null; go('new-announcement'); },
+  'new-event'() { S.draft.event = null; go('new-event'); },
+  /* A retake (from the form) keeps the draft's child and reflections; a fresh
+     snap starts a new draft. */
+  snap() {
+    if (S.stack.some(s => s.name === 'new-obs')) Object.assign(obsDraft(), { overlays: [], noPhoto: false });
+    else { S.draft.obs = null; obsDraft(); }
+    S.edTool = null; S.edText = null; S.edSel = null; go('edit-photo');
+  },
+  'obs-edit-photo'() {
+    if (S.stack.at(-2)?.name === 'edit-photo') back(); else go('edit-photo');
+  },
+  'obs-remove-photo'() { Object.assign(obsDraft(), { noPhoto: true, overlays: [] }); render(); },
+  'obs-retake'() { go('camera'); },
+
+  /* photo editor */
+  'ed-tool'(p) { S.edTool = p && S.edTool !== p ? p : null; S.edSel = null; render(); },
+  'ed-add'(type, el) {
+    const d = obsDraft(), n = d.overlays.length;
+    const o = { id: Date.now(), type, v: type === 'sticker' ? +el.dataset.v : el.dataset.v, x: 50 + ((n * 13) % 31) - 15, y: 55 + ((n * 17) % 21) - 10 };
+    d.overlays.push(o); S.edSel = o.id; S.edTool = null; render();
+  },
+  'ed-del'(id) { const d = obsDraft(); d.overlays = d.overlays.filter(o => o.id !== +id); S.edSel = null; render(); },
+  'ed-undo'() { obsDraft().overlays.pop(); S.edSel = null; render(); },
+  'ed-deselect'() { if (S.edSel) { S.edSel = null; render(); } },
+  'ed-text-new'() { S.edTool = null; S.edSel = null; S.edText = { id: null, v: '', color: '#FFFFFF', bg: false }; render(); },
+  'ed-color'(c) { S.edText.color = c; render(); },
+  'ed-bg'() { S.edText.bg = !S.edText.bg; render(); },
+  'ed-text-cancel'() { S.edText = null; render(); },
+  'ed-text-done'() {
+    const t = S.edText, d = obsDraft(), v = t.v.trim();
+    if (t.id) {
+      const o = d.overlays.find(x => x.id === t.id);
+      if (v) Object.assign(o, { v, color: t.color, bg: t.bg }); else d.overlays = d.overlays.filter(x => x.id !== t.id);
+    } else if (v) {
+      const o = { id: Date.now(), type: 'text', v, color: t.color, bg: t.bg, x: 50, y: 24 };
+      d.overlays.push(o); S.edSel = o.id;
+    }
+    S.edText = null; render();
+  },
+  'ed-next'() {
+    const c = device.querySelector('#canvas').getBoundingClientRect();
+    obsDraft().ratio = `${Math.round(c.width)} / ${Math.round(c.height)}`;
+    S.edSel = null; S.edTool = null;
+    /* Coming back to a form that's already open: return to it rather than stacking a second one. */
+    const i = S.stack.findIndex(s => s.name === 'new-obs');
+    if (i < 0) return go('new-obs');
+    S.stack = S.stack.slice(0, i + 1); S.dir = 'back'; render();
+  },
+  'ann-dismiss'() {
+    if (S.annIdx < ANNOUNCEMENTS.length - 1) S.annIdx++; else S.annHidden = true;
+    render();
+  },
+  classroom(p) { S.classroomFilter = p; render(); },
+  'learn-child'(p) { S.learnChild = p; render(); },
+  'obs-child'(p) { S.draft.obs.child = p; render(); },
+  'cal-child'(p) { S.calChild = p; render(); },
+  'msg-filter'(p) { S.msgFilter = p; render(); },
+  'notif-filter'(p) { S.notifFilter = p; render(); },
+  'journal-tab'(p) { S.journalTab = p; render(); },
+  'ann-tab'(p) { S.annTab = p; render(); },
+  like(p) { S.liked[p] = !S.liked[p]; render(); },
+  'cal-day'(p) { S.calSel = +p; render(); },
+  'cal-nav'(p) {
+    const d = new Date(S.calYear, S.calMonth + +p, 1);
+    S.calMonth = d.getMonth(); S.calYear = d.getFullYear();
+    S.calSel = Math.min(S.calSel, new Date(S.calYear, S.calMonth + 1, 0).getDate());
+    render();
+  },
+  decide(p, el) {
+    const card = el.closest('.post');
+    card.classList.add('leaving');
+    setTimeout(() => {
+      S.pending--; if (p === 'approve') S.approved++;
+      S.toast = p === 'approve' ? 'Observation approved and added to Emma’s journal' : 'Observation declined — the family will be notified';
+      render();
+    }, 280);
+  },
+  'add-photo'(p) { S.draft[p].photo = true; render(); },
+  toast(p) { toast(p); },
+  'delete-event'() { back(); toast('Event deleted'); },
+};
+
+device.addEventListener('click', e => {
+  const el = e.target.closest('[data-act],[data-go],[data-tab]');
+  if (!el || !device.contains(el)) return;
+  if (el.tagName === 'A') e.preventDefault();
+  if (el.dataset.tab) return tab(el.dataset.tab);
+  if (el.dataset.go) {
+    const target = el.dataset.go === 'learning-tab' ? null : el.dataset.go;
+    return target ? go(target, el.dataset.p) : tab('learning');
+  }
+  const fn = actions[el.dataset.act];
+  if (fn) fn(el.dataset.p, el);
+});
+
+document.querySelector('.proto-bar').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.role) signIn(b.dataset.role);
+  else if (b.dataset.act === 'restart') actions.restart();
+});
+
+/* Live inputs — update state without a full re-render so focus is kept. */
+/* Photo editor: drag overlays around the canvas; a tap (no movement) selects,
+   and tapping selected text reopens it for editing. */
+device.addEventListener('pointerdown', e => {
+  const ov = e.target.closest('#canvas .ov[data-id]');
+  if (!ov || e.target.closest('.ov-del')) return;
+  e.preventDefault();
+  const canvas = device.querySelector('#canvas').getBoundingClientRect();
+  const o = obsDraft().overlays.find(x => x.id === +ov.dataset.id);
+  const sx = e.clientX, sy = e.clientY, ox = o.x, oy = o.y;
+  let moved = false;
+  ov.setPointerCapture(e.pointerId);
+  ov.classList.add('dragging');
+  const move = ev => {
+    const dx = ev.clientX - sx, dy = ev.clientY - sy;
+    if (!moved && Math.hypot(dx, dy) < 4) return;
+    moved = true;
+    o.x = Math.max(4, Math.min(96, ox + dx / canvas.width * 100));
+    o.y = Math.max(4, Math.min(96, oy + dy / canvas.height * 100));
+    ov.style.left = o.x + '%'; ov.style.top = o.y + '%';
+  };
+  const up = () => {
+    ov.removeEventListener('pointermove', move); ov.removeEventListener('pointerup', up); ov.removeEventListener('pointercancel', up);
+    if (!moved && S.edSel === o.id && o.type === 'text') S.edText = { id: o.id, v: o.v, color: o.color, bg: o.bg };
+    S.edSel = o.id;
+    render();
+  };
+  ov.addEventListener('pointermove', move); ov.addEventListener('pointerup', up); ov.addEventListener('pointercancel', up);
+});
+
+device.addEventListener('input', e => {
+  const el = e.target;
+  if (el.id === 'edText') { S.edText.v = el.innerText.replace(/\n$/, ''); return; }
+  if (el.dataset.bind) {
+    const [kind, key] = el.dataset.bind.split('.');
+    S.draft[kind][key] = el.value;
+    if (el.dataset.count) device.querySelector('#' + el.dataset.count).textContent = `${el.value.length} / 240`;
+    device.querySelector('#createBtn').disabled = !formValid(kind);
+  }
+  if (el.dataset.input === 'obs-text') { S.draft.obs.text = el.value; device.querySelector('#obsCount').textContent = `${el.value.length} / 240`; }
+  if (el.dataset.input === 'contact-q') device.querySelector('#contactList').innerHTML = contactRows(el.value);
+  if (el.dataset.input === 'roster-q') { S.rosterQ = el.value; device.querySelector('#rosterList').innerHTML = rosterGroups(); }
+});
+device.addEventListener('change', e => {
+  const el = e.target, c = el.dataset.change;
+  if (el.dataset.bind) el.dispatchEvent(new Event('input', { bubbles: true }));
+  if (c === 'learn-room') S.learnRoom = el.value;
+  if (c === 'obs-room') S.draft.obs.room = el.value;
+  if (c === 'roster-g') {
+    S.rosterG = el.value;
+    device.querySelector('#rosterList').innerHTML = rosterGroups();
+    device.querySelector('#rosterHint').textContent = `Showing ${S.rosterG === 'All groups' ? 'all children' : S.rosterG} · sorted A–Z`;
+  }
+});
+
+device.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target, kind = f.dataset.form;
+  if (kind === 'login') return signIn(S.role);
+  if (kind === 'send') {
+    const input = f.querySelector('input'), text = input.value.trim();
+    if (!text) return;
+    const now = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const thread = S.threads[f.dataset.p] ||= [];
+    thread.forEach(m => m.fresh = false);
+    thread.push({ me: 1, t: text, at: now, fresh: true });
+    render();
+    device.querySelector('.composer input').focus();
+    return;
+  }
+  if (kind === 'obs') {
+    const name = CHILDREN[S.draft.obs.child]?.name || 'the class';
+    S.stack = [{ name: 'learning' }]; S.dir = 'fwd';
+    S.toast = S.role === 'teacher' ? `Observation posted to ${name}’s journal` : `Sent to TSK — a teacher will review it before it appears in ${name}’s journal`;
+    return render();
+  }
+  if (kind === 'create') {
+    const k = f.dataset.p, d = S.draft[k];
+    S.created = { kind: k, title: d.title, when: fmtWhen(d.date, d.time), photo: d.photo ? 'photo-autumn.jpg' : null, body: d.body };
+    S.stack.pop();
+    go(k === 'event' ? 'event' : 'announcement', k === 'event' ? 'new' : undefined);
+    toast(k === 'event' ? 'Event published to parents' : 'Announcement posted');
+  }
+});
+
+/* Boot. ?role=parent|teacher skips straight to that dashboard. */
+const qs = new URLSearchParams(location.search).get('role');
+if (qs === 'parent' || qs === 'teacher') { S.role = qs; S.stack = [{ name: 'dashboard' }]; }
+else S.stack = [{ name: 'roles' }];
+render();
+</script>
+</body>
+</html>

@@ -63,6 +63,24 @@ subset lifted from `index.html`, so it adds no download weight) and shares the
 `assets/` images. The phone frame collapses below 520px, so it also works
 full-bleed on a real device.
 
+## Prototype (Figma: Dashboard › Version 04)
+
+`public/proto/index.html` is a clickable recreation of the Figma page, at
+http://localhost:4173/proto/. It opens on a **Parent / Teacher** choice, then a
+login, then that role's app; the switch above the phone changes role at any
+point (`?role=parent` or `?role=teacher` skips straight in).
+
+| Role | Covers |
+| --- | --- |
+| Both | Dashboard, Classrooms, Learning, Chat (list → contacts → thread, sending works), notifications, calendar, event / announcement detail, the **+** sheet |
+| Parent | Rotating announcement banner, Services (term dates, uniform, transport, late club, contacts), children feed, profile → child page |
+| Teacher | Learning journal approvals, announcements, children roster with live search and group filter, profile |
+| Create flows | Add observation (camera → form), post class update, create event — forms validate and publish to a detail screen |
+
+Icons and photos are the exported Figma assets in `public/proto/img/`
+(photos resized). Everything is one plain HTML file with no build step. State
+lives in memory and resets on reload.
+
 ## Deploying
 
 The site is plain static files with no build step, so any static host works.
