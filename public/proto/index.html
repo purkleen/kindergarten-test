@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 /* ---------------------------------------------------------------------------
    Tokens — named from the Figma file (Dashboard › Version 04).
@@ -102,7 +101,7 @@ body {
 
 .top { flex: none; padding: 19px 16px 0; display: flex; flex-direction: column; gap: 12px; height: 106px; }
 .status { display: flex; align-items: center; justify-content: space-between; padding: 0 14px; }
-.status .time { font-family: 'Nunito', var(--font); font-weight: 700; font-size: 16px; color: var(--ink); width: 71px; }
+.status .time { font-family: var(--font); font-weight: 700; font-size: 16px; color: var(--ink); width: 71px; }
 .status .island { width: 120px; height: 35px; border-radius: 22px; background: #12101C; }
 .status .ind { width: 71px; display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
 .status .ind img:nth-child(1) { width: 18px; height: 11px; }
@@ -192,9 +191,12 @@ body {
 .chip { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--purple-50); font-size: 12px; color: var(--tag-ink); white-space: nowrap; flex: none; display: inline-flex; align-items: center; }
 .chip.on { background: var(--purple-600); color: #fff; }
 
-.switch { display: flex; gap: 8px; flex: none; }
-.switch button { flex: 1; text-align: center; height: 44px; border-radius: 10px; border: 1px solid #CAC6D8; background: #fff; font-size: 14px; font-weight: 500; color: #2D2939; }
-.switch button.on { background: var(--switch); border-color: var(--switch); color: #fff; }
+/* Button group: joined segments sharing one outline, 44px tall. */
+.switch { display: flex; flex: none; height: 44px; border: 1px solid #CAC6D8; border-radius: 10px; background: #fff; overflow: hidden; }
+.switch button { flex: 1; text-align: center; height: 100%; font-size: 14px; font-weight: 500; color: #2D2939; transition: background .15s, color .15s; }
+.switch button + button { border-left: 1px solid #CAC6D8; }
+.switch button.on { background: var(--switch); color: #fff; }
+.switch button.on + button, .switch button + button.on { border-left-color: var(--switch); }
 
 .avatar { border-radius: 999px; object-fit: cover; flex: none; }
 
@@ -241,10 +243,9 @@ textarea.input:focus { padding: 11px 15px; }
 .brand img { width: 44px; height: 44px; }
 .welcome h2 { font-size: 32px; line-height: 38px; font-weight: 700; letter-spacing: -.64px; color: #201A26; }
 .welcome p { font-size: 15px; line-height: 22px; color: #6C6572; margin-top: 8px; }
-.role-card { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line-3); border-radius: 20px; padding: 16px;
+.role-card { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line-3); border-radius: 20px; padding: 20px;
              width: 100%; transition: border-color .15s, box-shadow .15s; }
 .role-card:hover { border-color: var(--purple); box-shadow: 0 8px 24px rgba(43,37,64,.06); }
-.role-card .badge { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; flex: none; }
 .role-card .t { font-size: 17px; font-weight: 600; color: var(--ink); }
 .role-card .s { font-size: 13px; line-height: 18px; color: var(--ink-2); margin-top: 2px; }
 .role-card .ic { color: var(--muted); margin-left: auto; }
@@ -300,11 +301,20 @@ textarea.input:focus { padding: 11px 15px; }
 .post .hd { display: flex; align-items: center; justify-content: space-between; }
 .post .who { display: flex; align-items: center; gap: 11px; }
 .post .who img { width: 42px; height: 42px; }
-.post .nm { display: flex; align-items: center; gap: 7px; font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 15.5px; color: var(--ink); }
+.post .nm { display: flex; align-items: center; gap: 7px; font-family: var(--font); font-weight: 600; font-size: 15.5px; color: var(--ink); }
 .post .ago { font-size: 12px; line-height: 16px; color: var(--muted-2); }
 .post .txt { font-size: 16px; line-height: 24px; color: var(--ink-body); }
-.post .ph { height: 230px; border-radius: 18px; object-fit: cover; width: 100%; }
+.post .ph { width: 100%; height: auto; border-radius: 18px; }
 .post .acts { display: flex; gap: 12px; align-items: center; font-size: 14px; color: var(--ink); }
+.post .acts .cal-btn { margin-left: auto; }
+/* "Add to calendar" — Figma node 859:42741: yellow, 16px radius, calendar icon + label */
+.cal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 18px; border-radius: 16px; flex: none;
+           background: var(--yellow-cta); color: var(--ink-900); font-size: 14px; line-height: 20px; font-weight: 600; transition: background .15s, transform .1s; }
+.cal-btn:active { transform: scale(.97); }
+.cal-btn.sm { height: 34px; padding: 0 12px; border-radius: 12px; gap: 6px; font-size: 12px; }
+.cal-btn.added { background: var(--green-bg); color: var(--green-ink); }
+.event-box { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--violet-tint); flex: none; }
+.event-box .date-chip { background: #fff; }
 .post .acts button { display: inline-flex; align-items: center; gap: 2px; }
 .post .acts button.liked { color: var(--rose); }
 .post .child { display: flex; align-items: center; justify-content: space-between; }
@@ -313,11 +323,13 @@ textarea.input:focus { padding: 11px 15px; }
 .post .child .c span { color: var(--ink-2); line-height: 20px; }
 .post .sep { height: 1px; background: var(--line-2); }
 .post .decide { display: flex; gap: 11px; padding-top: 24px; }
+/* Side-by-side buttons share the row instead of each taking full width. */
+.post .decide .btn, .dialog .row .btn { flex: 1; width: auto; min-width: 0; }
+.post .decide .btn { height: 44px; }
 .post.leaving { animation: leave .3s ease forwards; }
 @keyframes leave { to { opacity: 0; transform: scale(.96); } }
 
 .obs { background: var(--card-warm); border-radius: var(--r-lg); overflow: hidden; box-shadow: 0 5px 18px rgba(59,38,48,.05); flex: none; }
-.obs > img { width: 100%; height: 166px; object-fit: cover; }
 .obs .in { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .obs .kid { display: flex; align-items: center; gap: 8px; font-size: 14px; }
 .obs .kid b { display: block; font-weight: 600; color: var(--ink-900); line-height: 18px; }
@@ -337,25 +349,23 @@ textarea.input:focus { padding: 11px 15px; }
 .post-title { font-size: 17px; line-height: 24px; font-weight: 600; color: var(--ink-900); margin-bottom: -6px; }
 .clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .obs-ph { width: 100%; object-fit: cover; display: block; }
-.story-frame { display: flex; justify-content: center; position: relative; overflow: hidden; width: 100%; flex: none; }
-.story-frame::before { content: ''; position: absolute; inset: -20px; background: var(--bg) center / cover; filter: blur(18px) brightness(.85); }
-.story-frame .story { position: relative; border-radius: 0; box-shadow: none; }
-.hero.story-frame .story { border-radius: 12px; }
+/* A photo at its own proportions, with any editor stickers on top (positions are % of the photo). */
+.pic { position: relative; width: 100%; overflow: hidden; container-type: inline-size; flex: none; }
+.pic > img.bg, .pic .frame > img.bg { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* The full-screen capture sits centred in the 4:5 card; top and bottom are cropped, like Instagram. */
+.pic .frame { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); }
+.pic .ov { cursor: default; pointer-events: none; }
+.hero.pic { border-radius: var(--r-control); }
 .obs .kid-row2 { display: flex; align-items: center; justify-content: space-between; }
 .post-detail-head, .obs-kid, .obs-by { display: flex; align-items: center; gap: 11px; flex: none; }
-.post-detail-head .nm { display: flex; align-items: center; gap: 7px; font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 16px; color: var(--ink); }
+.post-detail-head .nm { display: flex; align-items: center; gap: 7px; font-family: var(--font); font-weight: 600; font-size: 16px; color: var(--ink); }
 .post-detail-head .ago { font-size: 12px; color: var(--muted-2); }
 .obs-kid b, .obs-by b { display: block; font-size: 15px; font-weight: 600; color: var(--ink-900); }
 .obs-kid span, .obs-by span { font-size: 13px; color: var(--ink-2); }
 .obs-meta { display: flex; align-items: center; gap: 10px; flex: none; }
-.post-acts { display: flex; gap: 20px; font-size: 14px; color: var(--ink); flex: none; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.post-acts { display: flex; gap: 20px; font-size: 14px; color: var(--ink); flex: none; }
 .post-acts > * { display: inline-flex; align-items: center; gap: 6px; }
 .post-acts .liked { color: var(--rose); }
-.comments { display: flex; flex-direction: column; gap: 10px; flex: none; }
-.cmt { background: #fff; border: 1px solid var(--line-2); border-radius: 14px; padding: 10px 14px; }
-.cmt b { font-size: 12px; font-weight: 600; color: var(--ink-2); }
-.cmt p { font-size: 14px; line-height: 20px; color: var(--ink-900); margin-top: 2px; }
-.cmt.new { animation: pop .2s ease-out; }
 .pop-scrim { position: absolute; inset: 0; z-index: 40; }
 .pop { position: absolute; z-index: 41; min-width: 196px; background: #fff; border-radius: 16px; padding: 6px; box-shadow: 0 12px 36px rgba(43,37,64,.18), 0 0 0 1px rgba(43,37,64,.05);
        animation: popin .14s ease-out; transform-origin: top right; }
@@ -573,8 +583,8 @@ textarea.input:focus { padding: 11px 15px; }
 .sub { font-size: 14px; line-height: 20px; color: var(--ink-2); }
 
 .photo-drop { height: 114px; border: 1px solid var(--line-3); background: #fff; border-radius: var(--r-control); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--ink-900); width: 100%; overflow: hidden; }
-.photo-drop.filled { height: 127px; border: 0; padding: 0; }
-.photo-drop.filled img { width: 100%; height: 100%; object-fit: cover; }
+.photo-drop.filled { height: auto; border: 0; padding: 0; }
+.photo-drop.filled img { width: 100%; height: auto; }
 
 .camera { background: #12101C; color: #fff; }
 .camera .vf { flex: 1; margin: 0 8px; border-radius: 20px; background: radial-gradient(120% 80% at 50% 40%, #3a3f86 0%, #1c1d3d 60%, #151430 100%);
@@ -589,7 +599,7 @@ textarea.input:focus { padding: 11px 15px; }
 .camera .x { width: 28px; height: 28px; border-radius: 99px; background: #3a3842; display: grid; place-items: center; font-size: 14px; }
 /* --- photo editor (stories-style) --------------------------------------- */
 .editor { background: #000; color: #fff; }
-.canvas { position: absolute; inset: 0; overflow: hidden; container-type: size; }
+.canvas { position: absolute; inset: 0; overflow: hidden; container-type: inline-size; }
 .canvas > img.bg { width: 100%; height: 100%; object-fit: cover; }
 .ov { position: absolute; transform: translate(-50%, -50%); touch-action: none; user-select: none; -webkit-user-select: none;
       cursor: grab; white-space: pre; text-align: center; line-height: 1.15; }
@@ -597,7 +607,7 @@ textarea.input:focus { padding: 11px 15px; }
 .ov.emoji { font-size: 15cqw; filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
 .ov.text { font-size: 7.5cqw; font-weight: 700; letter-spacing: -.01em; text-shadow: 0 1px 8px rgba(0,0,0,.35); }
 .ov.text.bg { text-shadow: none; padding: .18em .45em; border-radius: .3em; }
-.ov.sticker { font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 5.6cqw; padding: .4em .85em; border-radius: 999px;
+.ov.sticker { font-family: var(--font); font-weight: 600; font-size: 5.6cqw; padding: .4em .85em; border-radius: 999px;
               box-shadow: 0 6px 16px rgba(0,0,0,.2); transform: translate(-50%, -50%) rotate(-4deg); }
 .ov.sel { outline: 2px dashed rgba(255,255,255,.95); outline-offset: 6px; border-radius: 10px; }
 .ov.sticker.sel, .ov.text.bg.sel { border-radius: 999px; }
@@ -626,7 +636,7 @@ textarea.input:focus { padding: 11px 15px; }
 .tray .emojis button { font-size: 34px; height: 54px; border-radius: 14px; text-align: center; transition: background .12s; }
 .tray .emojis button:hover { background: rgba(255,255,255,.1); }
 .tray .stickers { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.tray .stickers button { font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 17px; padding: 9px 16px; border-radius: 999px; }
+.tray .stickers button { font-family: var(--font); font-weight: 600; font-size: 17px; padding: 9px 16px; border-radius: 999px; }
 .ed-text { position: absolute; inset: 0; z-index: 6; background: rgba(0,0,0,.6); display: flex; flex-direction: column; animation: fade .15s ease; }
 .ed-text .row { display: flex; justify-content: space-between; align-items: center; padding: 72px 16px 0; }
 .ed-text .done { font-size: 16px; font-weight: 700; color: #fff; padding: 8px 4px; }
@@ -646,9 +656,7 @@ textarea.input:focus { padding: 11px 15px; }
 .story-actions { display: flex; gap: 8px; justify-content: center; }
 .story-actions .btn { height: 40px; width: auto; padding: 0 16px; }
 .btn.outline.danger { color: #C0264F; border-color: #EBC3CF; }
-.story { position: relative; height: 300px; flex: none; border-radius: 16px; overflow: hidden; container-type: size; box-shadow: 0 8px 24px rgba(43,37,64,.12); }
-.story img.bg { width: 100%; height: 100%; object-fit: cover; }
-.story .ov { cursor: default; pointer-events: none; }
+.story { border-radius: 16px; box-shadow: 0 8px 24px rgba(43,37,64,.12); }
 
 .webview { flex: 1; display: grid; place-items: center; font-size: 24px; font-weight: 700; color: var(--ink-900); }
 </style>
@@ -728,6 +736,7 @@ const S = {
   msgFilter: 'All messages', notifFilter: 'All messages',
   calChild: 'all', calMonth: 9, calYear: 2026, calSel: 15,
   liked: {},
+  inCalendar: {},          // event posts the user has added to their calendar
   threads: {
     claire: [
       { me: 1, t: 'Hi Ms. Johnson, I wanted to touch base about the upcoming parent-teacher conference. Is there anything specific you\'d like to discuss about Emma\'s progress?', at: '10:42 AM' },
@@ -739,12 +748,18 @@ const S = {
   },
   /* Class updates (Classrooms feed + teacher announcements). */
   posts: [
-    { id: 'p1', by: 'office',  group: 'Sunflower room', ago: '3h ago', text: EASEL, photo: 'photo-blocks.jpg', likes: 0, comments: [] },
-    { id: 'p2', by: 'teacher', group: 'Sunflower room', ago: '5h ago', title: 'Ball pit afternoon', text: 'Ball pit adventures in the Late Club room this afternoon — lots of giggles and brilliant turn-taking! 🟡🔴🔵', photo: 'photo-lateclub.jpg', likes: 2,
-      comments: [{ by: 'Siobhan · Emma’s mum', t: 'Emma hasn’t stopped talking about it! 💜' }, { by: 'Mark · Liam’s dad', t: 'Thanks for sharing these.' }] },
-    { id: 'p3', by: 'parker',  group: 'Acorn room',     ago: 'Yesterday', text: LOREM, photo: 'photo-autumn.jpg', likes: 4, comments: [{ by: 'Priya · Brielle’s mum', t: 'Beautiful colours!' }] },
-    { id: 'p4', by: 'teacher', group: 'Sunflower room', ago: '2 days ago', title: 'Block towers', text: 'We built the tallest block tower yet — 14 blocks before it wobbled over! Counting, balancing and lots of teamwork. 🧱', photo: 'photo-blocks.jpg', likes: 6, comments: [] },
-    { id: 'p5', by: 'diaz',    group: 'Acorn room',     ago: '3 weeks ago', past: true, title: 'First day of Autumn', text: 'Thanks to everyone who joined our leaf walk — the children collected over 40 different leaves! 🍂', photo: 'photo-autumn.jpg', likes: 9, comments: [] },
+    /* An event announcement: `event` adds the date box and "Add to calendar". */
+    { id: 'p0', by: 'office', group: 'Whole kindergarten', ago: '1h ago', title: 'Autumn Sports Day',
+      text: 'Our Autumn Sports Day is almost here! Races, a parachute game and a bouncy castle on the school field — families are welcome to come and cheer. Please send children in trainers with a named water bottle. 🏃',
+      event: { m: 'OCT', d: '11', day: 'Saturday 11 October, 2026', time: '10:00 – 12:30', place: 'School Field' },
+      photo: 'photo-capes.jpg', likes: 8 },
+    /* TSK (the home office) posts kindergarten-wide news only — never about individual children. */
+    { id: 'p1', by: 'office',  group: 'Whole kindergarten', ago: '3h ago', title: 'Harvest Festival · Friday 3 October',
+      text: 'Join us in the garden from 2pm for our Harvest Festival! The children will sing, show off their veggie art and help press apple juice for everyone. 🍎 Please bring a tin or packet for the local food bank if you can.', photo: 'photo-autumn.jpg', likes: 12 },
+    { id: 'p2', by: 'teacher', group: 'Sunflower room', ago: '5h ago', title: 'Ball pit afternoon', text: 'Ball pit adventures in the Late Club room this afternoon — lots of giggles and brilliant turn-taking! 🟡🔴🔵', photo: 'photo-lateclub.jpg', likes: 2 },
+    { id: 'p3', by: 'parker',  group: 'Acorn room',     ago: 'Yesterday', text: LOREM, photo: 'photo-easel.jpg', likes: 4 },
+    { id: 'p4', by: 'teacher', group: 'Sunflower room', ago: '2 days ago', title: 'Block towers', text: 'We built the tallest block tower yet — 14 blocks before it wobbled over! Counting, balancing and lots of teamwork. 🧱', photo: 'photo-blocks.jpg', likes: 6 },
+    { id: 'p5', by: 'diaz',    group: 'Acorn room',     ago: '3 weeks ago', past: true, title: 'First day of Autumn', text: 'Thanks to everyone who joined our leaf walk — the children collected over 40 different leaves! 🍂', photo: 'photo-autumn.jpg', likes: 9 },
   ],
   /* Learning-journal entries; 'parent' ones are contributions from home. */
   obs: [
@@ -827,6 +842,18 @@ const eventsCard = () => `
       </button>`).join('')}
   </section>`;
 
+/* Natural proportions of each photo, so cards never crop or stretch them. */
+const PHOTO_RATIO = { 'photo-autumn.jpg': '3 / 2', 'photo-blocks.jpg': '3 / 2', 'photo-cafe.jpg': '900 / 603', 'photo-capes.jpg': '3 / 2', 'photo-easel.jpg': '900 / 382', 'photo-lateclub.jpg': '3 / 2', 'photo-capture.avif': '2 / 3' };
+const ratioOf = f => PHOTO_RATIO[f] || '3 / 2';
+/* The demo "just taken" photo used by the camera flow. */
+const CAPTURE_PHOTO = 'photo-capture.avif';
+/* Photos taken with the in-app camera are portrait, shown 4:5 like an Instagram post.
+   FOCUS keeps each child in frame when a landscape source is cropped to portrait. */
+const CAMERA_RATIO = '4 / 5';
+const CAPTURE_RATIO = '402 / 874';   // the full-screen photo as taken in the editor
+const FOCUS = { 'photo-easel.jpg': '66% 50%', 'photo-capes.jpg': '58% 50%', 'photo-lateclub.jpg': '38% 50%', 'photo-blocks.jpg': '50% 50%', 'photo-capture.avif': '46% 50%' };
+const focusOf = f => FOCUS[f] || '50% 50%';
+
 /* Who wrote what. 'teacher' / 'parent' mean the signed-in user of that role,
    which is what makes an entry editable. */
 const AUTHORS = {
@@ -845,12 +872,22 @@ const avatarHtml = (by, size) => AUTHORS[by].avatar
 const dotsBtn = (kind, id) => `<button class="dots" data-act="menu" data-p="${kind}:${id}" aria-label="More options">${ic('dots')}</button>`;
 
 /* The photo of an observation: plain, or the edited "story" with its stickers. */
-function obsPhoto(o, cls, h) {
+function obsPhoto(o, cls = '') {
   if (!o.photo) return '';
-  if (!o.overlays?.length) return `<img class="${cls}" src="${IMG}${o.photo}" style="height:${h}px" alt="">`;
-  return `<div class="${cls} story-frame" style="height:${h}px;--bg:url(${IMG}${o.photo})">
-    <div class="story" style="height:${h}px;aspect-ratio:${o.ratio}"><img class="bg" src="${IMG}${o.photo}" alt="">${o.overlays.map(v => overlayHtml(v, false)).join('')}</div></div>`;
+  return `<div class="pic ${cls}" style="aspect-ratio:${CAMERA_RATIO}"><div class="frame" style="aspect-ratio:${o.ratio || CAPTURE_RATIO}">
+    <img class="bg" src="${IMG}${o.photo}" style="object-position:${focusOf(o.photo)}" alt="">${(o.overlays || []).map(v => overlayHtml(v, false)).join('')}</div></div>`;
 }
+
+const eventBox = (e) => `
+  <div class="event-box">
+    <div class="date-chip"><span class="m">${e.m}</span><span class="d">${e.d}</span></div>
+    <div class="ev-copy"><div class="t" style="font-size:14px;line-height:20px">${e.day}</div><div class="s">${e.time} · ${e.place}</div></div>
+  </div>`;
+const calBtn = (p, small) => {
+  const added = S.inCalendar[p.id];
+  return `<button class="cal-btn ${small ? 'sm' : ''} ${added ? 'added' : ''}" data-act="add-cal" data-p="${p.id}" aria-pressed="${!!added}">
+    ${ic('calendar-small', small ? 's16' : '')}${added ? 'Added to calendar' : 'Add to calendar'}</button>`;
+};
 
 const classPost = (p) => {
   const a = AUTHORS[p.by], liked = S.liked[p.id];
@@ -863,11 +900,12 @@ const classPost = (p) => {
       ${dotsBtn('post', p.id)}
     </div>
     ${p.title ? `<b class="post-title">${esc(p.title)}</b>` : ''}
+    ${p.event ? eventBox(p.event) : ''}
     <p class="txt clamp">${esc(p.text)}</p>
-    ${p.photo ? `<img class="ph" src="${IMG}${p.photo}" alt="">` : ''}
+    ${p.photo ? `<img class="ph" src="${IMG}${p.photo}" style="aspect-ratio:${ratioOf(p.photo)}" alt="">` : ''}
     <div class="acts">
-      <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${p.id}">${ic('heart')}${p.likes + (liked ? 1 : 0) || ''}</button>
-      <button data-go="post" data-p="${p.id}">${ic('comment')}${p.comments.length || ''}</button>
+      <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${p.id}" aria-pressed="${!!liked}">${ic(liked ? 'heart-filled' : 'heart')}${p.likes + (liked ? 1 : 0) || ''}</button>
+      ${p.event ? calBtn(p, true) : ''}
     </div>
   </article>`;
 };
@@ -876,7 +914,7 @@ const observation = (o, { showKid = true } = {}) => {
   const c = CHILDREN[o.child];
   return `
   <article class="obs tappable" data-go="obs" data-p="${o.id}">
-    ${obsPhoto(o, 'obs-ph', 166)}
+    ${obsPhoto(o)}
     <div class="in">
       <div class="kid-row2">${showKid ? `<div class="kid"><img class="avatar" src="${IMG}${c.avatar}" width="32" height="32" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>` : '<span></span>'}${dotsBtn('obs', o.id)}</div>
       <div class="meta"><div><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending</span>` : ''}</div>${o.ago}</div>
@@ -913,12 +951,10 @@ const screens = {
           <div class="welcome"><h2>Who’s signing in?</h2><p>Choose how you use the app. You can switch at any time.</p></div>
           <div style="display:flex;flex-direction:column;gap:12px">
             <button class="role-card" data-act="pick" data-p="parent">
-              <div class="badge" style="background:var(--peach);color:#C4622D">${ic('heart-handshake')}</div>
               <div><div class="t">I’m a parent</div><div class="s">Follow your child’s learning, events and messages.</div></div>
               ${ic('chevron-right', 's20')}
             </button>
             <button class="role-card" data-act="pick" data-p="teacher">
-              <div class="badge" style="background:var(--purple-50);color:var(--purple)">${ic('book-heart')}</div>
               <div><div class="t">I’m a teacher</div><div class="s">Post updates, review observations and manage your class.</div></div>
               ${ic('chevron-right', 's20')}
             </button>
@@ -1013,7 +1049,7 @@ const screens = {
   /* ---------- classrooms ---------- */
   classrooms() {
     const groups = ['All groups', 'Sunflower room', 'Acorn room'];
-    const posts = S.posts.filter(p => S.classroomFilter === 'All groups' || p.group === S.classroomFilter).map(classPost);
+    const posts = S.posts.filter(p => S.classroomFilter === 'All groups' || p.group === S.classroomFilter || p.group === 'Whole kindergarten').map(classPost);
     return { tab: 'classrooms', html: `
       ${topMain('Classrooms')}
       <div class="body">
@@ -1091,18 +1127,22 @@ const screens = {
   /* ---------- notifications ---------- */
   notifications() {
     const f = S.notifFilter;
-    const items = [0, 1, 2, 3, 4, 5].map(i => i % 2
-      ? { k: 'announcement', s: 'Kindergarten close day due to renovation.', g: 'Admin office' }
-      : { k: 'observation', s: 'First day of Autumn', g: 'Homeroom teacher' })
-      .filter(n => f === 'All messages' || n.g === f);
+    const items = [
+      { by: 'office', k: 'announcement', s: ANNOUNCEMENTS[0].t,               go: 'announcement', p: 0,    g: 'Admin office' },
+      { by: 'parker', k: 'observation',  s: 'Emma at the easel',               go: 'obs',          p: 'o1', g: 'Homeroom teacher' },
+      { by: 'office', k: 'event',        s: 'Harvest Festival · Friday 3 October', go: 'post',     p: 'p1', g: 'Admin office' },
+      { by: 'teacher', k: 'class update', s: 'Ball pit afternoon',             go: 'post',         p: 'p2', g: 'Homeroom teacher' },
+      { by: 'office', k: 'announcement', s: ANNOUNCEMENTS[1].t,               go: 'announcement', p: 1,    g: 'Admin office' },
+      { by: 'diaz',   k: 'class update', s: 'First day of Autumn',             go: 'post',         p: 'p5', g: 'Homeroom teacher' },
+    ].filter(n => f === 'All messages' || n.g === f);
     return { html: `
       ${topBack('Notifications')}
       <div class="body tight" style="gap:12px">
         <div class="pills" style="margin-bottom:4px">${['All messages', 'Homeroom teacher', 'Admin office', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="notif-filter" data-p="${c}">${c}</button>`).join('')}</div>
         ${items.length ? items.map(n => `
-          <button class="notif" data-go="${n.k === 'observation' ? 'learning-tab' : 'announcement'}">
-            <img src="${IMG}seal.svg" alt="">
-            <div><div class="t"><b>TSK</b> added <b>new ${n.k}</b></div><div class="s">${n.s}</div><div class="a">2h ago</div></div>
+          <button class="notif" data-go="${n.go}" data-p="${n.p}">
+            ${avatarHtml(n.by, 36)}
+            <div><div class="t"><b>${isMine(n) ? 'You' : AUTHORS[n.by].name}</b> added <b>new ${n.k}</b></div><div class="s">${n.s}</div><div class="a">2h ago</div></div>
           </button>`).join('') : `<p class="empty">Nothing here yet.</p>`}
       </div>${homeBar()}` };
   },
@@ -1179,7 +1219,7 @@ const screens = {
           <div class="hd"><div class="who"><img class="avatar" src="${IMG}avatar-joanne.jpg" style="background:#FFE9A8" alt="">
             <div><div class="nm">Ms. Parker <span class="tag">Homeroom teacher</span></div><div class="ago">3h ago</div></div></div>${ic('dots')}</div>
           <p class="txt">${EASEL}</p>
-          <img class="ph" src="${IMG}photo-blocks.jpg" alt="">
+          <img class="ph" src="${IMG}photo-blocks.jpg" style="aspect-ratio:${CAMERA_RATIO};object-fit:cover" alt="">
           <div class="acts"><button>${ic('heart')}</button><button>${ic('comment')}</button></div>
           <div class="decide"><button class="btn outline" data-act="decide" data-p="decline">Decline</button><button class="btn primary" data-act="decide" data-p="approve">Approve</button></div>
         </article>`).join('') || `<p class="empty">You’re all caught up — no observations waiting.</p>`
@@ -1275,20 +1315,13 @@ const screens = {
         <div class="post-detail-head">${avatarHtml(p.by, 44)}
           <div><div class="nm">${a.name} <span class="tag">${a.tag}</span></div><div class="ago">${p.group} · ${p.ago}</div></div></div>
         ${p.title ? `<div class="big-title" style="font-size:26px;line-height:32px">${esc(p.title)}</div>` : ''}
+        ${p.event ? eventBox(p.event) + calBtn(p, false) : ''}
         <p class="prose dim">${esc(p.text)}</p>
-        ${p.photo ? `<img class="hero" src="${IMG}${p.photo}" style="height:280px" alt="">` : ''}
+        ${p.photo ? `<img class="hero" src="${IMG}${p.photo}" style="aspect-ratio:${ratioOf(p.photo)}" alt="">` : ''}
         <div class="post-acts">
-          <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${p.id}">${ic('heart')}${p.likes + (liked ? 1 : 0)} likes</button>
-          <span>${ic('comment')}${p.comments.length} comments</span>
+          <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${p.id}" aria-pressed="${!!liked}">${ic(liked ? 'heart-filled' : 'heart')}${p.likes + (liked ? 1 : 0)} likes</button>
         </div>
-        <div class="comments">
-          ${p.comments.map(c => `<div class="cmt"><b>${esc(c.by)}</b><p>${esc(c.t)}</p></div>`).join('') || `<p class="sub">No comments yet — be the first.</p>`}
-        </div>
-      </div>
-      <div class="composer">
-        <form data-form="comment" data-p="${p.id}"><input placeholder="Add a comment…" autocomplete="off"><button class="send" aria-label="Post comment">➤</button></form>
-        <i class="hi" style="width:135px;height:5px;border-radius:999px;background:#2E2545;opacity:.22"></i>
-      </div>` };
+      </div>${homeBar()}` };
   },
 
   obs(id) {
@@ -1298,7 +1331,7 @@ const screens = {
     return { html: `
       ${topBack(o.by === 'parent' ? 'From home' : 'Observation', dotsBtn('obs', o.id).replace('class="dots"', 'class="dots on-light"'))}
       <div class="body tight">
-        ${obsPhoto(o, 'hero', o.overlays?.length ? 420 : 260)}
+        ${obsPhoto(o, 'hero')}
         <div class="obs-kid"><img class="avatar" src="${IMG}${c.avatar}" width="44" height="44" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>
         <div class="obs-meta"><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending review</span>` : ''}<span class="sub" style="font-size:12px;margin-left:auto">${o.ago}</span></div>
         <p class="prose dim">${esc(o.text)}</p>
@@ -1316,7 +1349,7 @@ const screens = {
         ${selectField('Who is it for?*', ['Sunflower room', 'Acorn room'], p.group, 'name="group"')}
         <div class="field"><label>Title</label><input class="input sm" name="title" value="${esc(p.title || '')}"></div>
         <div class="field"><label>Description*</label><textarea class="input" name="text" rows="6" required>${esc(p.text)}</textarea></div>
-        ${p.photo ? `<div class="field"><span class="lbl">Photo</span><img class="hero" src="${IMG}${p.photo}" style="height:160px" alt=""></div>` : ''}
+        ${p.photo ? `<div class="field"><span class="lbl">Photo</span><img class="hero" src="${IMG}${p.photo}" style="aspect-ratio:${ratioOf(p.photo)}" alt=""></div>` : ''}
         <button class="btn primary" type="submit">Save changes</button>
       </form>${homeBar()}` };
   },
@@ -1329,7 +1362,7 @@ const screens = {
       ${topCancel('Edit observation')}
       <form class="body" style="padding-top:32px;gap:16px" data-form="edit-obs" data-p="${o.id}">
         <div class="field"><span class="lbl">Child</span>${childPills(S.editChild, 'edit-child', false)}</div>
-        ${o.photo ? `<div style="display:flex;justify-content:center;flex:none">${obsPhoto(o, 'hero', o.overlays?.length ? 300 : 200)}</div>` : ''}
+        ${obsPhoto(o, 'hero')}
         <div class="field"><label>Reflections</label><textarea class="input" name="text" rows="7" maxlength="240" required>${esc(o.text)}</textarea></div>
         <button class="btn primary" type="submit">Save changes</button>
       </form>${homeBar()}` };
@@ -1377,7 +1410,7 @@ const screens = {
       <div class="vf"><span style="font-size:34px">📷</span>Point at the moment, then tap the shutter — or pick from your library</div>
       <div class="modes"><span class="on">PHOTO</span><span>VIDEO</span></div>
       <div class="ctrl">
-        <button class="lib" data-act="snap" aria-label="Library"><img src="${IMG}photo-capes.jpg" alt=""></button>
+        <button class="lib" data-act="snap" aria-label="Library"><img src="${IMG}${CAPTURE_PHOTO}" alt=""></button>
         <button class="shutter" data-act="snap" aria-label="Take photo"></button>
         <button class="flip" aria-label="Flip camera">⟳</button>
       </div>` };
@@ -1404,7 +1437,7 @@ const screens = {
       </div>` : '';
     return { cls: 'editor dark', html: `
       <div class="canvas" id="canvas">
-        <img class="bg" src="${IMG}photo-capes.jpg" alt="" data-act="ed-deselect">
+        <img class="bg" src="${IMG}${CAPTURE_PHOTO}" style="object-position:${focusOf(CAPTURE_PHOTO)}" alt="" data-act="ed-deselect">
         ${d.overlays.map(o => overlayHtml(o, true)).join('')}
       </div>
       <div class="ed-top">${statusBar()}
@@ -1438,9 +1471,7 @@ const screens = {
         <div class="field"><span class="lbl">Photo (optional)</span>
           <button type="button" class="photo-drop" data-act="obs-retake">${ic('plus', 's20')}Tap to snap or upload</button></div>` : `
         <div class="story-col">
-          <div class="story" style="aspect-ratio:${d.ratio}">
-            <img class="bg" src="${IMG}photo-capes.jpg" alt="">${d.overlays.map(o => overlayHtml(o, false)).join('')}
-          </div>
+          ${obsPhoto({ photo: CAPTURE_PHOTO, overlays: d.overlays, ratio: d.ratio }, 'story')}
           <div class="story-actions">
             <button type="button" class="btn outline" data-act="obs-edit-photo">Edit photo</button>
             <button type="button" class="btn outline danger" data-act="obs-remove-photo">Remove photo</button>
@@ -1471,7 +1502,7 @@ const STICKERS = [
 const TEXT_COLORS = ['#FFFFFF', '#20182B', '#7C3AED', '#FFD84D', '#E14372', '#37B87C', '#4FA8E0'];
 
 function obsDraft() {
-  return S.draft.obs ||= { room: 'Sunflowers room', child: 'emma', text: '', overlays: [], ratio: '402 / 874' };
+  return S.draft.obs ||= { room: 'Sunflowers room', child: 'emma', text: '', overlays: [] };
 }
 /* Text on a coloured block needs a contrasting ink; plain text just takes the colour. */
 function textStyle(t) {
@@ -1526,7 +1557,7 @@ function detailScreen(title, d, editLabel, canDelete) {
   return { html: `
     ${topCancel(title)}
     <div class="body" style="padding-top:32px;gap:24px">
-      ${d.photo ? `<img class="hero" src="${IMG}${d.photo}" style="height:152px" alt="">` : ''}
+      ${d.photo ? `<img class="hero" src="${IMG}${d.photo}" style="aspect-ratio:${ratioOf(d.photo)}" alt="">` : ''}
       <div class="big-title">${esc(d.title)}</div>
       ${d.office
         ? `<div class="byline"><img class="avatar" src="${IMG}seal.svg" alt=""><div>Posted by <b>TSK</b><span>Home office</span></div></div>`
@@ -1551,7 +1582,7 @@ function createForm(kind) {
       </div>
       <div class="field"><label>Place (optional)</label><input class="input sm" value="${esc(d.place)}" data-bind="${kind}.place"></div>
       <div class="field"><label>Cover photo (optional)</label>
-        <button type="button" class="photo-drop ${d.photo ? 'filled' : ''}" data-act="add-photo" data-p="${kind}">${d.photo ? `<img src="${IMG}photo-autumn.jpg" alt="">` : `${ic('plus', 's20')}Tap to snap or upload`}</button></div>
+        <button type="button" class="photo-drop ${d.photo ? 'filled' : ''}" data-act="add-photo" data-p="${kind}">${d.photo ? `<img src="${IMG}photo-autumn.jpg" style="aspect-ratio:${ratioOf('photo-autumn.jpg')}" alt="">` : `${ic('plus', 's20')}Tap to snap or upload`}</button></div>
       <div class="field"><label>Description*</label><textarea class="input" rows="4" maxlength="240" data-bind="${kind}.body" data-count="cnt-${kind}">${esc(d.body)}</textarea><div class="counter" id="cnt-${kind}">${d.body.length} / 240</div></div>
       <button class="btn primary" type="submit" id="createBtn" ${formValid(kind) ? '' : 'disabled'}>${ev ? 'Upload event' : 'Create announcement'}</button>
     </form>${homeBar()}` };
@@ -1626,7 +1657,7 @@ function tourDemo(name) {
     tabs: `<div class="demo d-tabs"><i class="slider"></i>${tab('tab-classrooms', 'Classrooms')}${tab('tab-learning', 'Learning')}${tab('tab-chat', 'Chat')}</div>`,
     share: `<div class="demo d-share">
         <span class="fab">${ic('plus', 's18')}</span>
-        <span class="photo"><img src="${IMG}photo-capes.jpg" alt=""><em>🌟</em></span>
+        <span class="photo"><img src="${IMG}${CAPTURE_PHOTO}" alt=""><em>🌟</em></span>
         <span class="trail"></span>
         <span class="to"><img src="${IMG}avatar-claire.jpg" alt=""><i>✓</i></span>
       </div>`,
@@ -1782,6 +1813,10 @@ const actions = {
   'journal-tab'(p) { S.journalTab = p; render(); },
   'ann-tab'(p) { S.annTab = p; render(); },
   like(p) { S.liked[p] = !S.liked[p]; render(); },
+  'add-cal'(id) {
+    S.inCalendar[id] = !S.inCalendar[id];
+    toast(S.inCalendar[id] ? 'Added to your calendar' : 'Removed from your calendar');
+  },
   menu(p, el) {
     const [kind, id] = p.split(':');
     const r = el.getBoundingClientRect(), d = device.getBoundingClientRect();
@@ -1920,15 +1955,6 @@ device.addEventListener('submit', e => {
     device.querySelector('.composer input').focus();
     return;
   }
-  if (kind === 'comment') {
-    const input = f.querySelector('input'), t = input.value.trim(), p = S.posts.find(x => x.id === f.dataset.p);
-    if (!t) return;
-    p.comments.push({ by: S.role === 'teacher' ? 'You · Homeroom teacher' : 'You · Emma’s mum', t });
-    render();
-    device.querySelector('.cmt:last-child')?.classList.add('new');
-    device.querySelector('.body').scrollTop = 1e6;
-    return;
-  }
   if (kind === 'edit-post') {
     const p = S.posts.find(x => x.id === f.dataset.p), fd = new FormData(f);
     Object.assign(p, { group: fd.get('group'), title: fd.get('title').trim(), text: fd.get('text').trim() || p.text });
@@ -1942,7 +1968,7 @@ device.addEventListener('submit', e => {
   if (kind === 'obs') {
     const d = S.draft.obs, name = CHILDREN[d.child]?.name || 'the class';
     S.obs.unshift({ id: 'o' + Date.now(), child: d.child, by: S.role, ago: 'Just now', pending: S.role === 'parent',
-      text: d.text.trim() || 'A new moment for the learning journal.', photo: d.noPhoto ? null : 'photo-capes.jpg', overlays: d.overlays, ratio: d.ratio });
+      text: d.text.trim() || 'A new moment for the learning journal.', photo: d.noPhoto ? null : CAPTURE_PHOTO, overlays: d.overlays, ratio: d.ratio });
     S.learnChild = d.child;
     S.stack = [{ name: 'learning' }]; S.dir = 'fwd';
     S.toast = S.role === 'teacher' ? `Observation posted to ${name}’s journal` : `Sent to TSK — a teacher will review it before it appears in ${name}’s journal`;
@@ -1955,7 +1981,7 @@ device.addEventListener('submit', e => {
     if (k === 'announcement') {
       /* A class update becomes a real post the teacher can later edit or delete. */
       const id = 'p' + Date.now();
-      S.posts.unshift({ id, by: 'teacher', group: d.group === 'All groups' ? 'Sunflower room' : d.group, ago: 'Just now', title: d.title.trim(), text: d.body.trim(), photo: d.photo ? 'photo-autumn.jpg' : null, likes: 0, comments: [] });
+      S.posts.unshift({ id, by: 'teacher', group: d.group === 'All groups' ? 'Sunflower room' : d.group, ago: 'Just now', title: d.title.trim(), text: d.body.trim(), photo: d.photo ? 'photo-autumn.jpg' : null, likes: 0 });
       go('post', id);
     } else go('event', 'new');
     toast(k === 'event' ? 'Event published to parents' : 'Announcement posted');
