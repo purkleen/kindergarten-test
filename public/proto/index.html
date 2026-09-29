@@ -328,6 +328,69 @@ textarea.input:focus { padding: 11px 15px; }
 .obs .by { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
 .obs .by img { width: 32px; height: 32px; background: #FFE9A8; }
 
+/* tappable cards, ⋯ menu, detail views */
+.tappable { cursor: pointer; transition: transform .12s, box-shadow .15s; }
+.tappable:active { transform: scale(.99); }
+.dots { width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; color: var(--ink); flex: none; margin-right: -6px; }
+.dots:hover { background: var(--n100); }
+.dots.on-light { width: 40px; height: 40px; margin-right: -8px; }
+.post-title { font-size: 17px; line-height: 24px; font-weight: 600; color: var(--ink-900); margin-bottom: -6px; }
+.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.obs-ph { width: 100%; object-fit: cover; display: block; }
+.story-frame { display: flex; justify-content: center; position: relative; overflow: hidden; width: 100%; flex: none; }
+.story-frame::before { content: ''; position: absolute; inset: -20px; background: var(--bg) center / cover; filter: blur(18px) brightness(.85); }
+.story-frame .story { position: relative; border-radius: 0; box-shadow: none; }
+.hero.story-frame .story { border-radius: 12px; }
+.obs .kid-row2 { display: flex; align-items: center; justify-content: space-between; }
+.post-detail-head, .obs-kid, .obs-by { display: flex; align-items: center; gap: 11px; flex: none; }
+.post-detail-head .nm { display: flex; align-items: center; gap: 7px; font-family: 'Fredoka', var(--font); font-weight: 600; font-size: 16px; color: var(--ink); }
+.post-detail-head .ago { font-size: 12px; color: var(--muted-2); }
+.obs-kid b, .obs-by b { display: block; font-size: 15px; font-weight: 600; color: var(--ink-900); }
+.obs-kid span, .obs-by span { font-size: 13px; color: var(--ink-2); }
+.obs-meta { display: flex; align-items: center; gap: 10px; flex: none; }
+.post-acts { display: flex; gap: 20px; font-size: 14px; color: var(--ink); flex: none; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.post-acts > * { display: inline-flex; align-items: center; gap: 6px; }
+.post-acts .liked { color: var(--rose); }
+.comments { display: flex; flex-direction: column; gap: 10px; flex: none; }
+.cmt { background: #fff; border: 1px solid var(--line-2); border-radius: 14px; padding: 10px 14px; }
+.cmt b { font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.cmt p { font-size: 14px; line-height: 20px; color: var(--ink-900); margin-top: 2px; }
+.cmt.new { animation: pop .2s ease-out; }
+.pop-scrim { position: absolute; inset: 0; z-index: 40; }
+.pop { position: absolute; z-index: 41; min-width: 196px; background: #fff; border-radius: 16px; padding: 6px; box-shadow: 0 12px 36px rgba(43,37,64,.18), 0 0 0 1px rgba(43,37,64,.05);
+       animation: popin .14s ease-out; transform-origin: top right; }
+.pop.up { transform-origin: bottom right; }
+@keyframes popin { from { opacity: 0; transform: scale(.92); } }
+.pop button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 11px 12px; border-radius: 10px; font-size: 15px; font-weight: 500; color: var(--ink-900); }
+.pop button:hover { background: var(--n100); }
+.pop button.danger { color: #C0264F; }
+.dialog-scrim { position: absolute; inset: 0; z-index: 45; background: rgba(18,16,28,.45); animation: fade .15s ease; }
+.dialog { position: absolute; z-index: 46; left: 28px; right: 28px; top: 50%; transform: translateY(-50%); background: #fff; border-radius: 22px; padding: 24px 20px 18px;
+          text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.25); animation: popin .16s ease-out; }
+.dialog h3 { font-size: 18px; font-weight: 600; color: var(--ink-900); }
+.dialog p { font-size: 14px; line-height: 20px; color: var(--ink-2); margin: 8px 0 20px; }
+.dialog .row { display: flex; gap: 10px; }
+.dialog .btn { height: 46px; }
+.btn.destructive { background: #D2335C; color: #fff; }
+
+/* --- app tour ------------------------------------------------------------ */
+.tour { position: absolute; inset: 0; z-index: 60; }
+.tour .spot { position: absolute; border-radius: 18px; box-shadow: 0 0 0 9999px rgba(18,16,28,.62); transition: all .3s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+.tour .spot::after { content: ''; position: absolute; inset: -4px; border-radius: inherit; border: 2px solid rgba(255,255,255,.85); animation: ring 1.6s ease-out infinite; }
+@keyframes ring { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.06); } }
+.tour .tip { position: absolute; left: 16px; right: 16px; background: #fff; border-radius: 22px; padding: 20px 20px 16px; box-shadow: 0 18px 44px rgba(0,0,0,.28); animation: tipin .25s ease-out; }
+@keyframes tipin { from { opacity: 0; transform: translateY(8px); } }
+.tour .tip .k { font-size: 12px; font-weight: 700; letter-spacing: .4px; color: var(--purple); text-transform: uppercase; }
+.tour .tip h3 { font-size: 20px; line-height: 26px; font-weight: 600; color: var(--ink-900); margin: 6px 0 6px; }
+.tour .tip p { font-size: 14px; line-height: 20px; color: var(--ink-2); }
+.tour .tip .foot { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; }
+.tour .tip .dots3 { display: flex; gap: 5px; }
+.tour .tip .dots3 i { width: 6px; height: 6px; border-radius: 9px; background: #DDD6E6; transition: all .2s; }
+.tour .tip .dots3 i.on { width: 18px; background: var(--purple); }
+.tour .tip .btns { display: flex; align-items: center; gap: 14px; }
+.tour .tip .skip { font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.tour .tip .next { height: 40px; padding: 0 20px; border-radius: 12px; background: var(--purple); color: #fff; font-size: 14px; font-weight: 600; }
+
 /* --- lists: chat, notifications, menu, children ------------------------- */
 .list { border: 1px solid var(--line); border-radius: var(--r-control); overflow: hidden; box-shadow: 0 1px 4px rgba(12,12,13,.05); flex: none; }
 .li { background: #fff; display: flex; align-items: center; gap: 16px; padding: 18px 12px; min-height: 88px; width: 100%; transition: background .12s; }
@@ -530,6 +593,7 @@ textarea.input:focus { padding: 11px 15px; }
     <button data-role="parent">Parent</button>
     <button data-role="teacher">Teacher</button>
   </div>
+  <button class="restart" data-act="tour">Replay tour</button>
   <button class="restart" data-act="restart">Restart</button>
 </div>
 
@@ -602,6 +666,25 @@ const S = {
     ],
     javier: [], aaliyah: [],
   },
+  /* Class updates (Classrooms feed + teacher announcements). */
+  posts: [
+    { id: 'p1', by: 'office',  group: 'Sunflower room', ago: '3h ago', text: EASEL, photo: 'photo-blocks.jpg', likes: 0, comments: [] },
+    { id: 'p2', by: 'teacher', group: 'Sunflower room', ago: '5h ago', title: 'Ball pit afternoon', text: 'Ball pit adventures in the Late Club room this afternoon — lots of giggles and brilliant turn-taking! 🟡🔴🔵', photo: 'photo-lateclub.jpg', likes: 2,
+      comments: [{ by: 'Siobhan · Emma’s mum', t: 'Emma hasn’t stopped talking about it! 💜' }, { by: 'Mark · Liam’s dad', t: 'Thanks for sharing these.' }] },
+    { id: 'p3', by: 'parker',  group: 'Acorn room',     ago: 'Yesterday', text: LOREM, photo: 'photo-autumn.jpg', likes: 4, comments: [{ by: 'Priya · Brielle’s mum', t: 'Beautiful colours!' }] },
+    { id: 'p4', by: 'teacher', group: 'Sunflower room', ago: '2 days ago', title: 'Block towers', text: 'We built the tallest block tower yet — 14 blocks before it wobbled over! Counting, balancing and lots of teamwork. 🧱', photo: 'photo-blocks.jpg', likes: 6, comments: [] },
+    { id: 'p5', by: 'diaz',    group: 'Acorn room',     ago: '3 weeks ago', past: true, title: 'First day of Autumn', text: 'Thanks to everyone who joined our leaf walk — the children collected over 40 different leaves! 🍂', photo: 'photo-autumn.jpg', likes: 9, comments: [] },
+  ],
+  /* Learning-journal entries; 'parent' ones are contributions from home. */
+  obs: [
+    { id: 'o1', child: 'emma',        by: 'joanne',  ago: '2 days ago', pending: false, photo: 'photo-easel.jpg', text: EASEL + ' She mixed purple from red and blue all by herself.' },
+    { id: 'o2', child: 'emma',        by: 'parent',  ago: 'Yesterday',  pending: true,  photo: 'photo-capes.jpg', text: 'Superhero afternoon in the park — Emma organised the whole game and made sure everyone had a turn to lead. 🦸' },
+    { id: 'o3', child: 'christopher', by: 'teacher', ago: 'Today',      pending: false, photo: 'photo-blocks.jpg', text: 'Christopher sorted the alphabet blocks into vowels and consonants and sounded out “CAT” on his own. 🔤' },
+    { id: 'o4', child: 'christopher', by: 'joanne',  ago: '4 days ago', pending: false, photo: 'photo-lateclub.jpg', text: 'Christopher counted the red balls in the ball pit up to 12 and then taught a friend how to do it.' },
+  ],
+  tour: null,              // index of the current app-tour step, or null
+  menu: null,              // { kind, id, top, right } — the ⋯ popover
+  confirm: null,           // { kind, id } — delete confirmation
   draft: {},               // form drafts for create flows
   created: null,           // last announcement / event created
   toast: null,
@@ -673,35 +756,61 @@ const eventsCard = () => `
       </button>`).join('')}
   </section>`;
 
-const classPost = (id, { name = 'TSK', tag = 'Home office', avatar = 'seal.svg', text = EASEL, photo = 'photo-blocks.jpg', counts = false } = {}) => {
-  const liked = S.liked[id];
+/* Who wrote what. 'teacher' / 'parent' mean the signed-in user of that role,
+   which is what makes an entry editable. */
+const AUTHORS = {
+  office:  { name: 'TSK',          tag: 'Home office',      avatar: 'seal.svg' },
+  parker:  { name: 'Ms. Parker',   tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg' },
+  diaz:    { name: 'Mr. Diaz',     tag: 'Homeroom teacher', avatar: 'avatar-diaz.jpg' },
+  joanne:  { name: 'Joanne',       tag: 'Teacher',          avatar: 'avatar-joanne.jpg' },
+  teacher: { name: 'Claire McKay', tag: 'Homeroom teacher', avatar: 'avatar-claire.jpg' },
+  parent:  { name: 'Siobhan',      tag: 'Parent',           avatar: null },
+};
+const isMine = x => x.by === S.role;
+const authorLine = x => isMine(x) ? 'you' : AUTHORS[x.by].name;
+const avatarHtml = (by, size) => AUTHORS[by].avatar
+  ? `<img class="avatar" src="${IMG}${AUTHORS[by].avatar}" width="${size}" height="${size}" alt="">`
+  : `<span class="initials" style="width:${size}px;height:${size}px;background:var(--peach);font-size:${Math.round(size / 2.6)}px">${AUTHORS[by].name[0]}</span>`;
+const dotsBtn = (kind, id) => `<button class="dots" data-act="menu" data-p="${kind}:${id}" aria-label="More options">${ic('dots')}</button>`;
+
+/* The photo of an observation: plain, or the edited "story" with its stickers. */
+function obsPhoto(o, cls, h) {
+  if (!o.photo) return '';
+  if (!o.overlays?.length) return `<img class="${cls}" src="${IMG}${o.photo}" style="height:${h}px" alt="">`;
+  return `<div class="${cls} story-frame" style="height:${h}px;--bg:url(${IMG}${o.photo})">
+    <div class="story" style="height:${h}px;aspect-ratio:${o.ratio}"><img class="bg" src="${IMG}${o.photo}" alt="">${o.overlays.map(v => overlayHtml(v, false)).join('')}</div></div>`;
+}
+
+const classPost = (p) => {
+  const a = AUTHORS[p.by], liked = S.liked[p.id];
   return `
-  <article class="post">
+  <article class="post tappable" data-go="post" data-p="${p.id}">
     <div class="hd">
-      <div class="who"><img class="avatar" src="${IMG}${avatar}" alt="">
-        <div><div class="nm">${name} <span class="tag">${tag}</span></div><div class="ago">3h ago</div></div>
+      <div class="who">${avatarHtml(p.by, 42)}
+        <div><div class="nm">${a.name} <span class="tag">${a.tag}</span></div><div class="ago">${p.ago}</div></div>
       </div>
-      <button aria-label="More">${ic('dots')}</button>
+      ${dotsBtn('post', p.id)}
     </div>
-    <p class="txt">${text}</p>
-    <img class="ph" src="${IMG}${photo}" alt="">
+    ${p.title ? `<b class="post-title">${esc(p.title)}</b>` : ''}
+    <p class="txt clamp">${esc(p.text)}</p>
+    ${p.photo ? `<img class="ph" src="${IMG}${p.photo}" alt="">` : ''}
     <div class="acts">
-      <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${id}">${ic('heart')}${counts ? (2 + (liked ? 1 : 0)) : ''}</button>
-      <button>${ic('comment')}${counts ? 6 : ''}</button>
+      <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${p.id}">${ic('heart')}${p.likes + (liked ? 1 : 0) || ''}</button>
+      <button data-go="post" data-p="${p.id}">${ic('comment')}${p.comments.length || ''}</button>
     </div>
   </article>`;
 };
 
-const observation = ({ child = 'emma', pending = true, showKid = true } = {}) => {
-  const c = CHILDREN[child];
+const observation = (o, { showKid = true } = {}) => {
+  const c = CHILDREN[o.child];
   return `
-  <article class="obs">
-    <img src="${IMG}photo-easel.jpg" alt="">
+  <article class="obs tappable" data-go="obs" data-p="${o.id}">
+    ${obsPhoto(o, 'obs-ph', 166)}
     <div class="in">
-      ${showKid ? `<div class="kid"><img class="avatar" src="${IMG}${c.avatar}" width="32" height="32" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>` : ''}
-      <div class="meta"><div><span class="tag green">OBSERVATION</span>${pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending</span>` : ''}</div>2 days ago</div>
-      <p class="txt">${child === 'emma' ? EASEL : EASEL.replace('Emma', 'Christopher').replace(' she ', ' he ')} Duis malesuada, turpis a placerat</p>
-      <div class="by"><img class="avatar" src="${IMG}avatar-joanne.jpg" alt="">Observed by Joanne · Teacher</div>
+      <div class="kid-row2">${showKid ? `<div class="kid"><img class="avatar" src="${IMG}${c.avatar}" width="32" height="32" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>` : '<span></span>'}${dotsBtn('obs', o.id)}</div>
+      <div class="meta"><div><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending</span>` : ''}</div>${o.ago}</div>
+      <p class="txt clamp">${esc(o.text)}</p>
+      <div class="by">${avatarHtml(o.by, 32)}${o.by === 'parent' ? 'Added by' : 'Observed by'} ${authorLine(o)}${isMine(o) ? '' : ` · ${AUTHORS[o.by].tag}`}</div>
     </div>
   </article>`;
 };
@@ -786,7 +895,7 @@ const screens = {
           </button>
           <button class="opt" data-go="announcements">
             <div class="head"><div class="tg"><div class="badge">${ic('megaphone', 's20')}</div>
-              <div><div class="t">Announcements</div><div class="st">2 current announcements</div></div></div>
+              <div><div class="t">Announcements</div><div class="st">${S.posts.filter(p => p.by === 'teacher' && !p.past).length} current announcements</div></div></div>
               <span class="arrow">${ic('arrow-up-right', 's18')}</span></div>
             <div class="desc">Manage current and past notices.</div>
           </button>
@@ -833,27 +942,25 @@ const screens = {
   /* ---------- classrooms ---------- */
   classrooms() {
     const groups = ['All groups', 'Sunflower room', 'Acorn room'];
-    const posts = S.classroomFilter === 'Acorn room'
-      ? [classPost('c3', { name: 'Ms. Parker', tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg', text: LOREM.slice(0, 118) + '…', photo: 'photo-autumn.jpg' })]
-      : [classPost('c1'), classPost('c2', { photo: 'photo-lateclub.jpg', text: 'Ball pit adventures in the Late Club room this afternoon — lots of giggles! 🟡🔴🔵' })];
+    const posts = S.posts.filter(p => S.classroomFilter === 'All groups' || p.group === S.classroomFilter).map(classPost);
     return { tab: 'classrooms', html: `
       ${topMain('Classrooms')}
       <div class="body">
         <div class="pills">${groups.map(g => `<button class="pill ${g === S.classroomFilter ? 'on' : ''}" data-act="classroom" data-p="${g}">${g}</button>`).join('')}</div>
-        ${posts.join('')}
+        ${posts.join('') || `<p class="empty">No updates for this group yet.</p>`}
       </div>${tabBar('classrooms')}` };
   },
 
   /* ---------- learning ---------- */
   learning() {
     const sel = S.learnChild;
-    const kids = sel === 'all' ? ['emma', 'christopher', 'emma'] : [sel, sel];
+    const list = S.obs.filter(o => sel === 'all' || o.child === sel);
     return { tab: 'learning', html: `
       ${topMain('Learning')}
       <div class="body gap16">
         ${S.role === 'teacher' ? selectField('', ['Sunflower room', 'Acorn room', 'Bluebells'], S.learnRoom, 'data-change="learn-room"').replace('<label></label>', '') : ''}
         ${childPills(sel, 'learn-child')}
-        ${kids.map((k, i) => observation({ child: k, pending: i === 0 && S.role === 'parent' })).join('')}
+        ${list.map(o => observation(o)).join('') || `<p class="empty">No observations yet.</p>`}
       </div>${tabBar('learning')}` };
   },
 
@@ -944,7 +1051,7 @@ const screens = {
           <button class="opt" data-go="announcements"><div class="head"><div class="tg"><div class="badge">${ic('megaphone', 's20')}</div><div><div class="t">Announcements</div><div class="st">2 current announcements</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Manage current and past notices.</div></button>
           <button class="opt" data-go="roster"><div class="head"><div class="tg"><div class="badge">${ic('contact-round', 's20')}</div><div><div class="t">Children</div><div class="st">18 children across 3 groups</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Search your roster and narrow it down by group.</div></button>
         </div>
-        ${accountMenu(['Notifications', 'Calendar', 'Password management', 'Advanced settings', 'Log out'])}
+        ${accountMenu(['Notifications', 'Calendar', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}
       </div>${homeBar()}` };
 
     return { html: `
@@ -959,7 +1066,7 @@ const screens = {
             </button>`).join('')}
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;flex:none"><div class="h2">Your account</div>
-          ${accountMenu(['Notifications settings', 'Calendar', 'Family members', 'Password management', 'Advanced settings', 'Log out'])}</div>
+          ${accountMenu(['Notifications settings', 'Calendar', 'Family members', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}</div>
       </div>${homeBar()}` };
   },
 
@@ -980,7 +1087,7 @@ const screens = {
         </section>
         ${eventsCard()}
         <div class="h2">Recent observations</div>
-        ${observation({ child: k, showKid: false })}${observation({ child: k, showKid: false, pending: false })}
+        ${S.obs.filter(o => o.child === k).slice(0, 3).map(o => observation(o, { showKid: false })).join('') || `<p class="empty">No observations yet.</p>`}
         <section class="cta-card">
           <span class="ib">${ic('sparkles')}</span>
           <div><h3>Add a moment from home</h3><p style="margin-top:8px">Share something ${c.name} enjoyed, tried or talked about. It helps ${k === 'emma' ? 'her' : 'his'} educators see the whole picture.</p></div>
@@ -1005,7 +1112,7 @@ const screens = {
           <div class="acts"><button>${ic('heart')}</button><button>${ic('comment')}</button></div>
           <div class="decide"><button class="btn outline" data-act="decide" data-p="decline">Decline</button><button class="btn primary" data-act="decide" data-p="approve">Approve</button></div>
         </article>`).join('') || `<p class="empty">You’re all caught up — no observations waiting.</p>`
-      : Array.from({ length: S.approved + 2 }, () => observation({ pending: false })).join('');
+      : S.obs.filter(o => !o.pending).map(o => observation(o)).join('');
     return { html: `
       ${topBack('Learning journey')}
       <div class="body tight">
@@ -1025,9 +1132,7 @@ const screens = {
       ${topBack('Announcements')}
       <div class="body tight">
         <div class="switch"><button class="${cur ? 'on' : ''}" data-act="ann-tab" data-p="current">Current</button><button class="${cur ? '' : 'on'}" data-act="ann-tab" data-p="past">Past</button></div>
-        ${cur
-          ? classPost('a1', { name: 'Ms. Parker', tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg', text: EASEL + ' Duis malesuada, turpis a pl…', counts: true }) + classPost('a2', { name: 'Ms. Parker', tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg', text: EASEL + ' Duis malesuada, turpis a pl…', counts: true, photo: 'photo-lateclub.jpg' })
-          : classPost('a3', { name: 'Mr. Diaz', tag: 'Homeroom teacher', avatar: 'avatar-diaz.jpg', text: 'First day of Autumn — thanks to everyone who joined our leaf walk!', photo: 'photo-autumn.jpg', counts: true })}
+        ${S.posts.filter(p => cur ? p.by === 'teacher' && !p.past : p.past).map(classPost).join('') || `<p class="empty">Nothing here yet.</p>`}
       </div>${homeBar()}` };
   },
 
@@ -1084,6 +1189,81 @@ const screens = {
   announcement() {
     const a = S.created?.kind === 'announcement' ? S.created : { title: 'First day of Autumn', when: '23 September, 2026; 13:00', photo: 'photo-autumn.jpg', body: LOREM };
     return detailScreen('Announcement', a, S.role === 'teacher' ? 'Edit announcement' : null, false);
+  },
+
+  /* ---------- entry details + editing ---------- */
+  post(id) {
+    const p = S.posts.find(x => x.id === id);
+    if (!p) return screens.gone('Class update');
+    const a = AUTHORS[p.by], liked = S.liked[p.id];
+    return { html: `
+      ${topBack('Class update', dotsBtn('post', p.id).replace('class="dots"', 'class="dots on-light"'))}
+      <div class="body tight">
+        <div class="post-detail-head">${avatarHtml(p.by, 44)}
+          <div><div class="nm">${a.name} <span class="tag">${a.tag}</span></div><div class="ago">${p.group} · ${p.ago}</div></div></div>
+        ${p.title ? `<div class="big-title" style="font-size:26px;line-height:32px">${esc(p.title)}</div>` : ''}
+        <p class="prose dim">${esc(p.text)}</p>
+        ${p.photo ? `<img class="hero" src="${IMG}${p.photo}" style="height:280px" alt="">` : ''}
+        <div class="post-acts">
+          <button class="${liked ? 'liked' : ''}" data-act="like" data-p="${p.id}">${ic('heart')}${p.likes + (liked ? 1 : 0)} likes</button>
+          <span>${ic('comment')}${p.comments.length} comments</span>
+        </div>
+        <div class="comments">
+          ${p.comments.map(c => `<div class="cmt"><b>${esc(c.by)}</b><p>${esc(c.t)}</p></div>`).join('') || `<p class="sub">No comments yet — be the first.</p>`}
+        </div>
+      </div>
+      <div class="composer">
+        <form data-form="comment" data-p="${p.id}"><input placeholder="Add a comment…" autocomplete="off"><button class="send" aria-label="Post comment">➤</button></form>
+        <i class="hi" style="width:135px;height:5px;border-radius:999px;background:#2E2545;opacity:.22"></i>
+      </div>` };
+  },
+
+  obs(id) {
+    const o = S.obs.find(x => x.id === id);
+    if (!o) return screens.gone('Observation');
+    const c = CHILDREN[o.child];
+    return { html: `
+      ${topBack(o.by === 'parent' ? 'From home' : 'Observation', dotsBtn('obs', o.id).replace('class="dots"', 'class="dots on-light"'))}
+      <div class="body tight">
+        ${obsPhoto(o, 'hero', o.overlays?.length ? 420 : 260)}
+        <div class="obs-kid"><img class="avatar" src="${IMG}${c.avatar}" width="44" height="44" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>
+        <div class="obs-meta"><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending review</span>` : ''}<span class="sub" style="font-size:12px;margin-left:auto">${o.ago}</span></div>
+        <p class="prose dim">${esc(o.text)}</p>
+        <div class="obs-by">${avatarHtml(o.by, 36)}<div><b>${o.by === 'parent' ? 'Added by' : 'Observed by'} ${authorLine(o)}</b><span>${isMine(o) ? (S.role === 'teacher' ? 'Homeroom teacher' : 'Emma & Christopher’s parent') : AUTHORS[o.by].tag}</span></div></div>
+        ${o.pending && S.role === 'parent' ? `<div class="hint" style="color:var(--ink)">${ic('info', 's16')}A teacher will review this before it’s added to ${c.name}’s learning journal.</div>` : ''}
+      </div>${homeBar()}` };
+  },
+
+  'edit-post'(id) {
+    const p = S.posts.find(x => x.id === id);
+    if (!p) return screens.gone('Edit update');
+    return { html: `
+      ${topCancel('Edit update')}
+      <form class="body" style="padding-top:32px;gap:16px" data-form="edit-post" data-p="${p.id}">
+        ${selectField('Who is it for?*', ['Sunflower room', 'Acorn room'], p.group, 'name="group"')}
+        <div class="field"><label>Title</label><input class="input sm" name="title" value="${esc(p.title || '')}"></div>
+        <div class="field"><label>Description*</label><textarea class="input" name="text" rows="6" required>${esc(p.text)}</textarea></div>
+        ${p.photo ? `<div class="field"><span class="lbl">Photo</span><img class="hero" src="${IMG}${p.photo}" style="height:160px" alt=""></div>` : ''}
+        <button class="btn primary" type="submit">Save changes</button>
+      </form>${homeBar()}` };
+  },
+
+  'edit-obs'(id) {
+    const o = S.obs.find(x => x.id === id);
+    if (!o) return screens.gone('Edit observation');
+    S.editChild ??= o.child;
+    return { html: `
+      ${topCancel('Edit observation')}
+      <form class="body" style="padding-top:32px;gap:16px" data-form="edit-obs" data-p="${o.id}">
+        <div class="field"><span class="lbl">Child</span>${childPills(S.editChild, 'edit-child', false)}</div>
+        ${o.photo ? `<div style="display:flex;justify-content:center;flex:none">${obsPhoto(o, 'hero', o.overlays?.length ? 300 : 200)}</div>` : ''}
+        <div class="field"><label>Reflections</label><textarea class="input" name="text" rows="7" maxlength="240" required>${esc(o.text)}</textarea></div>
+        <button class="btn primary" type="submit">Save changes</button>
+      </form>${homeBar()}` };
+  },
+
+  gone(title) {
+    return { html: `${topBack(title)}<p class="empty">This entry has been deleted.</p>${homeBar()}` };
   },
 
   /* ---------- services ---------- */
@@ -1264,7 +1444,8 @@ function rosterGroups() {
 }
 function accountMenu(items) {
   const icons = { 'Notifications': 'menu-bell', 'Notifications settings': 'menu-bell', 'Calendar': 'menu-calendar', 'Family members': 'menu-family', 'Password management': 'menu-password', 'Advanced settings': 'menu-settings', 'Log out': 'menu-logout' };
-  const go = { 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'Log out': 'data-act="logout"' };
+  icons['App tour'] = 'sparkles';
+  const go = { 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Log out': 'data-act="logout"' };
   return `<div class="menu">${items.map(t => `<button ${go[t] || 'data-act="toast" data-p="Coming soon in the prototype"'}>${ic(icons[t], 's20')}${t}</button>`).join('')}</div>`;
 }
 function detailScreen(title, d, editLabel, canDelete) {
@@ -1322,6 +1503,8 @@ function render() {
   const anim = S.dir === 'none' ? '' : S.dir === 'back' ? 'enter-back' : 'enter';
   device.innerHTML = `<div class="screen ${out.cls || ''} ${anim}">${out.html}</div>`
     + (S.sheet ? sheetHtml() : '')
+    + (S.menu ? menuHtml() : '')
+    + (S.confirm ? confirmHtml() : '')
     + (S.toast ? `<div class="toast">${S.toast}</div>` : '');
   S.dir = 'none';
   S.toast = null;
@@ -1329,12 +1512,85 @@ function render() {
   const t = device.querySelector('#thread'); if (t) t.scrollTop = t.scrollHeight;
   const ed = device.querySelector('#edText');
   if (ed) { ed.focus(); const r = document.createRange(); r.selectNodeContents(ed); r.collapse(false); getSelection().removeAllRanges(); getSelection().addRange(r); }
+  if (S.tour != null && cur().name === 'dashboard') {
+    /* Measure the spotlight target once the slide-in has finished. */
+    const scr = device.querySelector('.screen');
+    if (anim) scr.addEventListener('animationend', drawTour, { once: true }); else drawTour();
+  }
 }
-function go(name, p) { S.stack.push({ name, p }); S.dir = 'fwd'; S.sheet = false; render(); }
-function back() { if (S.stack.length > 1) { S.stack.pop(); S.dir = 'back'; } S.sheet = false; render(); }
-function tab(name) { S.stack = [{ name }]; S.dir = 'none'; S.sheet = false; render(); }
+function go(name, p) { S.stack.push({ name, p }); S.dir = 'fwd'; S.sheet = false; S.menu = null; render(); }
+function back() { if (S.stack.length > 1) { S.stack.pop(); S.dir = 'back'; } S.sheet = false; S.menu = null; render(); }
+function tab(name) { S.stack = [{ name }]; S.dir = 'none'; S.sheet = false; S.menu = null; render(); }
 function toast(msg) { S.toast = msg; render(); }
-function signIn(role) { S.role = role; S.stack = [{ name: 'dashboard' }]; S.dir = 'fwd'; render(); }
+function signIn(role) { S.role = role; S.stack = [{ name: 'dashboard' }]; S.dir = 'fwd'; S.tour = tourSeen(role) ? null : 0; render(); }
+
+/* ---------- 3-step app tour: a spotlight on the dashboard, one script per role ---------- */
+const TOUR = {
+  parent: [
+    { sel: '.tabbar .tabs', k: 'Find your way around', t: 'Everything about your children',
+      b: 'Classrooms shows class updates, Learning holds Emma and Christopher’s journals, and Chat is where you message their teachers.' },
+    { sel: '.tab-fab button', round: true, k: 'Share from home', t: 'Add a moment with +',
+      b: 'Snap a photo, decorate it with text, stickers or emoji and send it to the teachers for your child’s learning journal.' },
+    { sel: '.titlebar .side.r', k: 'Stay in the loop', t: 'Notifications and your profile',
+      b: 'The bell shows what’s new. ⋯ opens your profile, where you can switch between your children and manage your account.' },
+  ],
+  teacher: [
+    { sel: '.mgmt', k: 'Your day at a glance', t: 'Start with your to-do list',
+      b: 'Review observations waiting for approval, manage announcements and look up any child in your groups.' },
+    { sel: '.tab-fab button', round: true, k: 'Create in seconds', t: 'Post with +',
+      b: 'Add an observation for one child, post an update for the whole class, or create an event — parents see it straight away.' },
+    { sel: '.tabbar .tabs', k: 'Everything else', t: 'Classrooms, learning and chat',
+      b: 'Browse each group’s feed, follow every child’s learning journey and reply to families in Chat.' },
+  ],
+};
+function tourSeen(role) { try { return localStorage.getItem('tour-' + role) === '1'; } catch { return false; } }
+function tourDone() { try { localStorage.setItem('tour-' + S.role, '1'); } catch {} S.tour = null; device.querySelector('.tour')?.remove(); }
+function startTour() { S.stack = [{ name: 'dashboard' }]; S.dir = 'none'; S.sheet = false; S.menu = null; S.tour = 0; render(); }
+function drawTour() {
+  const steps = TOUR[S.role], step = steps[S.tour];
+  const target = device.querySelector(step.sel);
+  if (!target) return;
+  const d = device.getBoundingClientRect(), r = target.getBoundingClientRect(), pad = 6;
+  const box = { top: r.top - d.top - pad, left: r.left - d.left - pad, width: r.width + pad * 2, height: r.height + pad * 2 };
+  const below = box.top + box.height / 2 < d.height * .5;
+  const tipPos = below ? `top:${Math.round(box.top + box.height + 16)}px` : `bottom:${Math.round(d.height - box.top + 16)}px`;
+  const last = S.tour === steps.length - 1;
+  const el = document.createElement('div');
+  el.className = 'tour';
+  el.innerHTML = `
+    <div class="spot" style="top:${box.top}px;left:${box.left}px;width:${box.width}px;height:${box.height}px;${step.round ? 'border-radius:999px' : ''}"></div>
+    <div class="tip" style="${tipPos}" role="dialog" aria-label="App tour, step ${S.tour + 1} of ${steps.length}">
+      <div class="k">${step.k}</div><h3>${step.t}</h3><p>${step.b}</p>
+      <div class="foot">
+        <div class="dots3">${steps.map((_, i) => `<i class="${i === S.tour ? 'on' : ''}"></i>`).join('')}</div>
+        <div class="btns">${last ? '' : `<button class="skip" data-act="tour-skip">Skip</button>`}<button class="next" data-act="tour-next">${last ? 'Got it' : 'Next'}</button></div>
+      </div>
+    </div>`;
+  device.appendChild(el);
+}
+
+/* ⋯ menu: the author can edit or delete; everyone else gets the usual non-owner actions. */
+function findEntry(kind, id) { return (kind === 'post' ? S.posts : S.obs).find(x => x.id === id); }
+function menuHtml() {
+  const { kind, id, top, bottom, right } = S.menu, x = findEntry(kind, id);
+  if (!x) return '';
+  const pos = top != null ? `top:${top}px` : `bottom:${bottom}px`;
+  const items = isMine(x)
+    ? `<button data-act="menu-edit">${ic('notebook-pen', 's18')}Edit</button>
+       <button class="danger" data-act="menu-delete"><i class="ic s18" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i>Delete</button>`
+    : `<button data-act="toast" data-p="Link copied">${ic('arrow-up-right', 's18')}Copy link</button>
+       <button data-act="toast" data-p="Thanks — the school office will take a look">${ic('info', 's18')}Report</button>`;
+  return `<div class="pop-scrim" data-act="menu-close"></div><div class="pop ${top == null ? 'up' : ''}" style="${pos};right:${right}px" role="menu">${items}</div>`;
+}
+function confirmHtml() {
+  const obs = S.confirm.kind === 'obs';
+  return `<div class="dialog-scrim" data-act="confirm-cancel"></div>
+    <div class="dialog" role="alertdialog">
+      <h3>Delete this ${obs ? 'observation' : 'update'}?</h3>
+      <p>${obs ? 'It will be removed from the learning journal.' : 'It will be removed for all parents in this class.'} This can’t be undone.</p>
+      <div class="row"><button class="btn outline" data-act="confirm-cancel">Cancel</button><button class="btn destructive" data-act="confirm-delete">Delete</button></div>
+    </div>`;
+}
 
 function sheetHtml() {
   const opts = [
@@ -1424,6 +1680,33 @@ const actions = {
   'journal-tab'(p) { S.journalTab = p; render(); },
   'ann-tab'(p) { S.annTab = p; render(); },
   like(p) { S.liked[p] = !S.liked[p]; render(); },
+  menu(p, el) {
+    const [kind, id] = p.split(':');
+    const r = el.getBoundingClientRect(), d = device.getBoundingClientRect();
+    const right = Math.round(d.right - r.right), below = r.bottom - d.top + 4;
+    S.menu = below > d.height - 200 ? { kind, id, bottom: Math.round(d.bottom - r.top + 4), right } : { kind, id, top: Math.round(below), right };
+    render();
+  },
+  'menu-close'() { S.menu = null; render(); },
+  'tour-next'() {
+    if (S.tour >= TOUR[S.role].length - 1) return tourDone();
+    S.tour++; device.querySelector('.tour')?.remove(); drawTour();
+  },
+  'tour-skip'() { tourDone(); },
+  tour() { startTour(); },
+  'menu-edit'() { const { kind, id } = S.menu; S.menu = null; S.editChild = null; go(kind === 'post' ? 'edit-post' : 'edit-obs', id); },
+  'menu-delete'() { const { kind, id } = S.menu; S.menu = null; S.confirm = { kind, id }; render(); },
+  'confirm-cancel'() { S.confirm = null; render(); },
+  'confirm-delete'() {
+    const { kind, id } = S.confirm;
+    if (kind === 'post') S.posts = S.posts.filter(x => x.id !== id); else S.obs = S.obs.filter(x => x.id !== id);
+    S.confirm = null;
+    /* Leave any detail or edit screen that was showing the deleted entry. */
+    while (S.stack.length > 1 && S.stack.at(-1).p === id) S.stack.pop();
+    S.dir = 'back';
+    toast(kind === 'post' ? 'Update deleted' : 'Observation deleted');
+  },
+  'edit-child'(p) { S.editChild = p; render(); },
   'cal-day'(p) { S.calSel = +p; render(); },
   'cal-nav'(p) {
     const d = new Date(S.calYear, S.calMonth + +p, 1);
@@ -1462,6 +1745,7 @@ document.querySelector('.proto-bar').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.role) signIn(b.dataset.role);
   else if (b.dataset.act === 'restart') actions.restart();
+  else if (b.dataset.act === 'tour') { if (!S.role) signIn('parent'); startTour(); }
 });
 
 /* Live inputs — update state without a full re-render so focus is kept. */
@@ -1534,8 +1818,30 @@ device.addEventListener('submit', e => {
     device.querySelector('.composer input').focus();
     return;
   }
+  if (kind === 'comment') {
+    const input = f.querySelector('input'), t = input.value.trim(), p = S.posts.find(x => x.id === f.dataset.p);
+    if (!t) return;
+    p.comments.push({ by: S.role === 'teacher' ? 'You · Homeroom teacher' : 'You · Emma’s mum', t });
+    render();
+    device.querySelector('.cmt:last-child')?.classList.add('new');
+    device.querySelector('.body').scrollTop = 1e6;
+    return;
+  }
+  if (kind === 'edit-post') {
+    const p = S.posts.find(x => x.id === f.dataset.p), fd = new FormData(f);
+    Object.assign(p, { group: fd.get('group'), title: fd.get('title').trim(), text: fd.get('text').trim() || p.text });
+    back(); return toast('Update saved');
+  }
+  if (kind === 'edit-obs') {
+    const o = S.obs.find(x => x.id === f.dataset.p);
+    Object.assign(o, { child: S.editChild || o.child, text: new FormData(f).get('text').trim() || o.text });
+    back(); return toast('Observation saved');
+  }
   if (kind === 'obs') {
-    const name = CHILDREN[S.draft.obs.child]?.name || 'the class';
+    const d = S.draft.obs, name = CHILDREN[d.child]?.name || 'the class';
+    S.obs.unshift({ id: 'o' + Date.now(), child: d.child, by: S.role, ago: 'Just now', pending: S.role === 'parent',
+      text: d.text.trim() || 'A new moment for the learning journal.', photo: d.noPhoto ? null : 'photo-capes.jpg', overlays: d.overlays, ratio: d.ratio });
+    S.learnChild = d.child;
     S.stack = [{ name: 'learning' }]; S.dir = 'fwd';
     S.toast = S.role === 'teacher' ? `Observation posted to ${name}’s journal` : `Sent to TSK — a teacher will review it before it appears in ${name}’s journal`;
     return render();
@@ -1544,14 +1850,19 @@ device.addEventListener('submit', e => {
     const k = f.dataset.p, d = S.draft[k];
     S.created = { kind: k, title: d.title, when: fmtWhen(d.date, d.time), photo: d.photo ? 'photo-autumn.jpg' : null, body: d.body };
     S.stack.pop();
-    go(k === 'event' ? 'event' : 'announcement', k === 'event' ? 'new' : undefined);
+    if (k === 'announcement') {
+      /* A class update becomes a real post the teacher can later edit or delete. */
+      const id = 'p' + Date.now();
+      S.posts.unshift({ id, by: 'teacher', group: d.group === 'All groups' ? 'Sunflower room' : d.group, ago: 'Just now', title: d.title.trim(), text: d.body.trim(), photo: d.photo ? 'photo-autumn.jpg' : null, likes: 0, comments: [] });
+      go('post', id);
+    } else go('event', 'new');
     toast(k === 'event' ? 'Event published to parents' : 'Announcement posted');
   }
 });
 
 /* Boot. ?role=parent|teacher skips straight to that dashboard. */
 const qs = new URLSearchParams(location.search).get('role');
-if (qs === 'parent' || qs === 'teacher') { S.role = qs; S.stack = [{ name: 'dashboard' }]; }
+if (qs === 'parent' || qs === 'teacher') { S.role = qs; S.stack = [{ name: 'dashboard' }]; S.tour = tourSeen(qs) ? null : 0; }
 else S.stack = [{ name: 'roles' }];
 render();
 </script>
