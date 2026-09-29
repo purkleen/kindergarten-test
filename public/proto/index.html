@@ -256,14 +256,35 @@ textarea.input:focus { padding: 11px 15px; }
 .acct a { font-size: 14px; font-weight: 600; color: var(--purple); margin-left: 6px; }
 
 /* --- dashboard ----------------------------------------------------------- */
-.announce { background: var(--purple-50); border-radius: var(--r-lg); padding: 16px; position: relative; flex: none; box-shadow: 0 2px 10px rgba(43,37,64,.04); }
+.announce { background: var(--purple-50); border: 1px solid #DCCFF6; border-radius: var(--r-lg); padding: 16px; position: relative; flex: none; box-shadow: 0 2px 10px rgba(43,37,64,.04); }
+/* Due payments — Figma node 11:148 */
+.pay { background: #FFD200; border-radius: 24px; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; flex: none; color: #2E2545; }
+.pay .row1 { display: flex; align-items: center; justify-content: space-between; }
+.pay .k { font-size: 10px; font-weight: 800; letter-spacing: .6px; }
+.pay .row1 .r { display: flex; align-items: center; gap: 4px; }
+.pay .stmt { font-size: 11px; font-weight: 800; opacity: .65; }
+.pay .close { width: 28px; height: 28px; margin-right: -6px; border-radius: 99px; display: grid; place-items: center; color: #2E2545; }
+.pay .close:hover { background: rgba(46,37,69,.08); }
+.pay .amt { display: flex; align-items: center; justify-content: space-between; }
+.pay .amt b { display: block; font-size: 30px; font-weight: 700; line-height: 36px; }
+.pay .amt span { font-size: 12px; font-weight: 700; opacity: .7; }
+.pay .now { background: #2E2545; color: #fff; font-size: 14px; font-weight: 800; padding: 13px 22px; border-radius: 15px; transition: transform .1s; }
+.pay .now:active { transform: scale(.96); }
+.pay .lines { display: flex; flex-direction: column; gap: 7px; font-size: 12px; }
+.pay .lines div { display: flex; justify-content: space-between; }
+.pay .lines span { font-weight: 500; opacity: .8; }
+.pay .lines b { font-weight: 700; }
 .announce .k { font-size: 10px; font-weight: 600; letter-spacing: .2px; color: var(--tag-ink); text-transform: uppercase; }
 .announce .t { font-size: 14px; font-weight: 600; color: var(--ink-900); margin-top: 12px; }
 .announce .b { font-size: 14px; line-height: 20px; color: var(--ink-2); margin-top: 4px; padding-right: 8px; }
 .announce .x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; display: grid; place-items: center; color: #000; }
-.announce .dots { display: flex; gap: 5px; margin-top: 12px; }
-.announce .dots i { width: 6px; height: 6px; border-radius: 99px; background: #D8CDF2; }
-.announce .dots i.on { background: var(--purple); width: 16px; }
+.announce { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.announce.dragging { transition: none; cursor: grabbing; }
+.announce.settle { transition: transform .22s ease, opacity .22s ease; }
+.announce.in-next { animation: ann-in-next .24s ease-out; }
+.announce.in-prev { animation: ann-in-prev .24s ease-out; }
+@keyframes ann-in-next { from { transform: translateX(40px); opacity: 0; } }
+@keyframes ann-in-prev { from { transform: translateX(-40px); opacity: 0; } }
 
 .services { background: var(--card-warm); border-radius: var(--r-lg); padding: 16px; display: flex; flex-direction: column; gap: 16px;
             box-shadow: 0 1px 4px rgba(12,12,13,.05); flex: none; }
@@ -727,7 +748,8 @@ const S = {
   stack: [],               // [{ name, p }]
   dir: 'fwd',
   sheet: false,
-  annIdx: 0, annHidden: false,
+  annIdx: 0, annGone: [], annEnter: '',   // current announcement, dismissed/opened ones, entry animation
+  payHidden: false,        // parent closed the due-payments card
   classroomFilter: 'All groups',
   learnChild: 'emma', learnRoom: 'Sunflower room',
   pending: 3, approved: 0,
@@ -1016,16 +1038,24 @@ const screens = {
         ${eventsCard()}
       </div>${tabBar('dashboard')}` };
 
-    const a = ANNOUNCEMENTS[S.annIdx];
+    const live = liveAnnouncements(), a = ANNOUNCEMENTS[S.annIdx], enter = S.annEnter;
+    S.annEnter = '';
     return { tab: 'dashboard', html: `
       ${topMain('Hi, Siobhan!')}
       <div class="body">
-        ${S.annHidden ? '' : `
-        <section class="announce tappable" data-act="ann-open">
-          <div class="k">Announcement ${S.annIdx + 1}/${ANNOUNCEMENTS.length}</div>
+        ${!live.length ? '' : `
+        <section class="announce tappable ${enter}" data-act="ann-open" aria-roledescription="carousel item">
+          <div class="k">Announcement ${live.indexOf(S.annIdx) + 1}/${live.length}</div>
           <button class="x" data-act="ann-dismiss" aria-label="Dismiss"><i class="ic" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i></button>
           <div class="t">${a.t}</div><p class="b">${a.b}</p>
-          <div class="dots">${ANNOUNCEMENTS.map((_, i) => `<i class="${i === S.annIdx ? 'on' : ''}"></i>`).join('')}</div>
+        </section>`}
+        ${S.payHidden ? '' : `
+        <section class="pay" aria-label="Due payments">
+          <div class="row1"><span class="k">DUE PAYMENTS</span>
+            <div class="r"><button class="stmt" data-go="webview" data-p="Payments">Statements ›</button>
+              <button class="close" data-act="pay-close" aria-label="Close"><i class="ic s18" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i></button></div></div>
+          <div class="amt"><div><b>$480.00</b><span>Due Friday, 9 May</span></div><button class="now" data-go="webview" data-p="Payments">Pay now</button></div>
+          <div class="lines"><div><span>May tuition</span><b>$420.00</b></div><div><span>Lunch club · 12 days</span><b>$60.00</b></div></div>
         </section>`}
         <section class="services">
           <h3>Services</h3>
@@ -1379,8 +1409,8 @@ const screens = {
       ${topBack('Term dates')}
       <div class="body" style="gap:24px">
         <div><div style="font-size:18px;color:var(--ink-900)">Key term dates</div><div style="font-size:36px;font-weight:700;letter-spacing:-.5px;color:var(--ink-900)">2026-2027</div></div>
-        <div class="card" style="border-radius:12px;flex:none">${terms.map(([t, d]) => `<div class="kid-row" style="flex-direction:column;align-items:flex-start;gap:2px;padding:12px 16px"><b style="font-size:12px;font-weight:600">${t}</b><span class="s" style="font-size:11px">${d}</span></div>`).join('')}</div>
-        <button class="btn yellow" data-act="toast" data-p="Term dates added to your calendar">Add to my calendar</button>
+        <div class="card" style="border-radius:12px;flex:none">${terms.map(([t, d]) => `<div class="kid-row" style="flex-direction:column;align-items:flex-start;gap:4px;padding:14px 16px"><b style="font-size:20px;line-height:28px;font-weight:600">${t}</b><span class="s" style="font-size:16px;line-height:24px">${d}</span></div>`).join('')}</div>
+        ${calBtn({ id: 'term-dates' }, false).replace('class="cal-btn', 'style="width:100%" class="cal-btn')}
         <button class="btn link" data-go="calendar">See full events calendar</button>
       </div>${homeBar()}` };
   },
@@ -1552,7 +1582,22 @@ function accountMenu(items) {
   const go = { 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Log out': 'data-act="logout"' };
   return `<div class="menu">${items.map(t => `<button ${go[t] || 'data-act="toast" data-p="Coming soon in the prototype"'}>${ic(icons[t], 's20')}${t}</button>`).join('')}</div>`;
 }
-function nextAnnouncement() { if (S.annIdx < ANNOUNCEMENTS.length - 1) S.annIdx++; else S.annHidden = true; }
+/* Dashboard announcements: swipe between the ones still showing; ✕ or opening one removes it. */
+function liveAnnouncements() { return ANNOUNCEMENTS.map((_, i) => i).filter(i => !S.annGone.includes(i)); }
+function stepAnnouncement(dir) {
+  const live = liveAnnouncements();
+  if (live.length < 2) return false;
+  const k = live.indexOf(S.annIdx);
+  S.annIdx = live[(k + dir + live.length) % live.length];
+  S.annEnter = dir > 0 ? 'in-next' : 'in-prev';
+  return true;
+}
+function removeAnnouncement(i) {
+  const live = liveAnnouncements(), k = live.indexOf(i);
+  S.annGone.push(i);
+  const rest = liveAnnouncements();
+  if (rest.length) { S.annIdx = rest[Math.min(k, rest.length - 1)]; S.annEnter = 'in-next'; }
+}
 function detailScreen(title, d, editLabel, canDelete) {
   return { html: `
     ${topCancel(title)}
@@ -1801,9 +1846,13 @@ const actions = {
     if (i < 0) return go('new-obs');
     S.stack = S.stack.slice(0, i + 1); S.dir = 'back'; render();
   },
-  'ann-dismiss'() { nextAnnouncement(); render(); },
+  'ann-dismiss'() { removeAnnouncement(S.annIdx); render(); },
   /* Opening an announcement also clears it from the dashboard, like dismissing it. */
-  'ann-open'() { const i = S.annIdx; nextAnnouncement(); go('announcement', i); },
+  'pay-close'() { S.payHidden = true; render(); },
+  'ann-open'() {
+    if (S.annSwiped) { S.annSwiped = false; return; }   // the click that ends a swipe isn't a tap
+    const i = S.annIdx; removeAnnouncement(i); S.annEnter = ''; go('announcement', i);
+  },
   classroom(p) { S.classroomFilter = p; render(); },
   'learn-child'(p) { S.learnChild = p; render(); },
   'obs-child'(p) { S.draft.obs.child = p; render(); },
@@ -1888,6 +1937,34 @@ document.querySelector('.proto-bar').addEventListener('click', e => {
 /* Live inputs — update state without a full re-render so focus is kept. */
 /* Photo editor: drag overlays around the canvas; a tap (no movement) selects,
    and tapping selected text reopens it for editing. */
+/* Swipe the dashboard announcement left/right to move between announcements. */
+device.addEventListener('pointerdown', e => {
+  const card = e.target.closest('.announce');
+  if (!card || e.target.closest('.x') || e.button > 0) return;
+  const sx = e.clientX, sy = e.clientY;
+  let dx = 0, horizontal = null;
+  const move = ev => {
+    dx = ev.clientX - sx;
+    if (horizontal === null && Math.hypot(dx, ev.clientY - sy) > 6) {
+      horizontal = Math.abs(dx) > Math.abs(ev.clientY - sy);
+      if (horizontal) { card.setPointerCapture(e.pointerId); card.classList.add('dragging'); }
+    }
+    if (horizontal) card.style.transform = `translateX(${dx}px) rotate(${dx / 40}deg)`;
+  };
+  const up = () => {
+    card.removeEventListener('pointermove', move); card.removeEventListener('pointerup', up); card.removeEventListener('pointercancel', up);
+    if (!horizontal) return;
+    S.annSwiped = true;
+    setTimeout(() => { S.annSwiped = false; }, 0);   // swallow only the click that ends this gesture
+    card.classList.remove('dragging'); card.classList.add('settle');
+    if (Math.abs(dx) > 60 && liveAnnouncements().length > 1) {
+      card.style.transform = `translateX(${dx > 0 ? 120 : -120}%)`; card.style.opacity = '0';
+      setTimeout(() => { stepAnnouncement(dx < 0 ? 1 : -1); render(); }, 180);
+    } else card.style.transform = '';
+  };
+  card.addEventListener('pointermove', move); card.addEventListener('pointerup', up); card.addEventListener('pointercancel', up);
+});
+
 device.addEventListener('pointerdown', e => {
   const ov = e.target.closest('#canvas .ov[data-id]');
   if (!ov || e.target.closest('.ov-del')) return;
