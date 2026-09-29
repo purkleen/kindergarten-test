@@ -391,6 +391,74 @@ textarea.input:focus { padding: 11px 15px; }
 .tour .tip .skip { font-size: 14px; font-weight: 600; color: var(--ink-2); }
 .tour .tip .next { height: 40px; padding: 0 20px; border-radius: 12px; background: var(--purple); color: #fff; font-size: 14px; font-weight: 600; }
 
+/* tour demos — each loops on the same 4s beat */
+.demo { position: relative; height: 84px; border-radius: 16px; background: var(--purple-50); overflow: hidden; margin-bottom: 14px;
+        display: flex; align-items: center; justify-content: center; }
+.demo img { display: block; object-fit: cover; }
+/* tabs: a highlight glides Classrooms → Learning → Chat */
+.d-tabs { gap: 0; padding: 0 12px; }
+.d-tabs .dt { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; color: var(--ink-900); }
+.d-tabs .dt b { font-weight: 800; }
+.d-tabs .slider { position: absolute; top: 14px; bottom: 14px; left: 12px; width: calc((100% - 24px) / 3); border-radius: 14px; background: #fff;
+                  box-shadow: 0 4px 12px rgba(43,37,64,.1); animation: slide 4.5s cubic-bezier(.6,0,.3,1) infinite; }
+.d-tabs .dt:nth-child(2) { animation: tabon1 4.5s infinite; } .d-tabs .dt:nth-child(3) { animation: tabon2 4.5s infinite; } .d-tabs .dt:nth-child(4) { animation: tabon3 4.5s infinite; }
+@keyframes slide { 0%, 25% { transform: translateX(0); } 33%, 58% { transform: translateX(100%); } 66%, 91% { transform: translateX(200%); } 100% { transform: translateX(0); } }
+@keyframes tabon1 { 0%, 25%, 97%, 100% { color: var(--purple); } 30%, 94% { color: var(--ink-900); } }
+@keyframes tabon2 { 0%, 30%, 61%, 100% { color: var(--ink-900); } 36%, 58% { color: var(--purple); } }
+@keyframes tabon3 { 0%, 63%, 94%, 100% { color: var(--ink-900); } 69%, 91% { color: var(--purple); } }
+/* share: tap + → photo pops in → sticker lands → it flies to the teacher → ✓ */
+.d-share { justify-content: space-between; padding: 0 22px; }
+.d-share .fab, .d-create .fab { width: 40px; height: 40px; border-radius: 999px; background: var(--purple); color: #fff; display: grid; place-items: center; flex: none;
+                                box-shadow: 0 3px 8px rgba(53,20,99,.2); animation: tap 4s ease-in-out infinite; }
+@keyframes tap { 0%, 6%, 100% { transform: scale(1); } 3% { transform: scale(.82); } }
+.d-share .photo { position: absolute; left: 76px; top: 12px; width: 46px; height: 60px; border-radius: 8px; overflow: visible; animation: fly 4s ease-in-out infinite; }
+.d-share .photo img { width: 100%; height: 100%; border-radius: 8px; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+.d-share .photo em { position: absolute; right: -8px; top: -8px; font-style: normal; font-size: 18px; animation: stick 4s ease-out infinite; }
+@keyframes fly { 0%, 8% { opacity: 0; transform: scale(.4); } 16%, 55% { opacity: 1; transform: none; } 78% { opacity: 1; transform: translateX(150px) scale(.45); } 82%, 100% { opacity: 0; transform: translateX(160px) scale(.3); } }
+@keyframes stick { 0%, 28% { opacity: 0; transform: scale(2.2) rotate(-30deg); } 36%, 100% { opacity: 1; transform: none; } }
+.d-share .trail { position: absolute; left: 132px; right: 72px; top: 50%; height: 2px; background: repeating-linear-gradient(90deg, #C9B7F2 0 6px, transparent 6px 12px);
+                  animation: trail 4s linear infinite; }
+@keyframes trail { 0%, 55% { opacity: 0; } 60%, 80% { opacity: 1; } 90%, 100% { opacity: 0; } }
+.d-share .to { position: relative; width: 40px; height: 40px; }
+.d-share .to img { width: 40px; height: 40px; border-radius: 999px; border: 2px solid #fff; }
+.d-share .to i { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; border-radius: 99px; background: var(--green); color: #fff; font-size: 10px; font-style: normal;
+                 font-weight: 800; display: grid; place-items: center; border: 2px solid #fff; animation: badge 4s ease-out infinite; }
+@keyframes badge { 0%, 80% { transform: scale(0); } 86% { transform: scale(1.25); } 90%, 100% { transform: scale(1); } }
+/* bell: rings, a badge pops, notifications slide in */
+.d-bell { justify-content: flex-start; gap: 14px; padding: 0 16px; }
+.d-bell .bell { position: relative; width: 40px; height: 40px; border-radius: 999px; background: var(--purple-sec); color: #fff; display: grid; place-items: center; flex: none;
+                transform-origin: 50% 8%; animation: ring-bell 4s ease-in-out infinite; }
+.d-bell .bell .bdg { position: absolute; top: -3px; right: -3px; min-width: 17px; height: 17px; border-radius: 99px; background: var(--rose); color: #fff; font-size: 10px; font-weight: 700;
+                  display: grid; place-items: center; border: 2px solid var(--purple-50); animation: bdg 4s ease-out infinite; }
+@keyframes bdg { 0%, 16% { transform: scale(0); } 22% { transform: scale(1.3); } 26%, 92% { transform: scale(1); } 100% { transform: scale(0); } }
+@keyframes ring-bell { 0%, 20%, 100% { transform: rotate(0); } 4% { transform: rotate(16deg); } 8% { transform: rotate(-14deg); } 12% { transform: rotate(9deg); } 16% { transform: rotate(-5deg); } }
+.d-bell .rows { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.d-bell .row { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 10px; padding: 5px 8px; font-size: 11px; box-shadow: 0 2px 6px rgba(43,37,64,.06); }
+.d-bell .row img { width: 20px; height: 20px; border-radius: 99px; }
+.d-bell .row b { font-weight: 600; color: var(--ink-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.d-bell .r1 { animation: slidein 4s ease-out infinite; } .d-bell .r2 { animation: slidein2 4s ease-out infinite; }
+@keyframes slidein { 0%, 18% { opacity: 0; transform: translateX(30px); } 28%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes slidein2 { 0%, 34% { opacity: 0; transform: translateX(30px); } 44%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+/* todo: three pending observations get ticked off, the bar fills */
+.d-todo { flex-direction: column; gap: 5px; padding: 10px 16px; align-items: stretch; }
+.d-todo .row { display: flex; align-items: center; gap: 8px; height: 16px; }
+.d-todo .row img { width: 16px; height: 16px; border-radius: 99px; }
+.d-todo .row b { flex: 1; height: 7px; border-radius: 9px; background: #DCCFF6; }
+.d-todo .row i { width: 16px; height: 16px; border-radius: 99px; background: #fff; border: 1.5px solid #CFC3E6; color: transparent; font-size: 9px; font-weight: 800; font-style: normal; display: grid; place-items: center; }
+.d-todo .r1 i { animation: tick 4s infinite; } .d-todo .r2 i { animation: tick 4s infinite; animation-delay: .45s; } .d-todo .r3 i { animation: tick 4s infinite; animation-delay: .9s; }
+@keyframes tick { 0%, 15% { background: #fff; color: transparent; border-color: #CFC3E6; transform: scale(1); } 20% { transform: scale(1.3); } 24%, 85% { background: var(--green); color: #fff; border-color: var(--green); transform: scale(1); } 95%, 100% { background: #fff; color: transparent; border-color: #CFC3E6; } }
+.d-todo .bar { height: 5px; border-radius: 9px; background: #fff; margin-top: 3px; overflow: hidden; }
+.d-todo .bar i { display: block; height: 100%; width: 100%; background: var(--green); transform-origin: left; animation: fill 4s ease-out infinite; }
+@keyframes fill { 0%, 15% { transform: scaleX(0); } 26% { transform: scaleX(.34); } 37% { transform: scaleX(.67); } 48%, 85% { transform: scaleX(1); } 95%, 100% { transform: scaleX(0); } }
+/* create: tap + and the three options fan out */
+.d-create { justify-content: flex-start; gap: 12px; padding: 0 16px; }
+.d-create .chips { display: flex; flex-direction: column; gap: 4px; }
+.d-create .c { display: inline-flex; align-items: center; gap: 6px; height: 21px; padding: 0 9px; border-radius: 99px; background: #fff; font-size: 11px; font-weight: 600; color: var(--ink-900);
+               box-shadow: 0 2px 6px rgba(43,37,64,.08); width: max-content; }
+.d-create .c1 { animation: fan 4s ease-out infinite; } .d-create .c2 { animation: fan 4s ease-out infinite; animation-delay: .12s; } .d-create .c3 { animation: fan 4s ease-out infinite; animation-delay: .24s; }
+@keyframes fan { 0%, 6% { opacity: 0; transform: translateX(-24px) scale(.7); } 16%, 85% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; transform: translateX(-12px); } }
+@media (prefers-reduced-motion: reduce) { .demo *, .demo *::before { animation: none !important; } }
+
 /* --- lists: chat, notifications, menu, children ------------------------- */
 .list { border: 1px solid var(--line); border-radius: var(--r-control); overflow: hidden; box-shadow: 0 1px 4px rgba(12,12,13,.05); flex: none; }
 .li { background: #fff; display: flex; align-items: center; gap: 16px; padding: 18px 12px; min-height: 88px; width: 100%; transition: background .12s; }
@@ -612,9 +680,12 @@ const EVENTS = [
   { m: 'JUN', d: '04', t: 'Parent evening',       s: 'Thu · 6:00 PM · Main Hall' },
 ];
 const ANNOUNCEMENTS = [
-  { t: 'Closed Monday 26 May',   b: 'Little Sprouts is closed for staff training. Normal hours resume Tuesday.' },
-  { t: 'Photo day this Thursday', b: 'Class photos will be taken in the morning. Please send children in by 9:00.' },
-  { t: 'Forest School is back',   b: 'Pack wellies and a waterproof coat — we head out every Wednesday afternoon.' },
+  { t: 'Closed Monday 26 May',   b: 'Little Sprouts is closed for staff training. Normal hours resume Tuesday.', when: 'Monday 26 May, 2026',
+    body: 'Little Sprouts will be closed on Monday 26 May while our team takes part in a staff training day on early literacy and outdoor learning. Normal hours resume on Tuesday 27 May at 7:30. If you have any questions, the office is happy to help.' },
+  { t: 'Photo day this Thursday', b: 'Class photos will be taken in the morning. Please send children in by 9:00.', when: 'Thursday 29 May, 2026; 9:00', photo: 'photo-blocks.jpg',
+    body: 'Individual and class photos will be taken on Thursday morning. Please make sure your child arrives by 9:00 — any favourite outfit is welcome. Sibling photos can be booked at the office.' },
+  { t: 'Forest School is back',   b: 'Pack wellies and a waterproof coat — we head out every Wednesday afternoon.', when: 'Every Wednesday, 13:30', photo: 'photo-autumn.jpg',
+    body: 'Forest School starts again this term. Every Wednesday afternoon the children will explore the woods behind the garden. Please pack wellies, a waterproof coat and a spare pair of socks in a labelled bag.' },
 ];
 const FEED = [
   { a: 'Ms. Parker', p: 'Sensory bins were a huge hit today! We scooped, poured and explored rice and beans.', m: 'Emma · 2h ago' },
@@ -914,7 +985,7 @@ const screens = {
       ${topMain('Hi, Siobhan!')}
       <div class="body">
         ${S.annHidden ? '' : `
-        <section class="announce">
+        <section class="announce tappable" data-act="ann-open">
           <div class="k">Announcement ${S.annIdx + 1}/${ANNOUNCEMENTS.length}</div>
           <button class="x" data-act="ann-dismiss" aria-label="Dismiss"><i class="ic" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i></button>
           <div class="t">${a.t}</div><p class="b">${a.b}</p>
@@ -1186,7 +1257,9 @@ const screens = {
     return detailScreen('Event details', { title: e.title, when: e.when || `${e.d} ${e.m === 'MAY' ? 'May' : 'June'}, 2026; ${(e.s || '').split('·')[1]?.trim() || '13:00'}`, photo: e.photo ?? 'photo-autumn.jpg', body: e.body || LOREM }, S.role === 'teacher' ? 'Edit event' : null, S.role === 'teacher');
   },
 
-  announcement() {
+  announcement(i) {
+    const n = ANNOUNCEMENTS[i];
+    if (n) return detailScreen('Announcement', { title: n.t, when: n.when, photo: n.photo, body: n.body, office: true }, null, false);
     const a = S.created?.kind === 'announcement' ? S.created : { title: 'First day of Autumn', when: '23 September, 2026; 13:00', photo: 'photo-autumn.jpg', body: LOREM };
     return detailScreen('Announcement', a, S.role === 'teacher' ? 'Edit announcement' : null, false);
   },
@@ -1448,13 +1521,16 @@ function accountMenu(items) {
   const go = { 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Log out': 'data-act="logout"' };
   return `<div class="menu">${items.map(t => `<button ${go[t] || 'data-act="toast" data-p="Coming soon in the prototype"'}>${ic(icons[t], 's20')}${t}</button>`).join('')}</div>`;
 }
+function nextAnnouncement() { if (S.annIdx < ANNOUNCEMENTS.length - 1) S.annIdx++; else S.annHidden = true; }
 function detailScreen(title, d, editLabel, canDelete) {
   return { html: `
     ${topCancel(title)}
     <div class="body" style="padding-top:32px;gap:24px">
       ${d.photo ? `<img class="hero" src="${IMG}${d.photo}" style="height:152px" alt="">` : ''}
       <div class="big-title">${esc(d.title)}</div>
-      <div class="byline"><img class="avatar" src="${IMG}avatar-diaz.jpg" alt=""><div>Created by <b>Mr. Diaz</b><span>Homeroom teacher</span></div></div>
+      ${d.office
+        ? `<div class="byline"><img class="avatar" src="${IMG}seal.svg" alt=""><div>Posted by <b>TSK</b><span>Home office</span></div></div>`
+        : `<div class="byline"><img class="avatar" src="${IMG}avatar-diaz.jpg" alt=""><div>Created by <b>Mr. Diaz</b><span>Homeroom teacher</span></div></div>`}
       <div class="when">${ic('calendar-small')}${esc(d.when)}</div>
       <p class="prose">${esc(d.body)}</p>
       ${editLabel ? `<button class="btn outline" data-act="toast" data-p="Editing isn’t wired up in the prototype">${editLabel}</button>` : ''}
@@ -1527,22 +1603,48 @@ function signIn(role) { S.role = role; S.stack = [{ name: 'dashboard' }]; S.dir 
 /* ---------- 3-step app tour: a spotlight on the dashboard, one script per role ---------- */
 const TOUR = {
   parent: [
-    { sel: '.tabbar .tabs', k: 'Find your way around', t: 'Everything about your children',
+    { sel: '.tabbar .tabs', demo: 'tabs', k: 'Find your way around', t: 'Everything about your children',
       b: 'Classrooms shows class updates, Learning holds Emma and Christopher’s journals, and Chat is where you message their teachers.' },
-    { sel: '.tab-fab button', round: true, k: 'Share from home', t: 'Add a moment with +',
+    { sel: '.tab-fab button', round: true, demo: 'share', k: 'Share from home', t: 'Add a moment with +',
       b: 'Snap a photo, decorate it with text, stickers or emoji and send it to the teachers for your child’s learning journal.' },
-    { sel: '.titlebar .side.r', k: 'Stay in the loop', t: 'Notifications and your profile',
+    { sel: '.titlebar .side.r', demo: 'bell', k: 'Stay in the loop', t: 'Notifications and your profile',
       b: 'The bell shows what’s new. ⋯ opens your profile, where you can switch between your children and manage your account.' },
   ],
   teacher: [
-    { sel: '.mgmt', k: 'Your day at a glance', t: 'Start with your to-do list',
+    { sel: '.mgmt', demo: 'todo', k: 'Your day at a glance', t: 'Start with your to-do list',
       b: 'Review observations waiting for approval, manage announcements and look up any child in your groups.' },
-    { sel: '.tab-fab button', round: true, k: 'Create in seconds', t: 'Post with +',
+    { sel: '.tab-fab button', round: true, demo: 'create', k: 'Create in seconds', t: 'Post with +',
       b: 'Add an observation for one child, post an update for the whole class, or create an event — parents see it straight away.' },
-    { sel: '.tabbar .tabs', k: 'Everything else', t: 'Classrooms, learning and chat',
+    { sel: '.tabbar .tabs', demo: 'tabs', k: 'Everything else', t: 'Classrooms, learning and chat',
       b: 'Browse each group’s feed, follow every child’s learning journey and reply to families in Chat.' },
   ],
 };
+/* Tiny looping illustrations inside each tip — pure CSS, see .demo styles. */
+function tourDemo(name) {
+  const tab = (icon, label) => `<span class="dt">${ic(icon, 's18')}<b>${label}</b></span>`;
+  const demos = {
+    tabs: `<div class="demo d-tabs"><i class="slider"></i>${tab('tab-classrooms', 'Classrooms')}${tab('tab-learning', 'Learning')}${tab('tab-chat', 'Chat')}</div>`,
+    share: `<div class="demo d-share">
+        <span class="fab">${ic('plus', 's18')}</span>
+        <span class="photo"><img src="${IMG}photo-capes.jpg" alt=""><em>🌟</em></span>
+        <span class="trail"></span>
+        <span class="to"><img src="${IMG}avatar-claire.jpg" alt=""><i>✓</i></span>
+      </div>`,
+    bell: `<div class="demo d-bell">
+        <span class="bell">${ic('bell', 's18')}<span class="bdg">2</span></span>
+        <span class="rows"><span class="row r1"><img src="${IMG}seal.svg" alt=""><b>New class update</b></span><span class="row r2"><img src="${IMG}avatar-joanne.jpg" alt=""><b>Emma’s observation</b></span></span>
+      </div>`,
+    todo: `<div class="demo d-todo">
+        ${[1, 2, 3].map(n => `<span class="row r${n}"><img src="${IMG}avatar-emma-round.png" alt=""><b></b><i>✓</i></span>`).join('')}
+        <span class="bar"><i></i></span>
+      </div>`,
+    create: `<div class="demo d-create">
+        <span class="fab">${ic('plus', 's18')}</span>
+        <span class="chips"><span class="c c1">${ic('binoculars', 's16')}Observation</span><span class="c c2">${ic('ed-star', 's16')}Update</span><span class="c c3">${ic('calendar-add', 's16')}Event</span></span>
+      </div>`,
+  };
+  return demos[name] || '';
+}
 function tourSeen(role) { try { return localStorage.getItem('tour-' + role) === '1'; } catch { return false; } }
 function tourDone() { try { localStorage.setItem('tour-' + S.role, '1'); } catch {} S.tour = null; device.querySelector('.tour')?.remove(); }
 function startTour() { S.stack = [{ name: 'dashboard' }]; S.dir = 'none'; S.sheet = false; S.menu = null; S.tour = 0; render(); }
@@ -1560,6 +1662,7 @@ function drawTour() {
   el.innerHTML = `
     <div class="spot" style="top:${box.top}px;left:${box.left}px;width:${box.width}px;height:${box.height}px;${step.round ? 'border-radius:999px' : ''}"></div>
     <div class="tip" style="${tipPos}" role="dialog" aria-label="App tour, step ${S.tour + 1} of ${steps.length}">
+      ${tourDemo(step.demo)}
       <div class="k">${step.k}</div><h3>${step.t}</h3><p>${step.b}</p>
       <div class="foot">
         <div class="dots3">${steps.map((_, i) => `<i class="${i === S.tour ? 'on' : ''}"></i>`).join('')}</div>
@@ -1667,10 +1770,9 @@ const actions = {
     if (i < 0) return go('new-obs');
     S.stack = S.stack.slice(0, i + 1); S.dir = 'back'; render();
   },
-  'ann-dismiss'() {
-    if (S.annIdx < ANNOUNCEMENTS.length - 1) S.annIdx++; else S.annHidden = true;
-    render();
-  },
+  'ann-dismiss'() { nextAnnouncement(); render(); },
+  /* Opening an announcement also clears it from the dashboard, like dismissing it. */
+  'ann-open'() { const i = S.annIdx; nextAnnouncement(); go('announcement', i); },
   classroom(p) { S.classroomFilter = p; render(); },
   'learn-child'(p) { S.learnChild = p; render(); },
   'obs-child'(p) { S.draft.obs.child = p; render(); },
