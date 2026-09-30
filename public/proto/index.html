@@ -240,7 +240,7 @@ textarea.input:focus { padding: 11px 15px; }
 .login { background: #F8F7FA; }
 .login .body { padding: 18px 24px; justify-content: space-between; gap: 34px; }
 .brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; letter-spacing: -.17px; color: #201A26; }
-.brand img { width: 44px; height: 44px; }
+.brand .logo { width: auto; height: 44px; }
 .welcome h2 { font-size: 32px; line-height: 38px; font-weight: 700; letter-spacing: -.64px; color: #201A26; }
 .welcome p { font-size: 15px; line-height: 22px; color: #6C6572; margin-top: 8px; }
 .role-card { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line-3); border-radius: 20px; padding: 20px;
@@ -258,7 +258,7 @@ textarea.input:focus { padding: 11px 15px; }
 /* --- dashboard ----------------------------------------------------------- */
 .announce { background: var(--purple-50); border: 1px solid #DCCFF6; border-radius: var(--r-lg); padding: 16px; position: relative; flex: none; box-shadow: 0 2px 10px rgba(43,37,64,.04); }
 /* Due payments — Figma node 11:148 */
-.pay { background: #FFD200; border-radius: 24px; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; flex: none; color: #2E2545; }
+.pay { background: #FFF0C2; border: 1px solid #F3DC96; border-radius: 24px; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; flex: none; color: #2E2545; }
 .pay .row1 { display: flex; align-items: center; justify-content: space-between; }
 .pay .k { font-size: 10px; font-weight: 800; letter-spacing: .6px; }
 .pay .row1 .r { display: flex; align-items: center; gap: 4px; }
@@ -274,8 +274,18 @@ textarea.input:focus { padding: 11px 15px; }
 .pay .lines div { display: flex; justify-content: space-between; }
 .pay .lines span { font-weight: 500; opacity: .8; }
 .pay .lines b { font-weight: 700; }
+.announce { display: flex; gap: 12px; align-items: flex-start; }
+.announce .copy { flex: 1; min-width: 0; padding-right: 32px; }
+.announce .bell-badge.ring .ic { transform-origin: 50% 10%; animation: bell-ring 1.2s ease-in-out .45s 1 both; }
+@keyframes bell-ring { 0%, 100% { transform: rotate(0); } 10% { transform: rotate(18deg); } 22% { transform: rotate(-16deg); } 34% { transform: rotate(12deg); }
+                       46% { transform: rotate(-9deg); } 58% { transform: rotate(6deg); } 70% { transform: rotate(-3deg); } 82% { transform: rotate(1deg); } }
+.announce .bell-badge.ring { animation: bell-glow 1.2s ease-out .45s 1 both; }
+@keyframes bell-glow { 0% { box-shadow: 0 0 0 0 rgba(124,58,237,.35); } 60% { box-shadow: 0 0 0 10px rgba(124,58,237,0); } 100% { box-shadow: 0 2px 6px rgba(105,70,201,.12); } }
+@media (prefers-reduced-motion: reduce) { .announce .bell-badge.ring, .announce .bell-badge.ring .ic { animation: none; } }
+.announce .bell-badge { width: 40px; height: 40px; border-radius: 999px; background: #fff; color: var(--purple); display: grid; place-items: center; flex: none;
+                        box-shadow: 0 2px 6px rgba(105,70,201,.12); }
 .announce .k { font-size: 10px; font-weight: 600; letter-spacing: .2px; color: var(--tag-ink); text-transform: uppercase; }
-.announce .t { font-size: 14px; font-weight: 600; color: var(--ink-900); margin-top: 12px; }
+.announce .t { font-size: 14px; font-weight: 600; color: var(--ink-900); margin-top: 6px; }
 .announce .b { font-size: 14px; line-height: 20px; color: var(--ink-2); margin-top: 4px; padding-right: 8px; }
 .announce .x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; display: grid; place-items: center; color: #000; }
 .announce { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
@@ -295,6 +305,13 @@ textarea.input:focus { padding: 11px 15px; }
 .tile:active { transform: scale(.97); }
 .tile .ib { width: 36px; height: 36px; border-radius: 999px; background: #fff; display: grid; place-items: center; }
 .tile.full { grid-column: 1 / -1; }
+/* Parent dashboard Services — Figma 894:13722: bare heading, a row of three then a row of two */
+.svc { display: flex; flex-direction: column; gap: 8px; flex: none; }
+.svc h3 { font-size: 21px; line-height: 32px; font-weight: 600; color: var(--ink-900); }
+.svc-row { display: flex; gap: 12px; }
+.svc-row + .svc-row { margin-top: 4px; }
+.svc-row .tile { flex: 1; min-width: 0; }
+.tile.sm { font-size: 14px; line-height: 20px; text-align: left; }
 
 .mgmt { display: flex; flex-direction: column; gap: 12px; flex: none; }
 .opt { background: #fff; border: 1px solid #E3DDE8; border-radius: var(--r-card); padding: 16px; display: flex; flex-direction: column; gap: 12px; width: 100%; transition: border-color .15s; }
@@ -352,7 +369,11 @@ textarea.input:focus { padding: 11px 15px; }
 
 .obs { background: var(--card-warm); border-radius: var(--r-lg); overflow: hidden; box-shadow: 0 5px 18px rgba(59,38,48,.05); flex: none; }
 .obs .in { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-.obs .kid { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.obs .kid { display: flex; align-items: center; gap: 8px; font-size: 14px; text-align: left; border-radius: 12px; }
+.obs .kid:hover b, .obs-kid:hover b, .post .child .c:hover b { text-decoration: underline; }
+.obs-kid { text-align: left; width: 100%; }
+.obs-kid .ic { margin-left: auto; color: var(--muted); }
+.post .child .c { text-align: left; }
 .obs .kid b { display: block; font-weight: 600; color: var(--ink-900); line-height: 18px; }
 .obs .kid span { color: var(--ink-2); }
 .obs .meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--ink-2); }
@@ -377,6 +398,14 @@ textarea.input:focus { padding: 11px 15px; }
 .pic .frame { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); }
 .pic .ov { cursor: default; pointer-events: none; }
 .hero.pic { border-radius: var(--r-control); }
+.pic.video video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+.pic .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 999px;
+             background: rgba(255,255,255,.9); color: #20182B; display: grid; place-items: center;
+             box-shadow: 0 6px 20px rgba(0,0,0,.25); transition: transform .15s, background .15s; }
+.pic .play:hover { background: #fff; transform: translate(-50%, -50%) scale(1.06); }
+.pic .play .ic { width: 26px; height: 26px; }
+.pic .dur { position: absolute; right: 10px; bottom: 10px; padding: 3px 8px; border-radius: 999px; background: rgba(18,16,28,.6); color: #fff;
+            font-size: 12px; font-weight: 600; }
 .obs .kid-row2 { display: flex; align-items: center; justify-content: space-between; }
 .post-detail-head, .obs-kid, .obs-by { display: flex; align-items: center; gap: 11px; flex: none; }
 .post-detail-head .nm { display: flex; align-items: center; gap: 7px; font-family: var(--font); font-weight: 600; font-size: 16px; color: var(--ink); }
@@ -546,6 +575,9 @@ textarea.input:focus { padding: 11px 15px; }
 .bub.them { align-items: flex-start; } .bub.them .b { background: var(--bubble-them); color: #18202A; border-radius: 4px 18px 18px 18px; }
 .bub .b.img { padding: 4px; border-radius: 16px 4px 16px 16px; } .bub .b.img img { width: 100%; height: 168px; object-fit: cover; border-radius: 12px; }
 .bub .mt { font-size: 11px; color: #81758F; }
+.bub.grouped { margin-bottom: -12px; }          /* 4px between bubbles in a run instead of 16px */
+.bub.grouped .b { border-bottom-right-radius: 6px; }
+.bub.them.grouped .b { border-bottom-left-radius: 6px; border-bottom-right-radius: 18px; }
 .bub.new { animation: pop .2s ease-out; } @keyframes pop { from { opacity: 0; transform: translateY(6px); } }
 .composer { flex: none; background: #fff; border-top: 1px solid var(--line); padding: 9px 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .composer form { display: flex; gap: 8px; width: 100%; }
@@ -555,6 +587,11 @@ textarea.input:focus { padding: 11px 15px; }
                   display: grid; place-items: center; padding-left: 3px; line-height: 1; }
 .chat-head { display: flex; align-items: center; gap: 10px; }
 .chat-head img { width: 44px; height: 44px; }
+.thread-ref { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px 8px 8px; border-radius: 14px; background: #fff; border: 1px solid var(--line-2); flex: none; color: var(--ink-2); }
+.thread-ref img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex: none; }
+.thread-ref div { flex: 1; min-width: 0; }
+.thread-ref b { display: block; font-size: 13px; font-weight: 600; color: var(--ink-900); }
+.thread-ref span { display: block; font-size: 12px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-head .n { font-size: 16px; font-weight: 600; color: #241A3A; display: flex; align-items: center; gap: 8px; }
 .chat-head .s { font-size: 12px; color: #747A75; }
 
@@ -731,6 +768,15 @@ const CONTACTS = [
   { id: 'javier',  n: 'Javier Diaz',   s: 'Sunflower room · Emma’s teacher', tag: 'Teacher', av: 'avatar-javier.jpg' },
   { id: 'claire',  n: 'Claire McKay',  s: 'Acorn room · Liam’s teacher',     tag: 'Teacher', av: 'avatar-claire.jpg' },
 ];
+/* Parents a teacher can message (not listed in a parent's own Contacts). */
+const PARENT_CONTACTS = [
+  { id: 'siobhan', n: 'Siobhan Smith', s: 'Emma & Christopher’s mum', tag: 'Parent' },
+];
+const PARENT_OF = { emma: 'siobhan', christopher: 'siobhan' };
+const TEACHER_OF = { emma: 'javier', christopher: 'claire' };
+/* Who to message about a child: teachers reach the parent, parents reach the child's teacher. */
+const chatAbout = child => S.role === 'teacher' ? PARENT_OF[child] : TEACHER_OF[child];
+const contactOf = id => CONTACTS.concat(PARENT_CONTACTS).find(x => x.id === id);
 const ROSTER = [
   { n: 'Aaliyah Brown',   g: 'Acorns',     s: 'Alice Brown (mother), Frank Brown (father)', c: '#FBE3EA' },
   { n: 'Amelia Chen',     g: 'Sunflowers', s: 'Steve Chen (father)',                        c: '#E4F5EC' },
@@ -766,7 +812,7 @@ const S = {
       { me: 1, t: 'That sounds great. I\'ve noticed she\'s really taken to the new reading program. I can send over some additional resources for you to work on with her over the weekend if you\'d like.', at: '10:42 AM' },
       { me: 1, img: 'photo-cafe.jpg', at: '10:51 AM' },
     ],
-    javier: [], aaliyah: [],
+    javier: [], aaliyah: [], siobhan: [],
   },
   /* Class updates (Classrooms feed + teacher announcements). */
   posts: [
@@ -785,6 +831,11 @@ const S = {
   ],
   /* Learning-journal entries; 'parent' ones are contributions from home. */
   obs: [
+    /* A short video: the card shows its poster frame and a play button. */
+    { id: 'o6', child: 'emma',        by: 'joanne',  ago: 'Today',      pending: false, video: 'video-capes.mp4', photo: 'video-capes-poster.jpg', duration: '0:06',
+      text: 'Superhero race! Emma planned the route, counted everyone down from five and cheered on every runner who crossed the line. 🦸' },
+    /* A photo taken in landscape: shown at its own 3:2 shape instead of the 4:5 portrait crop. */
+    { id: 'o5', child: 'emma',        by: 'joanne',  ago: 'Today',      pending: false, photo: 'photo-autumn.jpg', landscape: true, text: 'On our autumn walk Emma collected twelve different leaves and sorted them from lightest to darkest — then named each colour for her friends. 🍂' },
     { id: 'o1', child: 'emma',        by: 'joanne',  ago: '2 days ago', pending: false, photo: 'photo-easel.jpg', text: EASEL + ' She mixed purple from red and blue all by herself.' },
     { id: 'o2', child: 'emma',        by: 'parent',  ago: 'Yesterday',  pending: true,  photo: 'photo-capes.jpg', text: 'Superhero afternoon in the park — Emma organised the whole game and made sure everyone had a turn to lead. 🦸' },
     { id: 'o3', child: 'christopher', by: 'teacher', ago: 'Today',      pending: false, photo: 'photo-blocks.jpg', text: 'Christopher sorted the alphabet blocks into vowels and consonants and sounded out “CAT” on his own. 🔤' },
@@ -879,7 +930,7 @@ const focusOf = f => FOCUS[f] || '50% 50%';
 /* Who wrote what. 'teacher' / 'parent' mean the signed-in user of that role,
    which is what makes an entry editable. */
 const AUTHORS = {
-  office:  { name: 'TSK',          tag: 'Home office',      avatar: 'seal.svg' },
+  office:  { name: 'TSK',          tag: 'Home office',      avatar: 'seal-tsk.svg' },
   parker:  { name: 'Ms. Parker',   tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg' },
   diaz:    { name: 'Mr. Diaz',     tag: 'Homeroom teacher', avatar: 'avatar-diaz.jpg' },
   joanne:  { name: 'Joanne',       tag: 'Teacher',          avatar: 'avatar-joanne.jpg' },
@@ -894,8 +945,16 @@ const avatarHtml = (by, size) => AUTHORS[by].avatar
 const dotsBtn = (kind, id) => `<button class="dots" data-act="menu" data-p="${kind}:${id}" aria-label="More options">${ic('dots')}</button>`;
 
 /* The photo of an observation: plain, or the edited "story" with its stickers. */
+/* Video observations start on their poster frame; the play button swaps in the <video>. */
+function videoPoster(o) {
+  return `<img class="bg" src="${IMG}${o.photo}" alt="">
+    <button class="play" data-act="play" data-p="${o.id}" aria-label="Play video">${ic('play')}</button>
+    <span class="dur">${o.duration}</span>`;
+}
 function obsPhoto(o, cls = '') {
   if (!o.photo) return '';
+  if (o.video) return `<div class="pic video ${cls}" style="aspect-ratio:${CAMERA_RATIO}" data-video="${o.id}">${videoPoster(o)}</div>`;
+  if (o.landscape) return `<div class="pic ${cls}" style="aspect-ratio:${ratioOf(o.photo)}"><img class="bg" src="${IMG}${o.photo}" alt=""></div>`;
   return `<div class="pic ${cls}" style="aspect-ratio:${CAMERA_RATIO}"><div class="frame" style="aspect-ratio:${o.ratio || CAPTURE_RATIO}">
     <img class="bg" src="${IMG}${o.photo}" style="object-position:${focusOf(o.photo)}" alt="">${(o.overlays || []).map(v => overlayHtml(v, false)).join('')}</div></div>`;
 }
@@ -938,8 +997,8 @@ const observation = (o, { showKid = true } = {}) => {
   <article class="obs tappable" data-go="obs" data-p="${o.id}">
     ${obsPhoto(o)}
     <div class="in">
-      <div class="kid-row2">${showKid ? `<div class="kid"><img class="avatar" src="${IMG}${c.avatar}" width="32" height="32" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>` : '<span></span>'}${dotsBtn('obs', o.id)}</div>
-      <div class="meta"><div><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending</span>` : ''}</div>${o.ago}</div>
+      <div class="kid-row2">${showKid ? `<button class="kid" data-go="child" data-p="${o.child}" aria-label="Open ${c.full}’s page"><img class="avatar" src="${IMG}${c.avatar}" width="32" height="32" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></button>` : '<span></span>'}${dotsBtn('obs', o.id)}</div>
+      <div class="meta"><div><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.video ? '<span class="tag purple" style="height:22px">VIDEO</span>' : ''}${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending</span>` : ''}</div>${o.ago}</div>
       <p class="txt clamp">${esc(o.text)}</p>
       <div class="by">${avatarHtml(o.by, 32)}${o.by === 'parent' ? 'Added by' : 'Observed by'} ${authorLine(o)}${isMine(o) ? '' : ` · ${AUTHORS[o.by].tag}`}</div>
     </div>
@@ -969,7 +1028,7 @@ const screens = {
       <div class="top" style="height:auto;padding-bottom:0">${statusBar()}</div>
       <div class="body">
         <div style="display:flex;flex-direction:column;gap:34px">
-          <div class="brand"><img src="${IMG}seal.svg" alt="">The Sunshine Kindergarten</div>
+          <div class="brand"><img class="logo" src="${IMG}logo-tsk.svg" alt="The Sunshine Kindergarten"></div>
           <div class="welcome"><h2>Who’s signing in?</h2><p>Choose how you use the app. You can switch at any time.</p></div>
           <div style="display:flex;flex-direction:column;gap:12px">
             <button class="role-card" data-act="pick" data-p="parent">
@@ -992,7 +1051,7 @@ const screens = {
       <div class="top" style="height:auto;padding-bottom:0">${statusBar()}</div>
       <form class="body" data-form="login">
         <div style="display:flex;flex-direction:column;gap:34px">
-          <div class="brand"><button type="button" data-act="back" aria-label="Back" style="margin-left:-8px">${ic('back', 's40')}</button><img src="${IMG}seal.svg" alt="">The Sunshine Kindergarten</div>
+          <div class="brand"><button type="button" data-act="back" aria-label="Back" style="margin-left:-8px">${ic('back', 's40')}</button><img class="logo" src="${IMG}logo-tsk.svg" alt="The Sunshine Kindergarten"></div>
           <div class="welcome"><h2>Welcome back</h2><p>Log in to continue to your ${S.role} account.</p></div>
           <div style="display:flex;flex-direction:column;gap:16px">
             <div class="field light"><label style="font-size:13px">Email</label><input class="input sm" type="email" value="${email}" placeholder="you@example.com"></div>
@@ -1040,14 +1099,21 @@ const screens = {
 
     const live = liveAnnouncements(), a = ANNOUNCEMENTS[S.annIdx], enter = S.annEnter;
     S.annEnter = '';
+    /* The bell rings the first time an announcement is shown, and again each time
+       closing (or opening) one reveals the next. It waits until the tour is out of the way. */
+    const ringNow = live.length && (!S.annBellRung || S.annRingNext) && S.tour == null;
+    queueMicrotask(() => { if (ringNow) { S.annBellRung = true; S.annRingNext = false; } });
     return { tab: 'dashboard', html: `
       ${topMain('Hi, Siobhan!')}
       <div class="body">
         ${!live.length ? '' : `
         <section class="announce tappable ${enter}" data-act="ann-open" aria-roledescription="carousel item">
-          <div class="k">Announcement ${live.indexOf(S.annIdx) + 1}/${live.length}</div>
+          <span class="bell-badge ${ringNow ? 'ring' : ''}" aria-hidden="true">${ic('bell', 's20')}</span>
+          <div class="copy">
+            <div class="k">Announcement ${live.indexOf(S.annIdx) + 1}/${live.length}</div>
+            <div class="t">${a.t}</div><p class="b">${a.b}</p>
+          </div>
           <button class="x" data-act="ann-dismiss" aria-label="Dismiss"><i class="ic" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i></button>
-          <div class="t">${a.t}</div><p class="b">${a.b}</p>
         </section>`}
         ${S.payHidden ? '' : `
         <section class="pay" aria-label="Due payments">
@@ -1057,14 +1123,16 @@ const screens = {
           <div class="amt"><div><b>$480.00</b><span>Due Friday, 9 May</span></div><button class="now" data-go="webview" data-p="Payments">Pay now</button></div>
           <div class="lines"><div><span>May tuition</span><b>$420.00</b></div><div><span>Lunch club · 12 days</span><b>$60.00</b></div></div>
         </section>`}
-        <section class="services">
+        <section class="svc" aria-label="Services">
           <h3>Services</h3>
-          <div class="tiles">
-            <button class="tile" style="background:var(--purple-50)" data-go="term-dates"><span class="ib">${ic('svc-term')}</span>Term dates</button>
-            <button class="tile" style="background:var(--sky)" data-go="webview" data-p="Uniform"><span class="ib">${ic('svc-uniform')}</span>Uniform</button>
-            <button class="tile" style="background:var(--green-bg)" data-go="late-club"><span class="ib">${ic('svc-lateclub')}</span>Late Club</button>
-            <button class="tile" style="background:var(--peach)" data-go="webview" data-p="Bus"><span class="ib">${ic('svc-transport')}</span>Transport</button>
-            <button class="tile full" style="background:var(--blush)" data-go="important-contacts"><span class="ib">${ic('svc-contacts')}</span>Contacts</button>
+          <div class="svc-row">
+            <button class="tile sm" style="background:var(--purple-50)" data-go="term-dates"><span class="ib">${ic('svc-term')}</span>Term dates</button>
+            <button class="tile sm" style="background:var(--sky)" data-go="webview" data-p="Uniform"><span class="ib">${ic('svc-uniform')}</span>Uniform</button>
+            <button class="tile sm" style="background:var(--peach)" data-go="webview" data-p="Bus"><span class="ib">${ic('svc-transport')}</span>Transport</button>
+          </div>
+          <div class="svc-row">
+            <button class="tile sm" style="background:var(--green-bg)" data-go="late-club"><span class="ib">${ic('svc-lateclub')}</span>Late Club</button>
+            <button class="tile sm" style="background:var(--blush)" data-go="important-contacts"><span class="ib">${ic('svc-contacts')}</span>Contacts</button>
           </div>
         </section>
         ${eventsCard()}
@@ -1115,7 +1183,7 @@ const screens = {
         <div class="pills">${['All messages', 'Homeroom teacher', 'Admin office', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="msg-filter" data-p="${c}">${c}</button>`).join('')}</div>
         ${rows.length ? `<div class="list">${rows.map(r => `
           <button class="li" data-go="thread" data-p="${r.id}">
-            <img class="avatar av" src="${IMG}${r.seal ? 'seal.svg' : r.av}" alt="">
+            <img class="avatar av" src="${IMG}${r.seal ? 'seal-tsk.svg' : r.av}" alt="">
             <div class="c">
               <div class="r1"><div><span class="n">${r.n}</span><span class="tag purple">${r.tag}</span></div><span class="time">${r.at}</span></div>
               ${r.unread ? `<div class="r2"><span class="msg b">${r.m}</span><span class="unread">${r.unread}</span></div>` : `<span class="msg">${r.m}</span>`}
@@ -1134,18 +1202,25 @@ const screens = {
       </div>${homeBar()}` };
   },
 
-  thread(id) {
-    const c = CONTACTS.find(x => x.id === id) || CONTACTS[2];
+  /* p is "<contact>" or "<contact>:<observation id>" when opened from an observation. */
+  thread(p) {
+    const [id, ref] = String(p).split(':');
+    const c = contactOf(id) || CONTACTS[2];
     const msgs = S.threads[id] || [];
+    const o = ref && S.obs.find(x => x.id === ref);
     return { html: `
       <div class="top">${statusBar()}
         <div class="chat-head">
           <button class="back-btn" data-act="back" aria-label="Back">${ic('back', 's40')}</button>
-          <img class="avatar" src="${IMG}${c.seal ? 'seal.svg' : c.av}" alt="">
+          ${c.seal || c.av ? `<img class="avatar" src="${IMG}${c.seal ? 'seal-tsk.svg' : c.av}" alt="">` : `<span class="initials" style="width:44px;height:44px;background:var(--peach)">${c.n[0]}</span>`}
           <div><div class="n">${c.id === 'aaliyah' ? 'Office' : c.n} <span class="tag solid">${c.tag || 'Admin office'}</span></div><div class="s">${c.id === 'aaliyah' ? 'School office' : c.s}</div></div>
         </div>
       </div>
       <div class="body tight" id="thread">
+        ${o ? `<button class="thread-ref" data-go="obs" data-p="${o.id}">
+          ${o.photo ? `<img src="${IMG}${o.photo}" alt="">` : ''}
+          <div><b>About ${CHILDREN[o.child].name}’s ${o.by === 'parent' ? 'moment from home' : 'observation'}</b><span>${esc(o.text)}</span></div>
+          ${ic('chevron-right', 's16')}</button>` : ''}
         <div class="bubbles">${msgs.map(bubble).join('')}</div>
       </div>
       <div class="composer">
@@ -1212,9 +1287,12 @@ const screens = {
   },
 
   child(k = 'emma') {
-    const c = CHILDREN[k];
+    const c = CHILDREN[k], teacher = S.role === 'teacher', her = k === 'emma' ? 'her' : 'his';
     return { html: `
-      ${topBack(c.name, `<button class="round-btn" data-act="new-obs" aria-label="Add">${ic('plus', 's20')}</button><button class="round-btn" data-go="thread" data-p="${k === 'emma' ? 'javier' : 'claire'}" aria-label="Message teacher">${ic('chat-white', 's20')}</button>`)}
+      ${topBack(c.name, `<button class="round-btn" data-act="new-obs" data-p="${k}" aria-label="Add">${ic('plus', 's20')}</button>`
+        + (teacher
+          ? `<button class="round-btn" data-go="thread" data-p="${PARENT_OF[k]}" aria-label="Message ${contactOf(PARENT_OF[k]).n}">${ic('chat-white', 's20')}</button>`
+          : `<button class="round-btn" data-go="thread" data-p="${TEACHER_OF[k]}" aria-label="Message teacher">${ic('chat-white', 's20')}</button>`))}
       <div class="body" style="padding-top:32px;gap:23px">
         <div style="display:flex;gap:16px;align-items:center;flex:none"><img class="avatar" src="${IMG}${c.avatar}" width="58" height="58" alt=""><div><div class="h2">${c.full}</div><div class="sub">${c.room} · Autumn term</div></div></div>
         <section class="services" style="gap:16px">
@@ -1222,7 +1300,7 @@ const screens = {
           <div class="stats">
             <button class="jstat" style="background:var(--purple-50)" data-tab="learning"><span class="ib">${ic('notebook-pen', 's18')}</span><b>${c.obs}</b><span>Observations ${ic('chevron-right', 's16')}</span></button>
             <div class="jstat" style="background:var(--sky)"><span class="ib">${ic('clock3', 's18')}</span><b>2 days ago</b><span>Last observation</span></div>
-            <button class="jstat" style="background:var(--peach)" data-act="new-obs"><span class="ib">${ic('heart-handshake', 's18')}</span><b>2</b><span>Your contributions ${ic('chevron-right', 's16')}</span></button>
+            <button class="jstat" style="background:var(--peach)" data-act="new-obs" data-p="${k}"><span class="ib">${ic('heart-handshake', 's18')}</span><b>2</b><span>${teacher ? 'Family contributions' : 'Your contributions'} ${ic('chevron-right', 's16')}</span></button>
             <div class="jstat" style="background:var(--green-bg)"><span class="ib">${ic('sprout', 's18')}</span><b>5</b><span>Milestones observed ${ic('chevron-right', 's16')}</span></div>
           </div>
         </section>
@@ -1231,8 +1309,11 @@ const screens = {
         ${S.obs.filter(o => o.child === k).slice(0, 3).map(o => observation(o, { showKid: false })).join('') || `<p class="empty">No observations yet.</p>`}
         <section class="cta-card">
           <span class="ib">${ic('sparkles')}</span>
-          <div><h3>Add a moment from home</h3><p style="margin-top:8px">Share something ${c.name} enjoyed, tried or talked about. It helps ${k === 'emma' ? 'her' : 'his'} educators see the whole picture.</p></div>
-          <button class="btn primary" data-act="new-obs">Add parent contribution</button>
+          ${teacher
+            ? `<div><h3>Add an observation</h3><p style="margin-top:8px">Capture something ${c.name} did today — it goes straight into ${her} learning journal for ${her} family to see.</p></div>
+          <button class="btn primary" data-act="new-obs" data-p="${k}">Add observation</button>`
+            : `<div><h3>Add a moment from home</h3><p style="margin-top:8px">Share something ${c.name} enjoyed, tried or talked about. It helps ${her} educators see the whole picture.</p></div>
+          <button class="btn primary" data-act="new-obs" data-p="${k}">Add parent contribution</button>`}
         </section>
       </div>${homeBar()}` };
   },
@@ -1243,7 +1324,7 @@ const screens = {
     const cards = pend
       ? Array.from({ length: S.pending }, (_, i) => `
         <article class="post" data-card="${i}">
-          <div class="child"><div class="c"><img class="avatar" src="${IMG}avatar-emma-round.png" width="32" height="32" alt=""><div><b>Emma Smith</b><span>Sunflower room</span></div></div>
+          <div class="child"><button class="c" data-go="child" data-p="emma" aria-label="Open Emma Smith’s page"><img class="avatar" src="${IMG}avatar-emma-round.png" width="32" height="32" alt=""><div><b>Emma Smith</b><span>Sunflower room</span></div></button>
             <span class="tag yellow">${ic('clock-pending', 's16')}Observation pending</span></div>
           <div class="sep"></div>
           <div class="hd"><div class="who"><img class="avatar" src="${IMG}avatar-joanne.jpg" style="background:#FFE9A8" alt="">
@@ -1359,11 +1440,13 @@ const screens = {
     if (!o) return screens.gone('Observation');
     const c = CHILDREN[o.child];
     return { html: `
-      ${topBack(o.by === 'parent' ? 'From home' : 'Observation', dotsBtn('obs', o.id).replace('class="dots"', 'class="dots on-light"'))}
+      ${topBack(o.by === 'parent' ? 'From home' : 'Observation',
+        `<button class="round-btn" data-go="thread" data-p="${chatAbout(o.child)}:${o.id}" aria-label="Message ${contactOf(chatAbout(o.child)).n}">${ic('chat-white', 's20')}</button>`
+        + dotsBtn('obs', o.id).replace('class="dots"', 'class="dots on-light"'))}
       <div class="body tight">
         ${obsPhoto(o, 'hero')}
-        <div class="obs-kid"><img class="avatar" src="${IMG}${c.avatar}" width="44" height="44" alt=""><div><b>${c.full}</b><span>${c.room}</span></div></div>
-        <div class="obs-meta"><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending review</span>` : ''}<span class="sub" style="font-size:12px;margin-left:auto">${o.ago}</span></div>
+        <button class="obs-kid" data-go="child" data-p="${o.child}" aria-label="Open ${c.full}’s page"><img class="avatar" src="${IMG}${c.avatar}" width="44" height="44" alt=""><div><b>${c.full}</b><span>${c.room}</span></div>${ic('chevron-right', 's16')}</button>
+        <div class="obs-meta"><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.video ? '<span class="tag purple" style="height:22px">VIDEO</span>' : ''}${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending review</span>` : ''}<span class="sub" style="font-size:12px;margin-left:auto">${o.ago}</span></div>
         <p class="prose dim">${esc(o.text)}</p>
         <div class="obs-by">${avatarHtml(o.by, 36)}<div><b>${o.by === 'parent' ? 'Added by' : 'Observed by'} ${authorLine(o)}</b><span>${isMine(o) ? (S.role === 'teacher' ? 'Homeroom teacher' : 'Emma & Christopher’s parent') : AUTHORS[o.by].tag}</span></div></div>
         ${o.pending && S.role === 'parent' ? `<div class="hint" style="color:var(--ink)">${ic('info', 's16')}A teacher will review this before it’s added to ${c.name}’s learning journal.</div>` : ''}
@@ -1532,7 +1615,7 @@ const STICKERS = [
 const TEXT_COLORS = ['#FFFFFF', '#20182B', '#7C3AED', '#FFD84D', '#E14372', '#37B87C', '#4FA8E0'];
 
 function obsDraft() {
-  return S.draft.obs ||= { room: 'Sunflowers room', child: 'emma', text: '', overlays: [] };
+  return S.draft.obs ||= { room: 'Sunflowers room', child: S.obsChild || 'emma', text: '', overlays: [] };
 }
 /* Text on a coloured block needs a contrasting ink; plain text just takes the colour. */
 function textStyle(t) {
@@ -1551,16 +1634,23 @@ function overlayHtml(o, editable) {
 }
 
 /* ---------- helpers used by several screens ---------- */
-function bubble(m) {
-  return `<div class="bub ${m.me ? '' : 'them'} ${m.fresh ? 'new' : ''}">
+/* Messages from the same sender within 2 minutes form a run: only the last one
+   shows its time and read status, and the bubbles sit closer together. */
+const RUN_GAP_MS = 2 * 60 * 1000;
+function inRunWithNext(m, next) {
+  return !!next && next.me === m.me && m.ts != null && next.ts != null && next.ts - m.ts <= RUN_GAP_MS;
+}
+function bubble(m, i, all) {
+  const grouped = inRunWithNext(m, all[i + 1]);
+  return `<div class="bub ${m.me ? '' : 'them'} ${m.fresh ? 'new' : ''} ${grouped ? 'grouped' : ''}">
     <div class="b ${m.img ? 'img' : ''}">${m.img ? `<img src="${IMG}${m.img}" alt="">` : esc(m.t)}</div>
-    <div class="mt">${m.at} · Read</div></div>`;
+    ${grouped ? '' : `<div class="mt">${m.at} · Read</div>`}</div>`;
 }
 function contactRows(q = '') {
   const rows = CONTACTS.filter(c => (c.n + c.s).toLowerCase().includes(q.toLowerCase()));
   return rows.map(c => `
     <button class="contact" data-go="thread" data-p="${c.id}">
-      <img class="avatar" src="${IMG}${c.seal ? 'seal.svg' : c.av}" alt="">
+      <img class="avatar" src="${IMG}${c.seal ? 'seal-tsk.svg' : c.av}" alt="">
       <div style="min-width:0"><div class="n">${c.n}${c.tag ? `<span class="tag purple">${c.tag}</span>` : ''}</div><div class="s">${c.s}</div></div>
     </button>`).join('') || `<p class="empty">No contacts match.</p>`;
 }
@@ -1596,7 +1686,7 @@ function removeAnnouncement(i) {
   const live = liveAnnouncements(), k = live.indexOf(i);
   S.annGone.push(i);
   const rest = liveAnnouncements();
-  if (rest.length) { S.annIdx = rest[Math.min(k, rest.length - 1)]; S.annEnter = 'in-next'; }
+  if (rest.length) { S.annIdx = rest[Math.min(k, rest.length - 1)]; S.annEnter = 'in-next'; S.annRingNext = true; }
 }
 function detailScreen(title, d, editLabel, canDelete) {
   return { html: `
@@ -1605,7 +1695,7 @@ function detailScreen(title, d, editLabel, canDelete) {
       ${d.photo ? `<img class="hero" src="${IMG}${d.photo}" style="aspect-ratio:${ratioOf(d.photo)}" alt="">` : ''}
       <div class="big-title">${esc(d.title)}</div>
       ${d.office
-        ? `<div class="byline"><img class="avatar" src="${IMG}seal.svg" alt=""><div>Posted by <b>TSK</b><span>Home office</span></div></div>`
+        ? `<div class="byline"><img class="avatar" src="${IMG}seal-tsk.svg" alt=""><div>Posted by <b>TSK</b><span>Home office</span></div></div>`
         : `<div class="byline"><img class="avatar" src="${IMG}avatar-diaz.jpg" alt=""><div>Created by <b>Mr. Diaz</b><span>Homeroom teacher</span></div></div>`}
       <div class="when">${ic('calendar-small')}${esc(d.when)}</div>
       <p class="prose">${esc(d.body)}</p>
@@ -1708,7 +1798,7 @@ function tourDemo(name) {
       </div>`,
     bell: `<div class="demo d-bell">
         <span class="bell">${ic('bell', 's18')}<span class="bdg">2</span></span>
-        <span class="rows"><span class="row r1"><img src="${IMG}seal.svg" alt=""><b>New class update</b></span><span class="row r2"><img src="${IMG}avatar-joanne.jpg" alt=""><b>Emma’s observation</b></span></span>
+        <span class="rows"><span class="row r1"><img src="${IMG}seal-tsk.svg" alt=""><b>New class update</b></span><span class="row r2"><img src="${IMG}avatar-joanne.jpg" alt=""><b>Emma’s observation</b></span></span>
       </div>`,
     todo: `<div class="demo d-todo">
         ${[1, 2, 3].map(n => `<span class="row r${n}"><img src="${IMG}avatar-emma-round.png" alt=""><b></b><i>✓</i></span>`).join('')}
@@ -1722,7 +1812,12 @@ function tourDemo(name) {
   return demos[name] || '';
 }
 function tourSeen(role) { try { return localStorage.getItem('tour-' + role) === '1'; } catch { return false; } }
-function tourDone() { try { localStorage.setItem('tour-' + S.role, '1'); } catch {} S.tour = null; device.querySelector('.tour')?.remove(); }
+function tourDone() {
+  try { localStorage.setItem('tour-' + S.role, '1'); } catch {}
+  S.tour = null; device.querySelector('.tour')?.remove();
+  const bell = device.querySelector('.announce .bell-badge');
+  if (bell && !S.annBellRung) { S.annBellRung = true; bell.classList.add('ring'); }
+}
 function startTour() { S.stack = [{ name: 'dashboard' }]; S.dir = 'none'; S.sheet = false; S.menu = null; S.tour = 0; render(); }
 function drawTour() {
   const steps = TOUR[S.role], step = steps[S.tour];
@@ -1796,7 +1891,7 @@ const actions = {
   /* Parents can only add observations, so + skips the menu for them. */
   sheet() { if (S.role === 'parent') return actions['new-obs'](); S.sheet = true; render(); },
   'close-sheet'() { S.sheet = false; render(); },
-  'new-obs'() { S.draft.obs = null; go('camera'); },
+  'new-obs'(child) { S.draft.obs = null; S.obsChild = CHILDREN[child] ? child : null; go('camera'); },
   'new-announcement'() { S.draft.announcement = null; go('new-announcement'); },
   'new-event'() { S.draft.event = null; go('new-event'); },
   /* A retake (from the form) keeps the draft's child and reflections; a fresh
@@ -1862,6 +1957,13 @@ const actions = {
   'journal-tab'(p) { S.journalTab = p; render(); },
   'ann-tab'(p) { S.annTab = p; render(); },
   like(p) { S.liked[p] = !S.liked[p]; render(); },
+  play(id, el) {
+    const o = S.obs.find(x => x.id === id), box = el.closest('.pic');
+    box.innerHTML = `<video src="${IMG}${o.video}" poster="${IMG}${o.photo}" playsinline controls autoplay></video>`;
+    const v = box.querySelector('video');
+    v.addEventListener('click', e => e.stopPropagation());            // using the controls shouldn't open the card
+    v.addEventListener('ended', () => { box.innerHTML = videoPoster(o); });
+  },
   'add-cal'(id) {
     S.inCalendar[id] = !S.inCalendar[id];
     toast(S.inCalendar[id] ? 'Added to your calendar' : 'Removed from your calendar');
@@ -2027,7 +2129,7 @@ device.addEventListener('submit', e => {
     const now = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
     const thread = S.threads[f.dataset.p] ||= [];
     thread.forEach(m => m.fresh = false);
-    thread.push({ me: 1, t: text, at: now, fresh: true });
+    thread.push({ me: 1, t: text, at: now, ts: Date.now(), fresh: true });
     render();
     device.querySelector('.composer input').focus();
     return;
