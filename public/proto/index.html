@@ -182,6 +182,18 @@ body {
 
 .pills { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; flex: none; }
 .pills::-webkit-scrollbar { display: none; }
+/* Overflowing pill rows get chevrons at the edges (added by enhancePills) */
+.pills-wrap { position: relative; margin: 0 -16px; flex: none; }
+.pills-wrap .pills { margin: 0; scroll-behavior: smooth; }
+.pills-nav { position: absolute; top: 0; bottom: 0; width: 56px; display: flex; align-items: center; z-index: 2; pointer-events: none;
+             opacity: 0; transition: opacity .18s; }
+.pills-nav.show { opacity: 1; }
+.pills-nav.prev { left: 0; padding-left: 8px; justify-content: flex-start; background: linear-gradient(90deg, var(--cream) 45%, rgba(251,247,240,0)); }
+.pills-nav.next { right: 0; padding-right: 8px; justify-content: flex-end; background: linear-gradient(270deg, var(--cream) 45%, rgba(251,247,240,0)); }
+.pills-nav button { width: 28px; height: 28px; border-radius: 999px; background: #fff; color: var(--ink-900); display: grid; place-items: center;
+                    box-shadow: 0 2px 8px rgba(43,37,64,.16), 0 0 0 1px rgba(43,37,64,.05); }
+.pills-nav.show button { pointer-events: auto; }
+.pills-nav button:active { transform: scale(.92); }
 .pill { height: 34px; padding: 0 16px; border-radius: 999px; border: 2px solid var(--line-2); background: #fff;
         display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--ink-900); white-space: nowrap; flex: none; }
 .pill.on { background: var(--orange-bg); border-color: var(--orange); }
@@ -305,13 +317,13 @@ textarea.input:focus { padding: 11px 15px; }
 .tile:active { transform: scale(.97); }
 .tile .ib { width: 36px; height: 36px; border-radius: 999px; background: #fff; display: grid; place-items: center; }
 .tile.full { grid-column: 1 / -1; }
-/* Parent dashboard Services — Figma 894:13722: bare heading, a row of three then a row of two */
-.svc { display: flex; flex-direction: column; gap: 8px; flex: none; }
-.svc h3 { font-size: 21px; line-height: 32px; font-weight: 600; color: var(--ink-900); }
-.svc-row { display: flex; gap: 12px; }
-.svc-row + .svc-row { margin-top: 4px; }
-.svc-row .tile { flex: 1; min-width: 0; }
-.tile.sm { font-size: 14px; line-height: 20px; text-align: left; }
+/* Parent dashboard Services: a compact 3×2 grid of white tiles, icon on a coloured square */
+.svc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; flex: none; }
+.svc-tile { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 6px 12px; background: #fff; border: 1px solid var(--line);
+            border-radius: 20px; font-size: 13px; line-height: 16px; font-weight: 600; color: var(--ink-900); text-align: center; transition: transform .12s, border-color .15s; }
+.svc-tile:hover { border-color: #cfc3e6; }
+.svc-tile:active { transform: scale(.96); }
+.svc-tile .sq { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; color: var(--ink-900); }
 
 .mgmt { display: flex; flex-direction: column; gap: 12px; flex: none; }
 .opt { background: #fff; border: 1px solid #E3DDE8; border-radius: var(--r-card); padding: 16px; display: flex; flex-direction: column; gap: 12px; width: 100%; transition: border-color .15s; }
@@ -931,10 +943,10 @@ const focusOf = f => FOCUS[f] || '50% 50%';
    which is what makes an entry editable. */
 const AUTHORS = {
   office:  { name: 'TSK',          tag: 'Home office',      avatar: 'seal-tsk.svg' },
-  parker:  { name: 'Ms. Parker',   tag: 'Homeroom teacher', avatar: 'avatar-joanne.jpg' },
-  diaz:    { name: 'Mr. Diaz',     tag: 'Homeroom teacher', avatar: 'avatar-diaz.jpg' },
+  parker:  { name: 'Ms. Parker',   tag: 'Class teacher', avatar: 'avatar-joanne.jpg' },
+  diaz:    { name: 'Mr. Diaz',     tag: 'Class teacher', avatar: 'avatar-diaz.jpg' },
   joanne:  { name: 'Joanne',       tag: 'Teacher',          avatar: 'avatar-joanne.jpg' },
-  teacher: { name: 'Claire McKay', tag: 'Homeroom teacher', avatar: 'avatar-claire.jpg' },
+  teacher: { name: 'Claire McKay', tag: 'Class teacher', avatar: 'avatar-claire.jpg' },
   parent:  { name: 'Siobhan',      tag: 'Parent',           avatar: null },
 };
 const isMine = x => x.by === S.role;
@@ -1124,20 +1136,18 @@ const screens = {
           <div class="lines"><div><span>May tuition</span><b>$420.00</b></div><div><span>Lunch club · 12 days</span><b>$60.00</b></div></div>
         </section>`}
         <section class="svc" aria-label="Services">
-          <h3>Services</h3>
-          <div class="svc-row">
-            <button class="tile sm" style="background:var(--purple-50)" data-go="term-dates"><span class="ib">${ic('svc-term')}</span>Term dates</button>
-            <button class="tile sm" style="background:var(--sky)" data-go="webview" data-p="Uniform"><span class="ib">${ic('svc-uniform')}</span>Uniform</button>
-            <button class="tile sm" style="background:var(--peach)" data-go="webview" data-p="Bus"><span class="ib">${ic('svc-transport')}</span>Transport</button>
-          </div>
-          <div class="svc-row">
-            <button class="tile sm" style="background:var(--green-bg)" data-go="late-club"><span class="ib">${ic('svc-lateclub')}</span>Late Club</button>
-            <button class="tile sm" style="background:var(--blush)" data-go="important-contacts"><span class="ib">${ic('svc-contacts')}</span>Contacts</button>
-          </div>
+          ${[
+            ['Term dates', 'svc-term',      'var(--sky)',       'data-go="term-dates"'],
+            ['Uniform',    'svc-uniform',   'var(--purple-50)', 'data-go="webview" data-p="Uniform"'],
+            ['Transport',  'svc-transport', 'var(--peach)',     'data-go="webview" data-p="Bus"'],
+            ['Late Club',  'svc-lateclub',  'var(--green-bg)',  'data-go="late-club"'],
+            ['Contacts',   'svc-contacts',  'var(--blush)',     'data-go="important-contacts"'],
+            ['More',       'more',          'var(--yellow)',    'data-act="toast" data-p="More services are coming soon"'],
+          ].map(([label, icon, bg, attrs]) => `<button class="svc-tile" ${attrs}><span class="sq" style="background:${bg}">${ic(icon, 's20')}</span>${label}</button>`).join('')}
         </section>
         ${eventsCard()}
         <section class="card" style="flex:none">
-          <div class="section-title"><span class="h sm">CHILDREN FEED</span><button class="link plain" data-tab="learning">Open feed ›</button></div>
+          <div class="section-title"><span class="h sm">LEARNING FEED</span><button class="link plain" data-tab="learning">Open feed ›</button></div>
           <div class="divider"></div>
           ${FEED.map(f => `<div class="feed-post"><div class="a">${f.a} <span class="tag purple">TEACHER</span></div><p class="p">${f.p}</p><div class="m">${f.m}</div></div>`).join('')}
         </section>
@@ -1173,14 +1183,14 @@ const screens = {
   chat() {
     const f = S.msgFilter;
     const rows = [
-      { id: 'javier', n: 'Javier Diaz', tag: 'Teacher', av: 'avatar-javier.jpg', at: '11:45', m: 'Perfect. The little ones loved story circle today.', grp: 'Homeroom teacher' },
-      { id: 'claire', n: 'Claire McKay', tag: 'Teacher', av: 'avatar-claire.jpg', at: 'Yesterday', m: 'A new weekly learning summary is ready to review.', unread: 2, grp: 'Homeroom teacher' },
-      { id: 'aaliyah', n: 'Office', tag: 'Admin office', seal: true, at: '2 days ago', m: 'Please confirm next week’s parent meeting time.', grp: 'Admin office' },
+      { id: 'javier', n: 'Javier Diaz', tag: 'Teacher', av: 'avatar-javier.jpg', at: '11:45', m: 'Perfect. The little ones loved story circle today.', grp: 'Class teacher' },
+      { id: 'claire', n: 'Claire McKay', tag: 'Teacher', av: 'avatar-claire.jpg', at: 'Yesterday', m: 'A new weekly learning summary is ready to review.', unread: 2, grp: 'Class teacher' },
+      { id: 'aaliyah', n: 'Office', tag: 'Admin', seal: true, at: '2 days ago', m: 'Please confirm next week’s parent meeting time.', grp: 'Admin' },
     ].filter(r => f === 'All messages' || r.grp === f);
     return { tab: 'chat', html: `
       ${topMain('Messages', `<button class="round-btn fab" data-go="contacts" aria-label="New message">${ic('plus')}</button>`)}
       <div class="body tight">
-        <div class="pills">${['All messages', 'Homeroom teacher', 'Admin office', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="msg-filter" data-p="${c}">${c}</button>`).join('')}</div>
+        <div class="pills">${['All messages', 'Class teacher', 'Admin', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="msg-filter" data-p="${c}">${c}</button>`).join('')}</div>
         ${rows.length ? `<div class="list">${rows.map(r => `
           <button class="li" data-go="thread" data-p="${r.id}">
             <img class="avatar av" src="${IMG}${r.seal ? 'seal-tsk.svg' : r.av}" alt="">
@@ -1213,7 +1223,7 @@ const screens = {
         <div class="chat-head">
           <button class="back-btn" data-act="back" aria-label="Back">${ic('back', 's40')}</button>
           ${c.seal || c.av ? `<img class="avatar" src="${IMG}${c.seal ? 'seal-tsk.svg' : c.av}" alt="">` : `<span class="initials" style="width:44px;height:44px;background:var(--peach)">${c.n[0]}</span>`}
-          <div><div class="n">${c.id === 'aaliyah' ? 'Office' : c.n} <span class="tag solid">${c.tag || 'Admin office'}</span></div><div class="s">${c.id === 'aaliyah' ? 'School office' : c.s}</div></div>
+          <div><div class="n">${c.id === 'aaliyah' ? 'Office' : c.n} <span class="tag solid">${c.tag || 'Admin'}</span></div><div class="s">${c.id === 'aaliyah' ? 'School office' : c.s}</div></div>
         </div>
       </div>
       <div class="body tight" id="thread">
@@ -1233,17 +1243,17 @@ const screens = {
   notifications() {
     const f = S.notifFilter;
     const items = [
-      { by: 'office', k: 'announcement', s: ANNOUNCEMENTS[0].t,               go: 'announcement', p: 0,    g: 'Admin office' },
-      { by: 'parker', k: 'observation',  s: 'Emma at the easel',               go: 'obs',          p: 'o1', g: 'Homeroom teacher' },
-      { by: 'office', k: 'event',        s: 'Harvest Festival · Friday 3 October', go: 'post',     p: 'p1', g: 'Admin office' },
-      { by: 'teacher', k: 'class update', s: 'Ball pit afternoon',             go: 'post',         p: 'p2', g: 'Homeroom teacher' },
-      { by: 'office', k: 'announcement', s: ANNOUNCEMENTS[1].t,               go: 'announcement', p: 1,    g: 'Admin office' },
-      { by: 'diaz',   k: 'class update', s: 'First day of Autumn',             go: 'post',         p: 'p5', g: 'Homeroom teacher' },
+      { by: 'office', k: 'announcement', s: ANNOUNCEMENTS[0].t,               go: 'announcement', p: 0,    g: 'Admin' },
+      { by: 'parker', k: 'observation',  s: 'Emma at the easel',               go: 'obs',          p: 'o1', g: 'Class teacher' },
+      { by: 'office', k: 'event',        s: 'Harvest Festival · Friday 3 October', go: 'post',     p: 'p1', g: 'Admin' },
+      { by: 'teacher', k: 'class update', s: 'Ball pit afternoon',             go: 'post',         p: 'p2', g: 'Class teacher' },
+      { by: 'office', k: 'announcement', s: ANNOUNCEMENTS[1].t,               go: 'announcement', p: 1,    g: 'Admin' },
+      { by: 'diaz',   k: 'class update', s: 'First day of Autumn',             go: 'post',         p: 'p5', g: 'Class teacher' },
     ].filter(n => f === 'All messages' || n.g === f);
     return { html: `
       ${topBack('Notifications')}
       <div class="body tight" style="gap:12px">
-        <div class="pills" style="margin-bottom:4px">${['All messages', 'Homeroom teacher', 'Admin office', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="notif-filter" data-p="${c}">${c}</button>`).join('')}</div>
+        <div class="pills" style="margin-bottom:4px">${['All messages', 'Class teacher', 'Admin', 'Other'].map(c => `<button class="chip ${c === f ? 'on' : ''}" data-act="notif-filter" data-p="${c}">${c}</button>`).join('')}</div>
         ${items.length ? items.map(n => `
           <button class="notif" data-go="${n.go}" data-p="${n.p}">
             ${avatarHtml(n.by, 36)}
@@ -1260,7 +1270,7 @@ const screens = {
         <section class="card" style="border-radius:16px;border-color:var(--line-3);padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;flex:none">
           <div style="position:relative"><img class="avatar" src="${IMG}avatar-claire.jpg" width="88" height="88" alt="">
             <span class="round-btn fab" style="position:absolute;right:-6px;bottom:-6px">${ic('plus')}</span></div>
-          <div style="text-align:center"><div class="h2">Claire McKay</div><span class="tag" style="margin-top:4px">Homeroom teacher</span></div>
+          <div style="text-align:center"><div class="h2">Claire McKay</div><span class="tag" style="margin-top:4px">Class teacher</span></div>
         </section>
         <div class="mgmt">
           <button class="opt hl" data-go="journal"><div class="head"><div class="tg"><div class="badge">${ic('book-heart', 's20')}</div><div><div class="t">Learning journal</div><div class="st">${S.pending} observations need review <i class="red"></i></div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Approve family observations and revisit your own notes.</div></button>
@@ -1328,7 +1338,7 @@ const screens = {
             <span class="tag yellow">${ic('clock-pending', 's16')}Observation pending</span></div>
           <div class="sep"></div>
           <div class="hd"><div class="who"><img class="avatar" src="${IMG}avatar-joanne.jpg" style="background:#FFE9A8" alt="">
-            <div><div class="nm">Ms. Parker <span class="tag">Homeroom teacher</span></div><div class="ago">3h ago</div></div></div>${ic('dots')}</div>
+            <div><div class="nm">Ms. Parker <span class="tag">Class teacher</span></div><div class="ago">3h ago</div></div></div>${ic('dots')}</div>
           <p class="txt">${EASEL}</p>
           <img class="ph" src="${IMG}photo-blocks.jpg" style="aspect-ratio:${CAMERA_RATIO};object-fit:cover" alt="">
           <div class="acts"><button>${ic('heart')}</button><button>${ic('comment')}</button></div>
@@ -1448,7 +1458,7 @@ const screens = {
         <button class="obs-kid" data-go="child" data-p="${o.child}" aria-label="Open ${c.full}’s page"><img class="avatar" src="${IMG}${c.avatar}" width="44" height="44" alt=""><div><b>${c.full}</b><span>${c.room}</span></div>${ic('chevron-right', 's16')}</button>
         <div class="obs-meta"><span class="tag green">${o.by === 'parent' ? 'FROM HOME' : 'OBSERVATION'}</span>${o.video ? '<span class="tag purple" style="height:22px">VIDEO</span>' : ''}${o.pending ? `<span class="tag yellow" style="height:22px">${ic('clock-pending', 's16')}Pending review</span>` : ''}<span class="sub" style="font-size:12px;margin-left:auto">${o.ago}</span></div>
         <p class="prose dim">${esc(o.text)}</p>
-        <div class="obs-by">${avatarHtml(o.by, 36)}<div><b>${o.by === 'parent' ? 'Added by' : 'Observed by'} ${authorLine(o)}</b><span>${isMine(o) ? (S.role === 'teacher' ? 'Homeroom teacher' : 'Emma & Christopher’s parent') : AUTHORS[o.by].tag}</span></div></div>
+        <div class="obs-by">${avatarHtml(o.by, 36)}<div><b>${o.by === 'parent' ? 'Added by' : 'Observed by'} ${authorLine(o)}</b><span>${isMine(o) ? (S.role === 'teacher' ? 'Class teacher' : 'Emma & Christopher’s parent') : AUTHORS[o.by].tag}</span></div></div>
         ${o.pending && S.role === 'parent' ? `<div class="hint" style="color:var(--ink)">${ic('info', 's16')}A teacher will review this before it’s added to ${c.name}’s learning journal.</div>` : ''}
       </div>${homeBar()}` };
   },
@@ -1696,7 +1706,7 @@ function detailScreen(title, d, editLabel, canDelete) {
       <div class="big-title">${esc(d.title)}</div>
       ${d.office
         ? `<div class="byline"><img class="avatar" src="${IMG}seal-tsk.svg" alt=""><div>Posted by <b>TSK</b><span>Home office</span></div></div>`
-        : `<div class="byline"><img class="avatar" src="${IMG}avatar-diaz.jpg" alt=""><div>Created by <b>Mr. Diaz</b><span>Homeroom teacher</span></div></div>`}
+        : `<div class="byline"><img class="avatar" src="${IMG}avatar-diaz.jpg" alt=""><div>Created by <b>Mr. Diaz</b><span>Class teacher</span></div></div>`}
       <div class="when">${ic('calendar-small')}${esc(d.when)}</div>
       <p class="prose">${esc(d.body)}</p>
       ${editLabel ? `<button class="btn outline" data-act="toast" data-p="Editing isn’t wired up in the prototype">${editLabel}</button>` : ''}
@@ -1739,8 +1749,38 @@ function fmtWhen(date, time) {
 const device = document.getElementById('device');
 const cur = () => S.stack[S.stack.length - 1];
 
+/* Give every overflowing pill row scroll chevrons; each shows only when there is more that way. */
+function enhancePills(keep = []) {
+  device.querySelectorAll('.screen .pills').forEach((row, i) => {
+    if (row.scrollWidth <= row.clientWidth + 1) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'pills-wrap';
+    row.before(wrap);
+    wrap.append(row);
+    const nav = dir => {
+      const n = document.createElement('div');
+      n.className = `pills-nav ${dir < 0 ? 'prev' : 'next'}`;
+      n.innerHTML = `<button data-act="pills-scroll" data-p="${dir}" aria-label="${dir < 0 ? 'Scroll back' : 'Scroll forward'}">
+        <i class="ic s16" style="--i:url(${IMG}month-prev.svg)${dir > 0 ? ';transform:scaleX(-1)' : ''}"></i></button>`;
+      wrap.append(n);
+      return n;
+    };
+    const prev = nav(-1), next = nav(1);
+    const update = () => {
+      prev.classList.toggle('show', row.scrollLeft > 4);
+      next.classList.toggle('show', row.scrollLeft < row.scrollWidth - row.clientWidth - 4);
+    };
+    row.addEventListener('scroll', update, { passive: true });
+    if (keep[i]) { row.style.scrollBehavior = 'auto'; row.scrollLeft = keep[i]; row.style.scrollBehavior = ''; }
+    update();
+  });
+}
+
 function render() {
   const { name, p } = cur();
+  /* Re-rendering the same screen (e.g. picking a filter) keeps each pill row where it was scrolled. */
+  const keepPills = S.lastScreen === name ? [...device.querySelectorAll('.screen .pills')].map(r => r.scrollLeft) : [];
+  S.lastScreen = name;
   const out = screens[name](p);
   const anim = S.dir === 'none' ? '' : S.dir === 'back' ? 'enter-back' : 'enter';
   device.innerHTML = `<div class="screen ${out.cls || ''} ${anim}">${out.html}</div>`
@@ -1751,6 +1791,7 @@ function render() {
   S.dir = 'none';
   S.toast = null;
   document.querySelectorAll('#roleSeg button').forEach(b => b.classList.toggle('on', b.dataset.role === S.role));
+  enhancePills(keepPills);
   const t = device.querySelector('#thread'); if (t) t.scrollTop = t.scrollHeight;
   const ed = device.querySelector('#edText');
   if (ed) { ed.focus(); const r = document.createRange(); r.selectNodeContents(ed); r.collapse(false); getSelection().removeAllRanges(); getSelection().addRange(r); }
@@ -1976,6 +2017,10 @@ const actions = {
     render();
   },
   'menu-close'() { S.menu = null; render(); },
+  'pills-scroll'(dir, el) {
+    const row = el.closest('.pills-wrap').querySelector('.pills');
+    row.scrollBy({ left: +dir * Math.max(140, row.clientWidth * 0.6), behavior: 'smooth' });
+  },
   'tour-next'() {
     if (S.tour >= TOUR[S.role].length - 1) return tourDone();
     S.tour++; device.querySelector('.tour')?.remove(); drawTour();
