@@ -1601,7 +1601,7 @@ const screens = {
           </div>
         </div>`}
         <div class="field"><label>Reflections</label><textarea class="input" rows="7" maxlength="240" placeholder="Write your reflections — what happened in this moment?" data-input="obs-text">${d.text}</textarea><div class="counter" id="obsCount">${d.text.length} / 240</div></div>
-        <div class="hint" style="color:var(--ink)">${ic('info', 's16')}Your observation needs to be ${S.role === 'teacher' ? 'reviewed' : 'improved by a teacher'} before it is posted in the learning journal.</div>
+        ${S.role === 'parent' ? `<div class="hint" style="color:var(--ink)">${ic('info', 's16')}Your observation needs to be approved by your child’s Class Teacher before it is posted in the Learning Feed.</div>` : ''}
         <button class="btn primary" type="submit">Submit to TSK</button>
       </form>${homeBar()}` };
   },
