@@ -278,7 +278,7 @@ textarea.input:focus { padding: 11px 15px; }
 .pay .close { width: 28px; height: 28px; margin-right: -6px; border-radius: 99px; display: grid; place-items: center; color: #2E2545; }
 .pay .close:hover { background: rgba(46,37,69,.08); }
 .pay .amt { display: flex; align-items: center; justify-content: space-between; }
-.pay .amt b { display: block; font-size: 30px; font-weight: 700; line-height: 36px; }
+.pay .amt b { display: block; font-size: 28px; font-weight: 700; line-height: 36px; }
 .pay .amt span { font-size: 12px; font-weight: 700; opacity: .7; }
 .pay .now { background: #2E2545; color: #fff; font-size: 14px; font-weight: 800; padding: 13px 22px; border-radius: 15px; transition: transform .1s; }
 .pay .now:active { transform: scale(.96); }
@@ -728,6 +728,89 @@ textarea.input:focus { padding: 11px 15px; }
 .btn.outline.danger { color: #C0264F; border-color: #EBC3CF; }
 .story { border-radius: 16px; box-shadow: 0 8px 24px rgba(43,37,64,.12); }
 
+/* Payments (School fees) */
+.fees .h3 { font-size: 16px; line-height: 24px; font-weight: 600; color: var(--ink-900); flex: none; margin-bottom: -10px; }
+.fees .h3.purple { color: var(--purple-sec); }
+.fees .year { font-size: 14px; color: var(--ink-2); flex: none; margin-bottom: -10px; }
+.dues { background: var(--purple-50); border: 1px solid #DCCFF6; border-radius: var(--r-lg); padding: 20px 20px 14px; text-align: center; flex: none; }
+.dues .lbl { font-size: 15px; font-weight: 600; color: var(--ink-900); }
+.dues .big { font-size: 32px; font-weight: 700; color: var(--ink-900); margin: 6px 0 14px; }
+.dues .big span { font-size: 18px; font-weight: 600; color: var(--purple-sec); margin-right: 8px; }
+.dues .rows { border-top: 1px solid #DCCFF6; padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.dues .rows div, .totals div, .pay-lines div, .acc-body div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.dues .rows span { font-size: 15px; color: var(--ink-2); } .dues .rows b { font-size: 15px; font-weight: 600; color: var(--ink-900); }
+.dues .more { margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--purple-sec); display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.dues .inst { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.dues .inst > div { display: flex; justify-content: space-between; background: #fff; border-radius: 14px; padding: 10px 12px; }
+.dues .inst b { display: block; font-size: 14px; font-weight: 600; color: var(--ink-900); }
+.dues .inst span { font-size: 12px; color: var(--ink-2); }
+.dues .inst .r { text-align: right; }
+.dues .state { display: inline-block; margin-top: 2px; padding: 1px 8px; border-radius: 99px; background: var(--n100); font-weight: 600; font-size: 11px; }
+.dues .state.paid { background: var(--green-bg); color: var(--green-ink); } .dues .state.due { background: var(--yellow); color: var(--tag-ink); }
+.opts { display: flex; flex-direction: column; gap: 10px; flex: none; }
+.opt-radio { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 14px 16px; background: #fff;
+             border: 1px solid var(--line); border-radius: var(--r-control); text-align: left; transition: border-color .15s; }
+.opt-radio b { display: block; font-size: 16px; font-weight: 600; color: var(--ink-900); }
+.opt-radio span { font-size: 13px; color: var(--ink-2); }
+.opt-radio.on { border: 2px solid var(--purple); padding: 13px 15px; }
+.opt-radio { cursor: pointer; }
+.opt-radio[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.radio { width: 22px; height: 22px; border-radius: 99px; border: 2px solid var(--purple); flex: none; position: relative; }
+.on > .radio::after { content: ''; position: absolute; inset: 3px; border-radius: 99px; background: var(--purple); }
+.kd-input { display: flex; align-items: center; gap: 8px; margin-top: 10px; height: 44px; padding: 0 12px; border: 1px solid var(--line-3); border-radius: 12px;
+            font-size: 14px; font-weight: 600; color: var(--purple-sec); background: #fff; }
+.kd-input input { border: 0; outline: 0; font-size: 16px; width: 100%; color: var(--ink-900); background: transparent; }
+.acc { background: #fff; border: 1px solid var(--line); border-radius: var(--r-control); flex: none; overflow: hidden; }
+.acc-head { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px; color: var(--ink-900); }
+.acc-head b { flex: 1; text-align: left; font-size: 16px; font-weight: 600; }
+.acc-head span { font-size: 14px; color: var(--ink-2); }
+.acc-head .chev { transition: transform .2s; } .acc.open .chev { transform: rotate(180deg); }
+.acc-body { border-top: 1px solid var(--line); padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+.acc-body span { color: var(--ink-2); } .acc-body b { font-weight: 600; color: var(--ink-900); }
+.totals, .pay-lines { background: var(--purple-50); border: 1px solid #DCCFF6; border-radius: var(--r-lg); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; flex: none; font-size: 15px; }
+.totals span, .pay-lines span { color: var(--ink-2); } .totals b, .pay-lines b { font-weight: 600; color: var(--ink-900); }
+.pay-lines .tot { border-top: 1px solid #DCCFF6; padding-top: 12px; } .pay-lines .tot span, .pay-lines .tot b { color: var(--ink-900); font-weight: 700; }
+.tx-list { display: flex; flex-direction: column; gap: 10px; flex: none; }
+.tx { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--r-control); padding: 14px 16px; }
+.tx .ib { width: 40px; height: 40px; border-radius: 99px; background: var(--purple-50); color: var(--purple-sec); display: grid; place-items: center; flex: none; }
+.tx > div { flex: 1; min-width: 0; } .tx b { display: block; font-size: 16px; font-weight: 600; color: var(--ink-900); }
+.tx span { font-size: 12px; color: var(--ink-2); } .tx strong { font-size: 14px; font-weight: 600; color: var(--ink-900); white-space: nowrap; }
+.fee-note { display: flex; align-items: center; gap: 12px; background: var(--purple-50); border: 1px solid #DCCFF6; border-radius: var(--r-lg); padding: 16px; font-size: 15px; line-height: 21px; color: var(--ink-900); flex: none; }
+.fee-note .i { width: 28px; height: 28px; border-radius: 99px; background: var(--purple-sec); color: #fff; font-weight: 700; display: grid; place-items: center; flex: none; font-family: Georgia, serif; }
+.method { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 2px solid var(--purple); border-radius: var(--r-control); background: #fff; font-size: 16px; font-weight: 600; color: var(--ink-900); flex: none; }
+.method .radio { margin-left: auto; }
+.method .knet { font-size: 10px; font-weight: 800; letter-spacing: .5px; color: #fff; background: #1F4FA0; border-radius: 6px; padding: 5px 7px; }
+.terms { font-size: 13px; line-height: 19px; color: var(--ink-2); text-align: center; flex: none; }
+.terms .lnk { color: var(--purple-sec); font-weight: 600; text-decoration: underline; }
+.done-badge { width: 84px; height: 84px; border-radius: 999px; background: var(--green-bg); color: var(--green); display: grid; place-items: center; flex: none; animation: pop .3s ease-out; }
+
+/* School uniform: full-screen shop hero (recreated from royalscot.bsk.edu.kw/kw) */
+.shop-hero { background: #000; color: #fff; touch-action: pan-y; }
+.shop-hero .slides { position: absolute; inset: 0; }
+.shop-hero .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .7s ease; }
+.shop-hero .slide.on { opacity: 1; }
+.shop-hero .shade { position: absolute; inset: 0; pointer-events: none;
+                    background: linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.25) 30%, rgba(0,0,0,.3) 55%, rgba(0,0,0,.65) 100%); }
+.shop-hero .hero-top { position: absolute; left: 0; right: 0; top: 0; z-index: 2; height: auto; }
+.shop-hero .status .time { color: #fff; }
+.glass-btn { width: 40px; height: 40px; border-radius: 999px; background: rgba(18,16,28,.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+             color: #fff; display: grid; place-items: center; }
+.hero-copy { position: absolute; left: 24px; right: 24px; bottom: 150px; z-index: 2; }
+.hero-copy h2 { font-size: 40px; line-height: 44px; font-weight: 500; text-transform: uppercase; letter-spacing: .3px; text-shadow: 0 2px 16px rgba(0,0,0,.25); }
+.shop-cta { margin-top: 24px; height: 44px; padding: 0 28px; border-radius: 999px; background: #fff; color: #5F2E8E; font-size: 13px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .3px; transition: transform .1s; }
+.shop-cta:active { transform: scale(.97); }
+.hero-nav { position: absolute; left: 20px; right: 20px; bottom: 64px; z-index: 2; display: flex; align-items: center; justify-content: space-between; }
+.hero-nav button { width: 40px; height: 40px; color: #fff; font-size: 22px; display: grid; place-items: center; }
+.hero-nav .dashes { display: flex; gap: 8px; }
+.hero-nav .dashes i { width: 36px; height: 4px; border-radius: 9px; background: rgba(255,255,255,.45); transition: background .3s; }
+.hero-nav .dashes i.on { background: #fff; }
+
+/* School uniform: the embedded login page cropped to its sign-in card */
+.signin-crop { position: relative; width: 352px; height: 442px; flex: none; border-radius: 24px; overflow: hidden; background: #fff;
+               box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+.signin-crop iframe { position: absolute; left: -16px; top: -120px; width: 384px; height: 900px; border: 0; }
+.signin-loading { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; color: var(--ink-2); }
 .webview { flex: 1; display: grid; place-items: center; font-size: 24px; font-weight: 700; color: var(--ink-900); }
 </style>
 </head>
@@ -808,6 +891,16 @@ const S = {
   sheet: false,
   annIdx: 0, annGone: [], annEnter: '',   // current announcement, dismissed/opened ones, entry animation
   payHidden: false,        // parent closed the due-payments card
+  fees: {                  // what has been paid so far; everything else is derived from FEES
+    paid: 1150,
+    transactions: [
+      { date: '02 Sep 26', ref: '302661014', amount: 1150, what: 'Instalment 1', year: '2026-2027' },
+      { date: '15 Jul 26', ref: '301887256', amount: 250, what: 'Re-enrolment deposit', year: '2025-2026' },
+      { date: '16 Apr 26', ref: '300912483', amount: 1420, what: 'Instalment 4', year: '2025-2026' },
+      { date: '14 Jan 26', ref: '300114370', amount: 1420, what: 'Instalment 3', year: '2025-2026' },
+    ],
+  },
+  feesTab: 'pay', payOption: null, payOther: '', statementOpen: {}, instalmentsOpen: false, payAmount: 0, lastPayment: null,
   classroomFilter: 'All groups',
   learnChild: 'emma', learnRoom: 'Sunflower room',
   pending: 3, approved: 0,
@@ -1127,18 +1220,19 @@ const screens = {
           </div>
           <button class="x" data-act="ann-dismiss" aria-label="Dismiss"><i class="ic" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i></button>
         </section>`}
-        ${S.payHidden ? '' : `
-        <section class="pay" aria-label="Due payments">
+        ${S.payHidden || !feeStatus().current ? '' : (() => { const c = feeStatus().current; return `
+        <section class="pay tappable" aria-label="Due payments" data-act="fees-open" data-p="pay">
           <div class="row1"><span class="k">DUE PAYMENTS</span>
-            <div class="r"><button class="stmt" data-go="webview" data-p="Payments">Statements ›</button>
+            <div class="r"><button class="stmt" data-act="fees-open" data-p="statement">Statements ›</button>
               <button class="close" data-act="pay-close" aria-label="Close"><i class="ic s18" style="--i:url(${IMG}plus.svg);transform:rotate(45deg)"></i></button></div></div>
-          <div class="amt"><div><b>$480.00</b><span>Due Friday, 9 May</span></div><button class="now" data-go="webview" data-p="Payments">Pay now</button></div>
-          <div class="lines"><div><span>May tuition</span><b>$420.00</b></div><div><span>Lunch club · 12 days</span><b>$60.00</b></div></div>
-        </section>`}
+          <div class="amt"><div><b>${kd(c.owed)}</b><span>Due Friday, 9 October</span></div><button class="now" data-act="fees-open" data-p="pay">Pay now</button></div>
+          ${c.owed === c.amount ? `<div class="lines">${c.lines.map(([l, a]) => `<div><span>${l}</span><b>${kd(a)}</b></div>`).join('')}</div>`
+                                : `<div class="lines"><div><span>Already paid</span><b>${kd(c.amount - c.owed)}</b></div></div>`}
+        </section>`; })()}
         <section class="svc" aria-label="Services">
           ${[
             ['Term dates', 'svc-term',      'var(--sky)',       'data-go="term-dates"'],
-            ['Uniform',    'svc-uniform',   'var(--purple-50)', 'data-go="webview" data-p="Uniform"'],
+            ['Uniform',    'svc-uniform',   'var(--purple-50)', 'data-go="uniform-shop"'],
             ['Transport',  'svc-transport', 'var(--peach)',     'data-go="webview" data-p="Bus"'],
             ['Late Club',  'svc-lateclub',  'var(--green-bg)',  'data-go="late-club"'],
             ['Contacts',   'svc-contacts',  'var(--blush)',     'data-go="important-contacts"'],
@@ -1292,7 +1386,7 @@ const screens = {
             </button>`).join('')}
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;flex:none"><div class="h2">Your account</div>
-          ${accountMenu(['Notifications settings', 'Calendar', 'Family members', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}</div>
+          ${accountMenu(['Payments', 'Notifications settings', 'Calendar', 'Family members', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}</div>
       </div>${homeBar()}` };
   },
 
@@ -1495,6 +1589,128 @@ const screens = {
     return { html: `${topBack(title)}<p class="empty">This entry has been deleted.</p>${homeBar()}` };
   },
 
+  /* ---------- Payments: pay fees, account statement, transactions ---------- */
+  fees() {
+    const t = S.feesTab, st = feeStatus();
+    const tabs = [['pay', 'Pay fees'], ['statement', 'Statement'], ['transactions', 'Transactions']];
+    let body = '';
+    if (t === 'pay') {
+      const opts = [
+        { k: 'current', t: 'Current dues', s: st.current ? kd(st.current.owed) : 'Nothing due right now', amount: st.current?.owed, off: !st.current },
+        { k: 'next', t: 'Next due amount', s: st.next ? `${kd(st.next.owed)} · due ${st.next.due}` : '—', amount: st.next?.owed, off: !!st.current || !st.next },
+        { k: 'full', t: 'Full amount', s: kd(st.remaining), amount: st.remaining, off: st.remaining <= 0 },
+        { k: 'other', t: 'Other amount', s: 'Specify a custom amount', off: st.remaining <= 0 },
+      ];
+      const otherVal = parseFloat(S.payOther);
+      const ready = S.payOption && (S.payOption !== 'other' || (otherVal > 0 && otherVal <= st.remaining));
+      body = `
+        <section class="dues">
+          <div class="lbl">Current dues</div>
+          <div class="big"><span>KD</span>${st.current ? st.current.owed.toLocaleString('en-US', { minimumFractionDigits: 3 }) : '0.000'}</div>
+          <div class="rows">
+            <div><span>Academic year</span><b>${FEES.year}</b></div>
+            <div><span>Balance</span><b>${kd(st.remaining)}</b></div>
+          </div>
+          <button class="more" data-act="instalments-toggle" aria-expanded="${S.instalmentsOpen}">${S.instalmentsOpen ? 'Hide instalments' : 'View instalments'}
+            <i class="ic s16" style="--i:url(${IMG}chevron-down.svg)${S.instalmentsOpen ? ';transform:rotate(180deg)' : ''}"></i></button>
+          ${S.instalmentsOpen ? `<div class="inst">${st.inst.map(i => `
+            <div><div><b>${i.label}</b><span>Due ${i.due}</span></div>
+              <div class="r"><b>${kd(i.amount)}</b><span class="state ${i.owed === 0 ? 'paid' : i === st.current ? 'due' : ''}">${i.owed === 0 ? 'Paid' : i === st.current ? 'Due now' : 'Upcoming'}</span></div></div>`).join('')}</div>` : ''}
+        </section>
+        <div class="h3">Payment option</div>
+        <div class="opts" role="radiogroup">${opts.map(o => `
+          <div class="opt-radio ${S.payOption === o.k ? 'on' : ''}" role="radio" tabindex="${o.off ? -1 : 0}" aria-disabled="${o.off}" aria-checked="${S.payOption === o.k}" data-act="pay-option" data-p="${o.k}">
+            <div><b>${o.t}</b><span>${o.s}</span>
+              ${o.k === 'other' && S.payOption === 'other' ? `<label class="kd-input" onclick="event.stopPropagation()">KD<input inputmode="decimal" placeholder="0.000" value="${esc(S.payOther)}" data-input="pay-other" aria-label="Amount in KD"></label>` : ''}</div>
+            <i class="radio"></i></div>`).join('')}</div>
+        <button class="btn primary" data-act="pay-continue" id="payContinue" ${ready ? '' : 'disabled'}>Continue</button>`;
+    } else if (t === 'statement') {
+      const sum = sec => sec.lines.reduce((a, [, v]) => a + v, 0);
+      body = `
+        <div class="year">${FEES.year}</div>
+        ${FEES.statement.map(sec => `
+          <section class="acc ${S.statementOpen[sec.key] ? 'open' : ''}">
+            <button class="acc-head" data-act="statement-toggle" data-p="${sec.key}" aria-expanded="${!!S.statementOpen[sec.key]}">
+              ${ic(sec.icon, 's20')}<b>${sec.label}</b><span>${kd(sum(sec))}</span><i class="ic s16 chev" style="--i:url(${IMG}chevron-down.svg)"></i></button>
+            ${S.statementOpen[sec.key] ? `<div class="acc-body">${sec.lines.map(([l, v]) => `<div><span>${l}</span><b>${kd(v)}</b></div>`).join('')}</div>` : ''}
+          </section>`).join('')}
+        <section class="totals">
+          <div><span>Total fees</span><b>${kd(FEES.total)}</b></div>
+          <div><span>Paid</span><b>${kd(S.fees.paid)}</b></div>
+          <div><span>Remaining balance</span><b>${kd(st.remaining)}</b></div>
+        </section>
+        <button class="btn primary" data-act="toast" data-p="Statement downloaded (PDF)" style="gap:8px">${ic('download', 's20')}Download statement</button>`;
+    } else {
+      const years = [...new Set(S.fees.transactions.map(x => x.year))];
+      body = years.map(y => `
+        <div class="year">${y}</div>
+        <div class="tx-list">${S.fees.transactions.filter(x => x.year === y).map(x => `
+          <div class="tx"><span class="ib">${ic('pay-card', 's20')}</span>
+            <div><b>${x.date}</b><span>${x.what} · Ref #${x.ref}</span></div><strong>${kd(x.amount)}</strong></div>`).join('')}</div>`).join('');
+    }
+    return { html: `
+      ${topBack('School fees')}
+      <div class="body tight fees">
+        <div class="switch">${tabs.map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="fees-tab" data-p="${k}">${l}</button>`).join('')}</div>
+        ${body}
+      </div>${homeBar()}` };
+  },
+
+  'make-payment'() {
+    const a = S.payAmount, fee = FEES.convenienceFee;
+    return { html: `
+      ${topBack('Make payment')}
+      <div class="body tight fees">
+        <div class="fee-note"><span class="i">i</span>An online convenience fee of ${kd(fee)} will be added to the total.</div>
+        <div class="h3 purple">Payment method</div>
+        <div class="method on"><span class="knet">KNET</span>KNET debit card<i class="radio"></i></div>
+        <div class="h3 purple">Payment details</div>
+        <div class="pay-lines">
+          <div><span>Amount</span><b>${kd(a)}</b></div>
+          <div><span>Convenience fee</span><b>${kd(fee)}</b></div>
+          <div class="tot"><span>Total</span><b>${kd(a + fee)}</b></div>
+        </div>
+        <button class="btn primary" data-act="pay-confirm">Pay ${kd(a + fee)}</button>
+        <p class="terms">By proceeding, you confirm that you agree to the <button class="lnk" data-act="toast" data-p="Terms & Conditions — not part of the prototype">Terms &amp; Conditions</button> as stated.</p>
+      </div>${homeBar()}` };
+  },
+
+  'payment-done'() {
+    const p = S.lastPayment;
+    return { html: `
+      ${topBack('Payment')}
+      <div class="body fees" style="align-items:center;text-align:center;padding-top:56px">
+        <span class="done-badge">${ic('check', 's40')}</span>
+        <div class="h2">Payment successful</div>
+        <p class="sub">${kd(p.total)} paid with KNET on ${p.date}.<br>Reference #${p.ref}</p>
+        <div class="pay-lines" style="width:100%;text-align:left">
+          <div><span>Applied to fees</span><b>${kd(p.amount)}</b></div>
+          <div><span>Remaining balance</span><b>${kd(feeStatus().remaining)}</b></div>
+        </div>
+        <button class="btn primary" data-act="fees-open" data-p="transactions">View transactions</button>
+        <button class="btn link" data-tab="dashboard">Back to dashboard</button>
+      </div>${homeBar()}` };
+  },
+
+  /* ---------- School uniform: full-screen shop hero, then the sign-in card ---------- */
+  'uniform-shop'() {
+    const i = S.shopSlide || 0;
+    return { cls: 'shop-hero', html: `
+      <div class="slides">${SHOP_SLIDES.map((sl, k) => `<img class="slide ${k === i ? 'on' : ''}" src="${IMG}${sl.img}" alt="${sl.alt}">`).join('')}</div>
+      <div class="shade"></div>
+      <div class="top hero-top">${statusBar()}
+        <div class="titlebar"><button class="glass-btn" data-act="back" aria-label="Back">${ic('back', 's40')}</button></div></div>
+      <div class="hero-copy">
+        <h2>The Royal Scot Online</h2>
+        <button class="shop-cta" data-go="webview" data-p="Uniform">Sign in to shop now</button>
+      </div>
+      <div class="hero-nav">
+        <button data-act="shop-slide" data-p="-1" aria-label="Previous photo">←</button>
+        <div class="dashes">${SHOP_SLIDES.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
+        <button data-act="shop-slide" data-p="1" aria-label="Next photo">→</button>
+      </div>` };
+  },
+
   /* ---------- services ---------- */
   'term-dates'() {
     const terms = [['Term 1', 'Wednesday 02 Sep to Thursday 15 Oct 2026'], ['Term 2', 'Sunday 25 Oct to Thursday 17 Dec 2026'], ['Term 3', 'Sunday 10 Jan to Thursday 04 Mar 2027'], ['Term 4', 'Sunday 14 Mar to Thursday 15 Apr 2027'], ['Term 5', 'Sunday 25 Apr to Thursday 03 Jun 2027']];
@@ -1522,6 +1738,18 @@ const screens = {
       <div class="body" style="gap:16px"><div class="big-title" style="font-size:24px">Important contacts</div><div class="list">${contactRows()}</div></div>${homeBar()}` };
   },
   webview(title = 'Uniform') {
+    /* Uniform shows only the sign-in card of the school shop's login page. The page is another
+       site, so it can't be edited: the embed is laid out at the card's measured mobile size
+       (384px wide, card 352×442 at 16,120) and cropped to the card. */
+    if (title === 'Uniform') return { html: `
+      ${topBack('School uniform')}
+      <div class="body" style="padding-top:24px;align-items:center">
+        <div class="signin-crop">
+          <div class="signin-loading">Loading sign-in…</div>
+          <iframe src="https://royalscot.bsk.edu.kw/login" title="Sign in to your parent account — royalscot.bsk.edu.kw"
+                  scrolling="no" referrerpolicy="strict-origin-when-cross-origin" onload="this.previousElementSibling.remove()"></iframe>
+        </div>
+      </div>${homeBar()}` };
     return { html: `${topBack(title)}<div class="webview">Web view</div>${homeBar()}` };
   },
 
@@ -1611,6 +1839,40 @@ const screens = {
 };
 
 /* ---------- photo editor ---------- */
+/* School fees for the 2026-2027 year (prototype figures, Kuwaiti dinar). The statement totals
+   4,600.000 = school fees 4,140 + learning resources 580 − deductions 120, paid in four instalments. */
+const FEES = {
+  year: '2026-2027',
+  total: 4600,
+  statement: [
+    { key: 'school', label: 'School fees', icon: 'pay-card', lines: [['Term 1 tuition', 1380], ['Term 2 tuition', 1380], ['Term 3 tuition', 1380]] },
+    { key: 'learning', label: 'Learning resources', icon: 'notebook-pen', lines: [['Books & materials', 320], ['Digital learning', 200], ['Lunch club · 12 days', 60]] },
+    { key: 'deductions', label: 'Deductions', icon: 'minus-circle', lines: [['Sibling discount', -120]] },
+  ],
+  instalments: [
+    { label: 'Instalment 1', due: '2 Sep 2026', amount: 1150 },
+    { label: 'Instalment 2', due: '9 Oct 2026', amount: 480, lines: [['Tuition · Instalment 2', 420], ['Lunch club · 12 days', 60]] },
+    { label: 'Instalment 3', due: '15 Jan 2027', amount: 1485 },
+    { label: 'Instalment 4', due: '15 Apr 2027', amount: 1485 },
+  ],
+  convenienceFee: 1,
+};
+/* How much of each instalment is still owed, given what has been paid (instalments are paid in order). */
+function feeStatus() {
+  let paid = S.fees.paid;
+  const inst = FEES.instalments.map(i => { const covered = Math.min(paid, i.amount); paid -= covered; return { ...i, owed: i.amount - covered }; });
+  const current = inst.find(i => i.owed > 0 && i.label !== 'Instalment 3' && i.label !== 'Instalment 4');   // due now
+  const next = inst.find(i => i.owed > 0 && i !== current);
+  return { inst, current, next, remaining: FEES.total - S.fees.paid };
+}
+const kd = n => 'KD ' + (n < 0 ? '−' : '') + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+
+/* The Royal Scot Online hero, recreated from royalscot.bsk.edu.kw/kw (photos are the site's own). */
+const SHOP_SLIDES = [
+  { img: 'shop-slide-1.jpg', alt: 'BSK students in school uniform' },
+  { img: 'shop-slide-2.jpg', alt: 'BSK students reading together' },
+];
+
 const EMOJI = ['🎨', '🌟', '❤️', '😊', '🎉', '👏', '🌈', '🌻', '🐞', '🍎', '🦋', '🧩', '📚', '🎵', '🌿', '✨', '💜', '🏆'];
 const STICKERS = [
   { v: 'Proud moment 🌟', bg: '#FFD84D', fg: '#20182B' },
@@ -1678,8 +1940,8 @@ function rosterGroups() {
 }
 function accountMenu(items) {
   const icons = { 'Notifications': 'menu-bell', 'Notifications settings': 'menu-bell', 'Calendar': 'menu-calendar', 'Family members': 'menu-family', 'Password management': 'menu-password', 'Advanced settings': 'menu-settings', 'Log out': 'menu-logout' };
-  icons['App tour'] = 'sparkles';
-  const go = { 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Log out': 'data-act="logout"' };
+  icons['App tour'] = 'sparkles'; icons['Payments'] = 'pay-card';
+  const go = { 'Payments': 'data-act="fees-open" data-p="pay"', 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Log out': 'data-act="logout"' };
   return `<div class="menu">${items.map(t => `<button ${go[t] || 'data-act="toast" data-p="Coming soon in the prototype"'}>${ic(icons[t], 's20')}${t}</button>`).join('')}</div>`;
 }
 /* Dashboard announcements: swipe between the ones still showing; ✕ or opening one removes it. */
@@ -1774,6 +2036,12 @@ function enhancePills(keep = []) {
     if (keep[i]) { row.style.scrollBehavior = 'auto'; row.scrollLeft = keep[i]; row.style.scrollBehavior = ''; }
     update();
   });
+}
+
+function showShopSlide(n) {
+  S.shopSlide = (n + SHOP_SLIDES.length) % SHOP_SLIDES.length;
+  device.querySelectorAll('.shop-hero .slide').forEach((el, k) => el.classList.toggle('on', k === S.shopSlide));
+  device.querySelectorAll('.shop-hero .dashes i').forEach((el, k) => el.classList.toggle('on', k === S.shopSlide));
 }
 
 function render() {
@@ -1985,6 +2253,30 @@ const actions = {
   'ann-dismiss'() { removeAnnouncement(S.annIdx); render(); },
   /* Opening an announcement also clears it from the dashboard, like dismissing it. */
   'pay-close'() { S.payHidden = true; render(); },
+  'fees-open'(tab) { S.feesTab = tab || 'pay'; S.payOption = null; S.payOther = '';
+    const i = S.stack.findIndex(x => x.name === 'fees');
+    if (i >= 0) { S.stack = S.stack.slice(0, i + 1); S.dir = 'back'; render(); } else go('fees'); },
+  'fees-tab'(k) { S.feesTab = k; render(); },
+  'instalments-toggle'() { S.instalmentsOpen = !S.instalmentsOpen; render(); },
+  'statement-toggle'(k) { S.statementOpen[k] = !S.statementOpen[k]; render(); },
+  'pay-option'(k, el) { if (el.getAttribute('aria-disabled') === 'true') return; S.payOption = k; render(); if (k === 'other') device.querySelector('[data-input="pay-other"]')?.focus(); },
+  'pay-continue'() {
+    const st = feeStatus();
+    S.payAmount = { current: st.current?.owed, next: st.next?.owed, full: st.remaining, other: Math.round(parseFloat(S.payOther) * 1000) / 1000 }[S.payOption];
+    go('make-payment');
+  },
+  'pay-confirm'() {
+    /* Prototype only: no card details are taken and nothing is charged. */
+    const amount = S.payAmount, now = new Date();
+    const ref = String(303000000 + Math.floor(Math.random() * 999999));
+    const date = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' });
+    S.fees.paid += amount;
+    S.fees.transactions.unshift({ date, ref, amount, what: 'Online payment', year: FEES.year });
+    S.lastPayment = { amount, total: amount + FEES.convenienceFee, ref, date: now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) };
+    S.payOption = null; S.payOther = '';
+    S.stack = S.stack.filter(x => x.name !== 'make-payment');
+    go('payment-done');
+  },
   'ann-open'() {
     if (S.annSwiped) { S.annSwiped = false; return; }   // the click that ends a swipe isn't a tap
     const i = S.annIdx; removeAnnouncement(i); S.annEnter = ''; go('announcement', i);
@@ -2017,6 +2309,7 @@ const actions = {
     render();
   },
   'menu-close'() { S.menu = null; render(); },
+  'shop-slide'(dir) { showShopSlide((S.shopSlide || 0) + +dir); },
   'pills-scroll'(dir, el) {
     const row = el.closest('.pills-wrap').querySelector('.pills');
     row.scrollBy({ left: +dir * Math.max(140, row.clientWidth * 0.6), behavior: 'smooth' });
@@ -2084,6 +2377,18 @@ document.querySelector('.proto-bar').addEventListener('click', e => {
 /* Live inputs — update state without a full re-render so focus is kept. */
 /* Photo editor: drag overlays around the canvas; a tap (no movement) selects,
    and tapping selected text reopens it for editing. */
+/* Swipe the shop hero photos left/right. */
+device.addEventListener('pointerdown', e => {
+  if (!e.target.closest('.shop-hero') || e.target.closest('button')) return;
+  const sx = e.clientX;
+  const up = ev => {
+    window.removeEventListener('pointerup', up);
+    const dx = ev.clientX - sx;
+    if (Math.abs(dx) > 50) showShopSlide((S.shopSlide || 0) + (dx < 0 ? 1 : -1));
+  };
+  window.addEventListener('pointerup', up);
+});
+
 /* Swipe the dashboard announcement left/right to move between announcements. */
 device.addEventListener('pointerdown', e => {
   const card = e.target.closest('.announce');
@@ -2142,6 +2447,12 @@ device.addEventListener('pointerdown', e => {
 device.addEventListener('input', e => {
   const el = e.target;
   if (el.id === 'edText') { S.edText.v = el.innerText.replace(/\n$/, ''); return; }
+  if (el.dataset.input === 'pay-other') {
+    S.payOther = el.value.replace(/[^0-9.]/g, '');
+    const v = parseFloat(S.payOther);
+    device.querySelector('#payContinue').disabled = !(v > 0 && v <= feeStatus().remaining);
+    return;
+  }
   if (el.dataset.bind) {
     const [kind, key] = el.dataset.bind.split('.');
     S.draft[kind][key] = el.value;
