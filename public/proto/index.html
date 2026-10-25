@@ -255,6 +255,91 @@ textarea.input:focus { padding: 11px 15px; }
 .brand .logo { width: auto; height: 44px; }
 .welcome h2 { font-size: 32px; line-height: 38px; font-weight: 700; letter-spacing: -.64px; color: #201A26; }
 .welcome p { font-size: 15px; line-height: 22px; color: #6C6572; margin-top: 8px; }
+/* Re-registration */
+.reg .body { justify-content: flex-start; gap: 24px; }
+.reg-card, .reg-form { background: #fff; border: 1px solid var(--line-2); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 12px; flex: none;
+                       font-size: 15px; line-height: 22px; color: var(--ink-900); }
+.reg-form, .reg-lookup { display: flex; flex-direction: column; gap: 16px; }
+.reg-card h3, .reg-form h3 { font-size: 18px; line-height: 24px; font-weight: 600; color: var(--purple); }
+.reg-card ol { padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.reg-card .hint { display: flex; gap: 10px; padding: 12px; border-radius: 12px; background: var(--purple-50); font-size: 14px; line-height: 20px; }
+.reg-card .hint .ic { color: var(--purple); margin-top: 1px; }
+.reg-form label em { color: #C2410C; font-style: normal; }
+.reg-form .help { font-size: 12px; color: var(--ink-2); }
+.reg-form .input[readonly] { background: #F3F1F6; border-color: transparent; color: var(--ink-900); }
+.reg-warn { font-size: 14px; line-height: 20px; font-weight: 600; color: #B42318; }
+.reg-nav { display: flex; gap: 12px; flex: none; padding-bottom: 8px; } .reg-nav .btn { flex: 1; width: auto; }
+.idv-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 14px; flex: none; }
+/* Identity check */
+.idv .body { padding-top: 12px; justify-content: flex-start; position: relative; }
+.idv-row { display: flex; align-items: center; justify-content: space-between; min-height: 40px; flex: none; }
+.lang { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--purple);
+        color: var(--ink-900); font-size: 15px; font-weight: 600; margin-left: auto; }
+.lang .ic { color: var(--purple); }
+.idv-title { font-size: 30px; line-height: 36px; font-weight: 700; letter-spacing: -.4px; color: var(--ink-900); flex: none; }
+.idv-title span { color: var(--purple); }
+.idv-title.small { font-size: 24px; line-height: 30px; }
+.idv-lead { font-size: 19px; font-weight: 500; color: var(--ink-900); flex: none; }
+.idv-opts { display: flex; flex-direction: column; gap: 14px; flex: none; }
+.idv-opt { display: flex; align-items: center; justify-content: space-between; height: 84px; padding: 0 24px; background: #fff; border: 1.5px solid #DCCFF6;
+           border-radius: 20px; font-size: 18px; color: var(--ink-900); transition: border-color .15s, transform .1s; }
+.idv-opt:hover { border-color: var(--purple); } .idv-opt:active { transform: scale(.98); }
+.idv-opt b { font-weight: 600; } .idv-opt .ic, .idv-opt .qr-ic { color: var(--purple); width: 36px; height: 36px; }
+.idv-body { gap: 24px; }
+.idv-who { display: flex; align-items: center; gap: 12px; font-size: 22px; color: var(--ink-2); flex: none; }
+.idv-who b { font-weight: 600; }
+.idv-art { display: grid; place-items: center; flex: 1; color: #6E6880; min-height: 260px; }
+.idv-art .art { width: 200px; height: auto; }
+.idv-art.dim { opacity: .25; filter: blur(2px); }
+.art .card { animation: card-in 2.4s ease-in-out infinite; }
+@keyframes card-in { 0%, 15% { transform: translateY(40px); } 55%, 100% { transform: translateY(0); } }
+.art .beam { fill: var(--purple); opacity: .3; animation: beam 1.6s ease-in-out infinite; }
+@keyframes beam { 0%, 100% { opacity: .15; } 50% { opacity: .5; } }
+.art .qr { stroke: var(--purple); color: var(--purple); }
+.art .phone { transform-box: fill-box; transform-origin: center; animation: phone-in 2.4s ease-in-out infinite; }
+@keyframes phone-in { 0%, 15% { transform: rotate(-12deg) translate(30px, 30px); opacity: .4; } 55%, 100% { transform: rotate(-12deg); opacity: 1; } }
+.idv-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border: 1px solid var(--line-4); border-radius: 18px;
+           background: #fff; font-size: 16px; color: var(--ink-900); text-align: left; flex: none; position: relative; margin: auto 0 18px; }
+.idv-bar[disabled] { justify-content: center; text-align: center; }
+.idv-bar .slot { width: 40px; height: 40px; border: 2px solid var(--purple); border-radius: 10px; flex: none; position: relative; }
+.idv-bar .slot::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: 9px; height: 2px; background: var(--purple); }
+.idv-bar[disabled] .slot { display: none; }
+.idv-bar em { position: absolute; left: 20px; bottom: -22px; font-size: 11px; font-style: normal; color: var(--muted-2); }
+.idv-status { margin: auto; width: 300px; padding: 40px 24px; border: 1px solid var(--line-4); border-radius: 20px; background: #fff; text-align: center;
+              display: flex; flex-direction: column; align-items: center; gap: 14px; flex: none; }
+.idv-status b { font-size: 20px; line-height: 27px; font-weight: 600; color: var(--ink-900); }
+.idv-status span:not(.idv-spin):not(.idv-badge) { font-size: 14px; color: var(--ink-2); margin-top: -8px; }
+.idv-spin { width: 52px; height: 52px; border-radius: 999px; border: 3px solid var(--purple-50); border-top-color: var(--purple); animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.idv-badge { width: 64px; height: 64px; border-radius: 999px; border: 2px solid var(--purple); color: var(--purple); display: grid; place-items: center; }
+.idv-hello { margin: auto; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.idv-hello span:not(.initials) { margin-top: 16px; font-size: 22px; font-weight: 600; color: var(--ink-900); }
+.idv-hello b { font-size: 40px; line-height: 46px; font-weight: 700; color: var(--purple); }
+.idv-hello p { font-size: 15px; color: var(--ink-2); }
+.idv-steps h3 { font-size: 22px; font-weight: 600; color: var(--ink-900); }
+.idv-steps .sub { margin: 4px 0 16px; }
+.idv-steps ol { display: flex; flex-direction: column; gap: 12px; padding-left: 20px; font-size: 16px; line-height: 22px; color: var(--ink-900); }
+.idv-face-head { text-align: center; flex: none; } .idv-face-head b { display: block; font-size: 20px; font-weight: 600; color: var(--ink-900); }
+.idv-face-head span { font-size: 15px; color: var(--ink-2); }
+.idv-face { position: relative; width: 280px; height: 280px; margin: 8px auto; border-radius: 999px; overflow: visible; flex: none; display: grid; place-items: center; }
+.idv-face .ring { position: absolute; inset: -10px; border-radius: 999px; border: 3px dashed #8E889A; }
+.idv-face::before { content: ''; position: absolute; inset: 0; border-radius: 999px; background: #E3E0EA; }
+.idv-face.position::before { background: linear-gradient(#D4D1DC, #B9B5C4); }
+.idv-face.capturing::before { background: #6E6880; } .idv-face.capturing .ring { border: 4px solid var(--purple); }
+.idv-face .clip { position: absolute; inset: 0; border-radius: 999px; overflow: hidden; }
+.idv-face .head, .idv-face .body { position: absolute; left: 50%; transform: translateX(-50%); background: #fff; }
+.idv-face .head { width: 84px; height: 84px; border-radius: 999px; top: 56px; }
+.idv-face .body { width: 190px; height: 110px; border-radius: 95px 95px 0 0; bottom: 0; }
+.idv-face.position .head, .idv-face.position .body { display: none; }
+.idv-face.capturing .head, .idv-face.capturing .body { background: #8E889A; }
+.idv-face .ic { position: relative; color: #fff; }
+.idv-face.position .ring { animation: spin 8s linear infinite; }
+.idv-note { padding: 20px 22px; border: 1px solid var(--line-4); border-radius: 18px; background: #fff; font-size: 18px; line-height: 25px; font-weight: 600; color: var(--ink-900); flex: none; }
+.idv-note.dim { opacity: .3; filter: blur(2px); }
+.idv-modal { position: absolute; left: 28px; right: 28px; top: 50%; transform: translateY(-50%); background: #fff; border-radius: 24px; padding: 36px 24px;
+             box-shadow: 0 20px 50px rgba(0,0,0,.18); display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.idv-modal b { font-size: 22px; font-weight: 600; color: var(--ink-900); } .idv-modal span:not(.idv-spin) { font-size: 15px; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) { .idv .art *, .idv-face .ring, .idv-spin { animation: none !important; } }
 .role-card { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line-3); border-radius: 20px; padding: 20px;
              width: 100%; transition: border-color .15s, box-shadow .15s; }
 .role-card:hover { border-color: var(--purple); box-shadow: 0 8px 24px rgba(43,37,64,.06); }
@@ -952,6 +1037,7 @@ const S = {
   draft: {},               // form drafts for create flows
   created: null,           // last announcement / event created
   toast: null,
+  reg: { civil: '', phone: '', email: '' },
 };
 
 /* ===========================================================================
@@ -1146,7 +1232,91 @@ const screens = {
             </button>
           </div>
         </div>
-        <p class="acct">Don’t have login credentials?<a href="#" data-act="noop">Contact us</a></p>
+        <p class="acct">Don’t have an account yet?<a href="#" data-go="register">Register</a></p>
+      </div>${homeBar()}` };
+  },
+
+  /* ---------- identity check (before the dashboard) ---------- */
+  idv(step = 'welcome') {
+    const top = `<div class="top" style="height:auto;padding-bottom:0">${statusBar()}</div>`;
+    if (step === 'welcome') return { cls: 'login idv', html: `${top}
+      <div class="body" style="gap:28px">
+        <div class="idv-row"><button class="back-btn" data-act="back" aria-label="Back" style="margin-left:-8px">${ic('back', 's40')}</button>
+          <button class="lang" data-act="toast" data-p="العربية — Arabic version coming soon">${ic('ed-text', 's18')}العربي</button></div>
+        <h2 class="idv-title">Welcome to<br><span>The Sunshine Kindergarten</span></h2>
+        <p class="idv-lead">First, let’s get to know you</p>
+        <div class="idv-opts">
+          <button class="idv-opt" data-act="idv-start" data-p="insert"><b>Smart Civil ID</b>${ic('pay-card', 's24')}</button>
+          <button class="idv-opt" data-act="idv-start" data-p="qr"><b>Mobile ID (Hawyti)</b><svg class="qr-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7V4h3M18 4h3v3M21 17v3h-3M6 20H3v-3"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="7" width="4" height="4"/><rect x="7" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/></svg></button>
+        </div>
+        <div class="idv-foot"><button class="btn link" data-go="login">Use email and password instead</button>
+          <p class="acct">New to The Sunshine Kindergarten?<a href="#" data-go="register">Register</a></p></div>
+      </div>${homeBar()}` };
+
+    /* Once the card has been read the kiosk knows who you are, so the name stays on screen. */
+    const who = !['instructions', 'starting', 'position', 'capturing', 'captured', 'almost', 'done'].includes(step)
+      ? '' : `<div class="idv-who">${avatarHtml(S.role === 'teacher' ? 'teacher' : 'parent', 40)}<b>${idvName()}</b></div>`;
+    const head = IDV[step]?.back ? `<div class="idv-row"><button class="back-btn" data-act="back" aria-label="Back" style="margin-left:-8px">${ic('back', 's40')}</button></div>` : '<div class="idv-row"></div>';
+    const welcome = `<h2 class="idv-title small">Welcome to<br><span>The Sunshine Kindergarten</span></h2>`;
+    const status = (icon, title, sub = '') => `<div class="idv-status">${icon}<b>${title}</b>${sub ? `<span>${sub}</span>` : ''}</div>`;
+    const spinner = '<span class="idv-spin" aria-hidden="true"></span>';
+    const bar = (text, next) => `<button class="idv-bar" ${next ? `data-act="idv-next" data-p="${next}"` : 'disabled'}><b>${text}</b><span class="slot"></span>${next ? '<em>Tap to simulate</em>' : ''}</button>`;
+    const face = cls => `<div class="idv-face ${cls}"><span class="ring"></span><span class="clip"><span class="head"></span><span class="body"></span></span>${cls === 'capturing' ? `<i class="ic s24" style="--i:url(${IMG}ed-emoji.svg)"></i>` : ''}</div>`;
+    const views = {
+      insert: `${welcome}<button class="idv-art" data-act="idv-next" data-p="reading" aria-label="Insert card (simulated)">${ART.reader}</button>${bar('Please insert your Civil ID card', 'reading')}`,
+      reading: `${welcome}${status(spinner, 'Reading your Civil ID…')}`,
+      accessing: `${welcome}${status(spinner, 'Accessing your account…')}`,
+      hello: `<div class="idv-hello">${avatarHtml(S.role === 'teacher' ? 'teacher' : 'parent', 88)}<span>Hi,</span><b>${idvName().split(' ')[0]}</b><p>Welcome back to The Sunshine Kindergarten</p></div>`,
+      instructions: `<div class="idv-steps"><h3>Face capture</h3><p class="sub">We’ll take a quick photo to confirm it’s you.</p>
+          <ol><li>Remove glasses, hats and face masks.</li><li>Pull your hair back away from your eyes.</li><li>Centre your face inside the on-screen circle.</li>
+          <li>Look directly into the camera lens, not at the screen.</li><li>Follow the prompts if asked to blink or turn.</li></ol></div>
+        <button class="btn primary" data-act="idv-next" data-p="starting" style="margin-top:auto">I’m ready</button>`,
+      starting: `<div class="idv-face-head"><b>Starting…</b><span>Getting the camera ready.</span></div>${face('starting')}`,
+      position: `<div class="idv-face-head"><b>Position your face</b><span>Move so your face sits inside the circle.</span></div>${face('position')}`,
+      capturing: `${face('capturing')}${bar('Photo capture in progress… Please wait')}`,
+      captured: `${status(`<span class="idv-badge">${ic('check', 's40')}</span>`, 'Photo capture complete')}${bar('Please remove your Civil ID card', 'almost')}`,
+      almost: `${status(spinner, 'Almost done…')}`,
+      qr: `<div class="idv-note">Please scan your Mobile ID (Hawyti) generated QR code now</div>
+        <button class="idv-art" data-act="idv-next" data-p="paci" aria-label="Scan QR code (simulated)">${ART.kiosk}</button>
+        <p class="sub" style="text-align:center">Tap the illustration to simulate scanning</p>`,
+      paci: `<div class="idv-note dim">Please scan your Mobile ID (Hawyti) generated QR code now</div><div class="idv-art dim">${ART.kiosk}</div>
+        <div class="idv-modal">${spinner}<b>Verifying with PACI…</b><span>One moment while we check your Mobile ID</span></div>`,
+      done: `${status(`<span class="idv-badge">${ic('check', 's40')}</span>`, 'Thank you', 'Verification complete.')}
+        <button class="btn primary" data-act="idv-finish" style="margin-top:auto">Continue</button>`,
+    };
+    return { cls: 'login idv', html: `${top}<div class="body idv-body">${head}${who}${views[step]}</div>${homeBar()}` };
+  },
+
+  /* Re-registration, recreated from the school's web form (first page only; Next goes no further). */
+  register() {
+    const r = S.reg, ready = regFound() && /^\S+@\S+\.\S+$/.test(r.email);
+    const steps = ['Verify your identity via Kuwait Mobile ID', 'Upload your Civil ID / Mobile ID', 'Select the child(ren) you wish to re-register',
+      'Review the re-registration fees payable', 'Confirm your agreement to the acknowledgement statements', 'Sign digitally and submit the form',
+      'Settle the re-registration fees using the payment link sent to you by email'];
+    return { cls: 'login reg', html: `
+      <div class="top" style="height:auto;padding-bottom:0">${statusBar()}</div>
+      <div class="body">
+        <div class="brand"><button type="button" data-act="back" aria-label="Back" style="margin-left:-8px">${ic('back', 's40')}</button><img class="logo" src="${IMG}logo-tsk.svg" alt="The Sunshine Kindergarten"></div>
+        <div class="welcome"><h2 style="font-size:28px;line-height:34px">Re-registration</h2><p>For the academic year 2026–27</p></div>
+        <section class="reg-card">
+          <h3>Instructions</h3>
+          <p>This form is for the <b>legal guardian</b> of children who would like to re-register at The Sunshine Kindergarten for the academic year 2026–27.</p>
+          <p>Payment in full of all fees for the academic year 2025–26 is also required in order to proceed.</p>
+          <p>All re-registrations must be submitted through this form, and only the father (or the legal guardian where this is not the father) can complete it:</p>
+          <ol>${steps.map(t => `<li>${t}</li>`).join('')}</ol>
+          <p class="hint">${ic('bell', 's18')}<span>You’ll verify your identity with the Kuwait Mobile ID app, so please make sure its notifications are turned on.</span></p>
+          <p>Questions? Contact the Registrar’s Office.</p>
+        </section>
+        <section class="reg-form">
+          <h3>Father / legal guardian information</h3>
+          <div class="field light"><label>Civil ID number <em>*</em></label><input class="input sm" inputmode="numeric" placeholder="12 digits" value="${esc(r.civil)}" data-input="reg-civil"></div>
+          <div class="field light"><label>Phone number <em>*</em></label><input class="input sm" type="tel" inputmode="numeric" placeholder="8 digits" value="${esc(r.phone)}" data-input="reg-phone"><span class="help">Don’t enter the country code for Kuwaiti numbers</span></div>
+          <div id="regLookup" class="reg-lookup">${regLookup()}</div>
+          <div class="field light"><label>Email address <em>*</em></label><input class="input sm" type="email" placeholder="you@example.com" value="${esc(r.email)}" data-input="reg-email"></div>
+          <p class="reg-warn">In the next step you’ll be asked to verify your identity with the Kuwait Mobile ID app. Please make sure notifications are turned on to receive the request.</p>
+          <p class="sub">Enter a valid Civil ID and phone number combination to continue. If a balance is shown above, please settle the 2025–26 fees first.</p>
+        </section>
+        <div class="reg-nav"><button class="btn outline" data-act="back">Previous</button><button class="btn primary" id="regNext" data-act="toast" data-p="The next step isn’t part of this prototype" ${ready ? '' : 'disabled'}>Next</button></div>
       </div>${homeBar()}` };
   },
 
@@ -1170,7 +1340,7 @@ const screens = {
             <button class="btn primary" type="submit">Log in</button>
           </div>
         </div>
-        <p class="acct">Don’t have login credentials?<a href="#" data-act="noop">Contact us</a></p>
+        <p class="acct">Don’t have an account yet?<a href="#" data-go="register">Register</a></p>
       </form>${homeBar()}` };
   },
 
@@ -1839,6 +2009,47 @@ const screens = {
 };
 
 /* ---------- photo editor ---------- */
+/* Identity check before signing in, based on the in-school kiosk designs (error states left out).
+   Smart Civil ID: card → read → hello → face capture → done. Mobile ID (Hawyti): QR → PACI → done.
+   `auto` steps move on by themselves after `ms`; the others wait for a (simulated) action. */
+const IDV = {
+  insert:       { flow: 'civil', back: true },
+  reading:      { flow: 'civil', auto: 'accessing', ms: 1600 },
+  accessing:    { flow: 'civil', auto: 'hello', ms: 1400 },
+  hello:        { flow: 'civil', auto: 'instructions', ms: 1900 },
+  instructions: { flow: 'civil' },
+  starting:     { flow: 'civil', auto: 'position', ms: 1400 },
+  position:     { flow: 'civil', auto: 'capturing', ms: 2200 },
+  capturing:    { flow: 'civil', auto: 'captured', ms: 1700 },
+  captured:     { flow: 'civil' },
+  almost:       { flow: 'civil', auto: 'done', ms: 1400 },
+  qr:           { flow: 'mobile', back: true },
+  paci:         { flow: 'mobile', auto: 'done', ms: 2200 },
+  done:         { flow: 'both' },
+};
+/* Registration lookup: any 12-digit Civil ID plus an 8-digit phone "finds" the guardian. */
+const regFound = () => /^\d{12}$/.test(S.reg.civil) && /^\d{8}$/.test(S.reg.phone);
+const regLookup = () => `
+  <div class="field light"><label>Legal guardian</label><input class="input sm" readonly tabindex="-1" value="${regFound() ? 'Siobhan Smith' : ''}"></div>
+  <div class="field light"><label>Current balance</label><input class="input sm" readonly tabindex="-1" value="${regFound() ? 'KD 0.000 · nothing outstanding' : ''}"></div>`;
+const idvName = () => S.role === 'teacher' ? 'Claire McKay' : 'Siobhan Smith';
+/* Simple line illustrations in the app's colours (not the kiosk artwork). */
+const ART = {
+  reader: `<svg class="art reader" viewBox="0 0 220 260" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" aria-hidden="true">
+      <rect x="20" y="10" width="180" height="110" rx="18"/><path d="M20 100v18a16 16 0 0 0 16 16h148a16 16 0 0 0 16-16v-18"/>
+      <g class="card"><rect x="52" y="122" width="116" height="128" rx="10" fill="#fff"/><rect x="128" y="138" width="24" height="30" rx="6"/>
+        <path d="M70 140v80M82 140v70" stroke-width="2" stroke-dasharray="3 3"/></g>
+      <path d="M40 124h140" stroke-width="5"/></svg>`,
+  kiosk: `<svg class="art kiosk" viewBox="0 0 240 300" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20 20a14 14 0 0 1 14-14h120a14 14 0 0 1 14 14v210a50 50 0 0 1-50 50H70a50 50 0 0 1-50-50Z"/>
+      <rect x="34" y="20" width="120" height="130" rx="10"/><rect x="62" y="176" width="64" height="14" rx="7" stroke-width="3"/>
+      <path class="beam" d="M70 192h48l34 50h-116Z" stroke="none"/>
+      <g class="phone" transform="rotate(-12 170 220)"><rect x="130" y="150" width="84" height="146" rx="14" fill="#fff"/>
+        <path d="M160 160h24" stroke-width="3" stroke-linecap="round"/>
+        <g class="qr" stroke-width="3"><rect x="146" y="184" width="20" height="20"/><rect x="178" y="184" width="20" height="20"/><rect x="146" y="216" width="20" height="20"/>
+          <path d="M178 216h8v8h-8zM190 228h8v8h-8z" fill="currentColor"/></g></g></svg>`,
+};
+
 /* School fees for the 2026-2027 year (prototype figures, Kuwaiti dinar). The statement totals
    4,600.000 = school fees 4,140 + learning resources 580 − deductions 120, paid in four instalments. */
 const FEES = {
@@ -2060,6 +2271,9 @@ function render() {
   S.toast = null;
   document.querySelectorAll('#roleSeg button').forEach(b => b.classList.toggle('on', b.dataset.role === S.role));
   enhancePills(keepPills);
+  clearTimeout(S.idvTimer);
+  const idvStep = cur().name === 'idv' && IDV[cur().p];
+  if (idvStep?.auto) S.idvTimer = setTimeout(() => cur().name === 'idv' && actions['idv-next'](idvStep.auto), idvStep.ms);
   const t = device.querySelector('#thread'); if (t) t.scrollTop = t.scrollHeight;
   const ed = device.querySelector('#edText');
   if (ed) { ed.focus(); const r = document.createRange(); r.selectNodeContents(ed); r.collapse(false); getSelection().removeAllRanges(); getSelection().addRange(r); }
@@ -2193,7 +2407,11 @@ function sheetHtml() {
 =========================================================================== */
 const actions = {
   restart() { S.role = null; S.stack = [{ name: 'roles' }]; S.dir = 'back'; render(); },
-  pick(p) { S.role = p; go('login'); },
+  pick(p) { S.role = p; go('idv', 'welcome'); },
+  'idv-start'(step) { go('idv', step); },
+  /* Later steps replace the current one, so Back always returns to the choice screen. */
+  'idv-next'(step) { S.stack[S.stack.length - 1] = { name: 'idv', p: step }; S.dir = 'fwd'; render(); },
+  'idv-finish'() { signIn(S.role); },
   logout() { actions.restart(); },
   back, noop() {},
   peek() { const pw = device.querySelector('#pw'); pw.type = pw.type === 'password' ? 'text' : 'password'; },
@@ -2460,6 +2678,13 @@ device.addEventListener('input', e => {
     device.querySelector('#createBtn').disabled = !formValid(kind);
   }
   if (el.dataset.input === 'obs-text') { S.draft.obs.text = el.value; device.querySelector('#obsCount').textContent = `${el.value.length} / 240`; }
+  if (el.dataset.input?.startsWith('reg-')) {
+    const k = el.dataset.input.slice(4), was = regFound();
+    S.reg[k] = k === 'email' ? el.value.trim() : el.value.replace(/\D/g, '').slice(0, k === 'civil' ? 12 : 8);
+    if (k !== 'email' && el.value !== S.reg[k]) el.value = S.reg[k];
+    if (regFound() !== was) device.querySelector('#regLookup').innerHTML = regLookup();
+    device.querySelector('#regNext').disabled = !(regFound() && /^\S+@\S+\.\S+$/.test(S.reg.email));
+  }
   if (el.dataset.input === 'contact-q') device.querySelector('#contactList').innerHTML = contactRows(el.value);
   if (el.dataset.input === 'roster-q') { S.rosterQ = el.value; device.querySelector('#rosterList').innerHTML = rosterGroups(); }
 });
@@ -2528,6 +2753,10 @@ const qs = new URLSearchParams(location.search).get('role');
 if (qs === 'parent' || qs === 'teacher') { S.role = qs; S.stack = [{ name: 'dashboard' }]; S.tour = tourSeen(qs) ? null : 0; }
 else S.stack = [{ name: 'roles' }];
 render();
+/* ?scene=<id> opens one exported screen state (see scenes.js); used for screenshots. */
+if (new URLSearchParams(location.search).has('scene')) {
+  const sc = document.createElement('script'); sc.src = 'scenes.js'; document.body.append(sc);
+}
 </script>
 </body>
 </html>
