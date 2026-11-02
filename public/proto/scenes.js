@@ -28,7 +28,7 @@ const SCENES = [
     run() { parent([{ name: 'term-dates' }]); } },
   { id: 'p-uniform-hero', flow: 'Parent · Home & services', title: 'School uniform', note: 'Services › Uniform',
     run() { parent([{ name: 'uniform-shop' }]); } },
-  { id: 'p-uniform-signin', flow: 'Parent · Home & services', title: 'Uniform sign-in', note: 'Embedded school shop login',
+  { id: 'p-uniform-signin', flow: 'Parent · Home & services', title: 'Shop', note: 'Blank for now',
     run() { parent([{ name: 'uniform-shop' }, { name: 'webview', p: 'Uniform' }]); } },
   { id: 'p-late-club', flow: 'Parent · Home & services', title: 'Late club', note: 'Services › Late club',
     run() { parent([{ name: 'late-club' }]); } },

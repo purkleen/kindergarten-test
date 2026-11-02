@@ -851,6 +851,8 @@ textarea.input:focus { padding: 11px 15px; }
 .acc-head span { font-size: 14px; color: var(--ink-2); }
 .acc-head .chev { transition: transform .2s; } .acc.open .chev { transform: rotate(180deg); }
 .acc-body { border-top: 1px solid var(--line); padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+.acc-body .kid-line { align-items: center; justify-content: flex-start; }
+.acc-body .kid-line span { flex: 1; color: var(--ink-900); display: flex; flex-direction: column; } .acc-body small { font-size: 12px; color: var(--ink-2); }
 .acc-body span { color: var(--ink-2); } .acc-body b { font-weight: 600; color: var(--ink-900); }
 .totals, .pay-lines { background: var(--purple-50); border: 1px solid #DCCFF6; border-radius: var(--r-lg); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; flex: none; font-size: 15px; }
 .totals span, .pay-lines span { color: var(--ink-2); } .totals b, .pay-lines b { font-weight: 600; color: var(--ink-900); }
@@ -891,11 +893,6 @@ textarea.input:focus { padding: 11px 15px; }
 .hero-nav .dashes i { width: 36px; height: 4px; border-radius: 9px; background: rgba(255,255,255,.45); transition: background .3s; }
 .hero-nav .dashes i.on { background: #fff; }
 
-/* School uniform: the embedded login page cropped to its sign-in card */
-.signin-crop { position: relative; width: 352px; height: 442px; flex: none; border-radius: 24px; overflow: hidden; background: #fff;
-               box-shadow: 0 8px 24px rgba(0,0,0,.06); }
-.signin-crop iframe { position: absolute; left: -16px; top: -120px; width: 384px; height: 900px; border: 0; }
-.signin-loading { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; color: var(--ink-2); }
 .webview { flex: 1; display: grid; place-items: center; font-size: 24px; font-weight: 700; color: var(--ink-900); }
 </style>
 </head>
@@ -1243,14 +1240,15 @@ const screens = {
       <div class="body" style="gap:28px">
         <div class="idv-row"><button class="back-btn" data-act="back" aria-label="Back" style="margin-left:-8px">${ic('back', 's40')}</button>
           <button class="lang" data-act="toast" data-p="العربية — Arabic version coming soon">${ic('ed-text', 's18')}العربي</button></div>
-        <h2 class="idv-title">Welcome to<br><span>The Sunshine Kindergarten</span></h2>
-        <p class="idv-lead">First, let’s get to know you</p>
+        ${S.stack[0].name === 'roles'
+          ? `<h2 class="idv-title">Welcome to<br><span>The Sunshine Kindergarten</span></h2><p class="idv-lead">First, let’s get to know you</p>`
+          : `<h2 class="idv-title">Verify your<br><span>identity</span></h2><p class="idv-lead">Choose how to confirm it’s you</p>`}
         <div class="idv-opts">
           <button class="idv-opt" data-act="idv-start" data-p="insert"><b>Smart Civil ID</b>${ic('pay-card', 's24')}</button>
           <button class="idv-opt" data-act="idv-start" data-p="qr"><b>Mobile ID (Hawyti)</b><svg class="qr-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7V4h3M18 4h3v3M21 17v3h-3M6 20H3v-3"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="7" width="4" height="4"/><rect x="7" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/></svg></button>
         </div>
-        <div class="idv-foot"><button class="btn link" data-go="login">Use email and password instead</button>
-          <p class="acct">New to The Sunshine Kindergarten?<a href="#" data-go="register">Register</a></p></div>
+        ${S.stack[0].name === 'roles' ? `<div class="idv-foot"><button class="btn link" data-go="login">Use email and password instead</button>
+          <p class="acct">New to The Sunshine Kindergarten?<a href="#" data-go="register">Register</a></p></div>` : ''}
       </div>${homeBar()}` };
 
     /* Once the card has been read the kiosk knows who you are, so the name stays on screen. */
@@ -1541,7 +1539,7 @@ const screens = {
           <button class="opt" data-go="announcements"><div class="head"><div class="tg"><div class="badge">${ic('megaphone', 's20')}</div><div><div class="t">Announcements</div><div class="st">2 current announcements</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Manage current and past notices.</div></button>
           <button class="opt" data-go="roster"><div class="head"><div class="tg"><div class="badge">${ic('contact-round', 's20')}</div><div><div class="t">Children</div><div class="st">18 children across 3 groups</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Search your roster and narrow it down by group.</div></button>
         </div>
-        ${accountMenu(['Notifications', 'Calendar', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}
+        ${accountMenu(['Notifications', 'Calendar', 'App tour', 'Password management', 'Verify identity', 'Advanced settings', 'Log out'])}
       </div>${homeBar()}` };
 
     return { html: `
@@ -1556,7 +1554,7 @@ const screens = {
             </button>`).join('')}
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;flex:none"><div class="h2">Your account</div>
-          ${accountMenu(['Payments', 'Notifications settings', 'Calendar', 'Family members', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}</div>
+          ${accountMenu(['Payments', 'Notifications settings', 'Calendar', 'Family members', 'App tour', 'Password management', 'Verify identity', 'Advanced settings', 'Log out'])}</div>
       </div>${homeBar()}` };
   },
 
@@ -1802,7 +1800,7 @@ const screens = {
           <section class="acc ${S.statementOpen[sec.key] ? 'open' : ''}">
             <button class="acc-head" data-act="statement-toggle" data-p="${sec.key}" aria-expanded="${!!S.statementOpen[sec.key]}">
               ${ic(sec.icon, 's20')}<b>${sec.label}</b><span>${kd(sum(sec))}</span><i class="ic s16 chev" style="--i:url(${IMG}chevron-down.svg)"></i></button>
-            ${S.statementOpen[sec.key] ? `<div class="acc-body">${sec.lines.map(([l, v]) => `<div><span>${l}</span><b>${kd(v)}</b></div>`).join('')}</div>` : ''}
+            ${S.statementOpen[sec.key] ? `<div class="acc-body">${sec.lines.map(([k, v, note]) => `<div class="kid-line"><img class="avatar" src="${IMG}${CHILDREN[k].avatar}" width="28" height="28" alt=""><span>${CHILDREN[k].full}${note ? `<small>${note}</small>` : ''}</span><b>${kd(v)}</b></div>`).join('')}</div>` : ''}
           </section>`).join('')}
         <section class="totals">
           <div><span>Total fees</span><b>${kd(FEES.total)}</b></div>
@@ -1862,7 +1860,7 @@ const screens = {
       </div>${homeBar()}` };
   },
 
-  /* ---------- School uniform: full-screen shop hero, then the sign-in card ---------- */
+  /* ---------- School uniform: full-screen shop hero, then the (blank for now) shop ---------- */
   'uniform-shop'() {
     const i = S.shopSlide || 0;
     return { cls: 'shop-hero', html: `
@@ -1872,7 +1870,7 @@ const screens = {
         <div class="titlebar"><button class="glass-btn" data-act="back" aria-label="Back">${ic('back', 's40')}</button></div></div>
       <div class="hero-copy">
         <h2>The Royal Scot Online</h2>
-        <button class="shop-cta" data-go="webview" data-p="Uniform">Sign in to shop now</button>
+        <button class="shop-cta" data-go="webview" data-p="Uniform">Shop now</button>
       </div>
       <div class="hero-nav">
         <button data-act="shop-slide" data-p="-1" aria-label="Previous photo">←</button>
@@ -1908,18 +1906,8 @@ const screens = {
       <div class="body" style="gap:16px"><div class="big-title" style="font-size:24px">Important contacts</div><div class="list">${contactRows()}</div></div>${homeBar()}` };
   },
   webview(title = 'Uniform') {
-    /* Uniform shows only the sign-in card of the school shop's login page. The page is another
-       site, so it can't be edited: the embed is laid out at the card's measured mobile size
-       (384px wide, card 352×442 at 16,120) and cropped to the card. */
-    if (title === 'Uniform') return { html: `
-      ${topBack('School uniform')}
-      <div class="body" style="padding-top:24px;align-items:center">
-        <div class="signin-crop">
-          <div class="signin-loading">Loading sign-in…</div>
-          <iframe src="https://royalscot.bsk.edu.kw/login" title="Sign in to your parent account — royalscot.bsk.edu.kw"
-                  scrolling="no" referrerpolicy="strict-origin-when-cross-origin" onload="this.previousElementSibling.remove()"></iframe>
-        </div>
-      </div>${homeBar()}` };
+    /* The shop itself is a placeholder for now. */
+    if (title === 'Uniform') return { html: `${topBack('School uniform')}<div class="body"></div>${homeBar()}` };
     return { html: `${topBack(title)}<div class="webview">Web view</div>${homeBar()}` };
   },
 
@@ -2051,14 +2039,15 @@ const ART = {
 };
 
 /* School fees for the 2026-2027 year (prototype figures, Kuwaiti dinar). The statement totals
-   4,600.000 = school fees 4,140 + learning resources 580 − deductions 120, paid in four instalments. */
+   4,600.000 = school fees 4,140 + learning resources 580 − deductions 120, paid in four instalments.
+   Statement lines are per child: [child key, amount, optional note]. */
 const FEES = {
   year: '2026-2027',
   total: 4600,
   statement: [
-    { key: 'school', label: 'School fees', icon: 'pay-card', lines: [['Term 1 tuition', 1380], ['Term 2 tuition', 1380], ['Term 3 tuition', 1380]] },
-    { key: 'learning', label: 'Learning resources', icon: 'notebook-pen', lines: [['Books & materials', 320], ['Digital learning', 200], ['Lunch club · 12 days', 60]] },
-    { key: 'deductions', label: 'Deductions', icon: 'minus-circle', lines: [['Sibling discount', -120]] },
+    { key: 'school', label: 'School fees', icon: 'pay-card', lines: [['emma', 2070], ['christopher', 2070]] },
+    { key: 'learning', label: 'Learning resources', icon: 'notebook-pen', lines: [['emma', 320], ['christopher', 260]] },
+    { key: 'deductions', label: 'Deductions', icon: 'minus-circle', lines: [['christopher', -120, 'Sibling discount']] },
   ],
   instalments: [
     { label: 'Instalment 1', due: '2 Sep 2026', amount: 1150 },
@@ -2151,8 +2140,8 @@ function rosterGroups() {
 }
 function accountMenu(items) {
   const icons = { 'Notifications': 'menu-bell', 'Notifications settings': 'menu-bell', 'Calendar': 'menu-calendar', 'Family members': 'menu-family', 'Password management': 'menu-password', 'Advanced settings': 'menu-settings', 'Log out': 'menu-logout' };
-  icons['App tour'] = 'sparkles'; icons['Payments'] = 'pay-card';
-  const go = { 'Payments': 'data-act="fees-open" data-p="pay"', 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Log out': 'data-act="logout"' };
+  icons['App tour'] = 'sparkles'; icons['Verify identity'] = 'contact-round'; icons['Payments'] = 'pay-card';
+  const go = { 'Payments': 'data-act="fees-open" data-p="pay"', 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Verify identity': 'data-go="idv" data-p="welcome"', 'Log out': 'data-act="logout"' };
   return `<div class="menu">${items.map(t => `<button ${go[t] || 'data-act="toast" data-p="Coming soon in the prototype"'}>${ic(icons[t], 's20')}${t}</button>`).join('')}</div>`;
 }
 /* Dashboard announcements: swipe between the ones still showing; ✕ or opening one removes it. */
@@ -2407,11 +2396,16 @@ function sheetHtml() {
 =========================================================================== */
 const actions = {
   restart() { S.role = null; S.stack = [{ name: 'roles' }]; S.dir = 'back'; render(); },
-  pick(p) { S.role = p; go('idv', 'welcome'); },
+  pick(p) { S.role = p; go('login'); },
   'idv-start'(step) { go('idv', step); },
   /* Later steps replace the current one, so Back always returns to the choice screen. */
   'idv-next'(step) { S.stack[S.stack.length - 1] = { name: 'idv', p: step }; S.dir = 'fwd'; render(); },
-  'idv-finish'() { signIn(S.role); },
+  /* Opened from the profile menu: finishing returns there instead of signing in again. */
+  'idv-finish'() {
+    if (S.stack[0].name === 'roles') return signIn(S.role);
+    while (cur().name === 'idv') S.stack.pop();
+    S.dir = 'back'; S.toast = 'Identity verified'; render();
+  },
   logout() { actions.restart(); },
   back, noop() {},
   peek() { const pw = device.querySelector('#pw'); pw.type = pw.type === 'password' ? 'text' : 'password'; },
