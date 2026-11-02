@@ -30,7 +30,7 @@ const SCENES = [
     run() { parent([{ name: 'uniform-shop' }]); } },
   { id: 'p-uniform-signin', flow: 'Parent · Home & services', title: 'Uniform sign-in', note: 'Embedded school shop login',
     run() { parent([{ name: 'uniform-shop' }, { name: 'webview', p: 'Uniform' }]); } },
-  { id: 'p-late-club', flow: 'Parent · Home & services', title: 'Late club', note: 'Services › Late Club',
+  { id: 'p-late-club', flow: 'Parent · Home & services', title: 'Late club', note: 'Services › Late club',
     run() { parent([{ name: 'late-club' }]); } },
   { id: 'p-contacts', flow: 'Parent · Home & services', title: 'Important contacts', note: 'Services › Contacts',
     run() { parent([{ name: 'important-contacts' }]); } },

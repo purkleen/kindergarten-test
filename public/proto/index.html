@@ -1014,7 +1014,7 @@ const S = {
     /* TSK (the home office) posts kindergarten-wide news only — never about individual children. */
     { id: 'p1', by: 'office',  group: 'Whole kindergarten', ago: '3h ago', title: 'Harvest Festival · Friday 3 October',
       text: 'Join us in the garden from 2pm for our Harvest Festival! The children will sing, show off their veggie art and help press apple juice for everyone. 🍎 Please bring a tin or packet for the local food bank if you can.', photo: 'photo-autumn.jpg', likes: 12 },
-    { id: 'p2', by: 'teacher', group: 'Sunflower room', ago: '5h ago', title: 'Ball pit afternoon', text: 'Ball pit adventures in the Late Club room this afternoon — lots of giggles and brilliant turn-taking! 🟡🔴🔵', photo: 'photo-lateclub.jpg', likes: 2 },
+    { id: 'p2', by: 'teacher', group: 'Sunflower room', ago: '5h ago', title: 'Ball pit afternoon', text: 'Ball pit adventures in the Late club room this afternoon — lots of giggles and brilliant turn-taking! 🟡🔴🔵', photo: 'photo-lateclub.jpg', likes: 2 },
     { id: 'p3', by: 'parker',  group: 'Acorn room',     ago: 'Yesterday', text: LOREM, photo: 'photo-easel.jpg', likes: 4 },
     { id: 'p4', by: 'teacher', group: 'Sunflower room', ago: '2 days ago', title: 'Block towers', text: 'We built the tallest block tower yet — 14 blocks before it wobbled over! Counting, balancing and lots of teamwork. 🧱', photo: 'photo-blocks.jpg', likes: 6 },
     { id: 'p5', by: 'diaz',    group: 'Acorn room',     ago: '3 weeks ago', past: true, title: 'First day of Autumn', text: 'Thanks to everyone who joined our leaf walk — the children collected over 40 different leaves! 🍂', photo: 'photo-autumn.jpg', likes: 9 },
@@ -1402,9 +1402,9 @@ const screens = {
         <section class="svc" aria-label="Services">
           ${[
             ['Term dates', 'svc-term',      'var(--sky)',       'data-go="term-dates"'],
-            ['Uniform',    'svc-uniform',   'var(--purple-50)', 'data-go="uniform-shop"'],
+            ['Shop',       'svc-uniform',   'var(--purple-50)', 'data-go="uniform-shop"'],
             ['Transport',  'svc-transport', 'var(--peach)',     'data-go="webview" data-p="Bus"'],
-            ['Late Club',  'svc-lateclub',  'var(--green-bg)',  'data-go="late-club"'],
+            ['Late club',  'svc-lateclub',  'var(--green-bg)',  'data-go="late-club"'],
             ['Contacts',   'svc-contacts',  'var(--blush)',     'data-go="important-contacts"'],
             ['More',       'more',          'var(--yellow)',    'data-act="toast" data-p="More services are coming soon"'],
           ].map(([label, icon, bg, attrs]) => `<button class="svc-tile" ${attrs}><span class="sq" style="background:${bg}">${ic(icon, 's20')}</span>${label}</button>`).join('')}
@@ -1900,7 +1900,7 @@ const screens = {
         <img class="hero" src="${IMG}photo-lateclub.jpg" style="height:240px;border:1px solid var(--line-4)" alt="">
         <div class="big-title">Late club</div>
         <p class="prose dim">Fusce sollicitudin tincidunt odio a mollis. Nullam consectetur est ut nunc imperdiet, ut ullamcorper ante cursus. Nunc ultrices vitae urna non mattis. Cras gravida auctor orci a consectetur. Fusce auctor velit ac libero convallis maximus. Mauris purus lacus, egestas quis efficitur mollis, volutpat eget mi.</p>
-        <button class="btn primary" data-act="toast" data-p="You’re registered for Late Club 🎉" style="margin-top:auto">Register to late club</button>
+        <button class="btn primary" data-act="toast" data-p="You’re registered for Late club 🎉" style="margin-top:auto">Register to late club</button>
       </div>${homeBar()}` };
   },
   'important-contacts'() {
