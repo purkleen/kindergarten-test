@@ -348,7 +348,9 @@ textarea.input:focus { padding: 11px 15px; }
 .role-card .ic { color: var(--muted); margin-left: auto; }
 .pw { position: relative; }
 .pw .eye { position: absolute; right: 12px; top: 4px; width: 44px; height: 44px; display: grid; place-items: center; color: #352D40; }
-.forgot { font-size: 14px; font-weight: 600; color: var(--purple); text-decoration: underline; text-align: right; display: block; margin-top: 10px; }
+.forgot { font-size: 13px; line-height: 20px; font-weight: 600; color: var(--purple); text-decoration: underline; }
+.lbl-row { display: flex; align-items: baseline; justify-content: space-between; height: 20px; }
+.lbl-row label { font-weight: 400; line-height: 20px; color: var(--tag-ink); }
 .acct { text-align: center; font-size: 15px; color: #6C6572; }
 .acct a { font-size: 14px; font-weight: 600; color: var(--purple); margin-left: 6px; }
 
@@ -1232,7 +1234,6 @@ const screens = {
             </button>
           </div>
         </div>
-        <p class="acct">Don’t have an account yet?<a href="#" data-go="register">Register</a></p>
       </div>${homeBar()}` };
   },
 
@@ -1250,8 +1251,7 @@ const screens = {
           <button class="idv-opt" data-act="idv-start" data-p="insert"><b>Smart Civil ID</b>${ic('pay-card', 's24')}</button>
           <button class="idv-opt" data-act="idv-start" data-p="qr"><b>Mobile ID (Hawyti)</b><svg class="qr-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7V4h3M18 4h3v3M21 17v3h-3M6 20H3v-3"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="7" width="4" height="4"/><rect x="7" y="13" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/></svg></button>
         </div>
-        ${S.stack[0].name === 'roles' ? `<div class="idv-foot"><button class="btn link" data-go="login">Use email and password instead</button>
-          <p class="acct">New to The Sunshine Kindergarten?<a href="#" data-go="register">Register</a></p></div>` : ''}
+        ${S.stack[0].name === 'roles' ? `<div class="idv-foot"><button class="btn link" data-go="login">Use email and password instead</button></div>` : ''}
       </div>${homeBar()}` };
 
     /* Once the card has been read the kiosk knows who you are, so the name stays on screen. */
@@ -1332,16 +1332,15 @@ const screens = {
           <div style="display:flex;flex-direction:column;gap:16px">
             <div class="field light"><label style="font-size:13px">Email</label><input class="input sm" type="email" value="${email}" placeholder="you@example.com"></div>
             <div>
-              <div class="field light pw"><label style="font-size:13px">Password</label>
+              <div class="field light pw">
+                <div class="lbl-row"><label for="pw" style="font-size:13px">Password</label><a class="forgot" href="#" data-act="noop">Forgot password?</a></div>
                 <input class="input sm" type="password" value="sunshine01" id="pw">
                 <button type="button" class="eye" data-act="peek" style="top:31px" aria-label="Show password">${ic('eye', 's20')}</button>
               </div>
-              <a class="forgot" href="#" data-act="noop">Forgot password?</a>
             </div>
             <button class="btn primary" type="submit">Log in</button>
           </div>
         </div>
-        <p class="acct">Don’t have an account yet?<a href="#" data-go="register">Register</a></p>
       </form>${homeBar()}` };
   },
 
