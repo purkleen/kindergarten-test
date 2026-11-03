@@ -642,6 +642,9 @@ textarea.input:focus { padding: 11px 15px; }
 .menu { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; flex: none; }
 .menu button { display: flex; align-items: center; gap: 12px; padding: 12px 16px; width: 100%; font-size: 14px; line-height: 20px; font-weight: 600; color: #2E2545; }
 .menu button + button { border-top: 1px solid var(--line); }
+.svc-list button { padding: 12px 16px; font-size: 15px; }
+.svc-list .sq { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; color: var(--ink-900); flex: none; }
+.svc-list .t { flex: 1; text-align: left; } .svc-list > button > .ic:last-child { color: var(--ink-2); }
 .menu button:hover { background: #fdfcff; }
 
 .contact { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #fff; width: 100%; }
@@ -1398,14 +1401,7 @@ const screens = {
                                 : `<div class="lines"><div><span>Already paid</span><b>${kd(c.amount - c.owed)}</b></div></div>`}
         </section>`; })()}
         <section class="svc" aria-label="Services">
-          ${[
-            ['Term dates', 'svc-term',      'var(--sky)',       'data-go="term-dates"'],
-            ['Shop',       'svc-uniform',   'var(--purple-50)', 'data-go="uniform-shop"'],
-            ['Transport',  'svc-transport', 'var(--peach)',     'data-go="webview" data-p="Bus"'],
-            ['Late club',  'svc-lateclub',  'var(--green-bg)',  'data-go="late-club"'],
-            ['Contacts',   'svc-contacts',  'var(--blush)',     'data-go="important-contacts"'],
-            ['More',       'more',          'var(--yellow)',    'data-act="toast" data-p="More services are coming soon"'],
-          ].map(([label, icon, bg, attrs]) => `<button class="svc-tile" ${attrs}><span class="sq" style="background:${bg}">${ic(icon, 's20')}</span>${label}</button>`).join('')}
+          ${[...SERVICES.slice(0, 5), ['More', 'more', 'var(--yellow)', 'data-go="services"']].map(([label, icon, bg, attrs]) => `<button class="svc-tile" ${attrs}><span class="sq" style="background:${bg}">${ic(icon, 's20')}</span>${label}</button>`).join('')}
         </section>
         ${eventsCard()}
         <section class="card" style="flex:none">
@@ -1539,7 +1535,7 @@ const screens = {
           <button class="opt" data-go="announcements"><div class="head"><div class="tg"><div class="badge">${ic('megaphone', 's20')}</div><div><div class="t">Announcements</div><div class="st">2 current announcements</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Manage current and past notices.</div></button>
           <button class="opt" data-go="roster"><div class="head"><div class="tg"><div class="badge">${ic('contact-round', 's20')}</div><div><div class="t">Children</div><div class="st">18 children across 3 groups</div></div></div><span class="arrow">${ic('arrow-up-right', 's18')}</span></div><div class="desc">Search your roster and narrow it down by group.</div></button>
         </div>
-        ${accountMenu(['Notifications', 'Calendar', 'App tour', 'Password management', 'Verify identity', 'Advanced settings', 'Log out'])}
+        ${accountMenu(['Notifications', 'Calendar', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}
       </div>${homeBar()}` };
 
     return { html: `
@@ -1554,7 +1550,7 @@ const screens = {
             </button>`).join('')}
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;flex:none"><div class="h2">Your account</div>
-          ${accountMenu(['Payments', 'Notifications settings', 'Calendar', 'Family members', 'App tour', 'Password management', 'Verify identity', 'Advanced settings', 'Log out'])}</div>
+          ${accountMenu(['Payments', 'Notifications settings', 'Calendar', 'Family members', 'App tour', 'Password management', 'Advanced settings', 'Log out'])}</div>
       </div>${homeBar()}` };
   },
 
@@ -1901,6 +1897,11 @@ const screens = {
         <button class="btn primary" data-act="toast" data-p="You’re registered for Late club 🎉" style="margin-top:auto">Register to late club</button>
       </div>${homeBar()}` };
   },
+  services() {
+    return { html: `${topBack('Services')}
+      <div class="body" style="gap:16px"><div class="menu svc-list">${SERVICES.map(([label, icon, bg, attrs]) =>
+        `<button ${attrs}><span class="sq" style="background:${bg}">${ic(icon, 's20')}</span><span class="t">${label}</span>${ic('chevron-right', 's16')}</button>`).join('')}</div></div>${homeBar()}` };
+  },
   'important-contacts'() {
     return { html: `${topBack('Contacts')}
       <div class="body" style="gap:16px"><div class="big-title" style="font-size:24px">Important contacts</div><div class="list">${contactRows()}</div></div>${homeBar()}` };
@@ -2038,6 +2039,17 @@ const ART = {
           <path d="M178 216h8v8h-8zM190 228h8v8h-8z" fill="currentColor"/></g></g></svg>`,
 };
 
+/* Parent services: the dashboard shows the first five plus More; the Services screen lists them all. */
+const SERVICES = [
+  ['Term dates', 'svc-term',      'var(--sky)',       'data-go="term-dates"'],
+  ['Shop',       'svc-uniform',   'var(--purple-50)', 'data-go="uniform-shop"'],
+  ['Transport',  'svc-transport', 'var(--peach)',     'data-go="webview" data-p="Bus"'],
+  ['Late club',  'svc-lateclub',  'var(--green-bg)',  'data-go="late-club"'],
+  ['Contacts',   'svc-contacts',  'var(--blush)',     'data-go="important-contacts"'],
+  ['Re-registration', 'svc-reregister', 'var(--yellow)', 'data-go="register"'],
+  ['Secure access registration', 'svc-shield', 'var(--sky)', 'data-go="idv" data-p="welcome"'],
+];
+
 /* School fees for the 2026-2027 year (prototype figures, Kuwaiti dinar). The statement totals
    4,600.000 = school fees 4,140 + learning resources 580 − deductions 120, paid in four instalments.
    Statement lines are per child: [child key, amount, optional note]. */
@@ -2140,8 +2152,8 @@ function rosterGroups() {
 }
 function accountMenu(items) {
   const icons = { 'Notifications': 'menu-bell', 'Notifications settings': 'menu-bell', 'Calendar': 'menu-calendar', 'Family members': 'menu-family', 'Password management': 'menu-password', 'Advanced settings': 'menu-settings', 'Log out': 'menu-logout' };
-  icons['App tour'] = 'sparkles'; icons['Verify identity'] = 'contact-round'; icons['Payments'] = 'pay-card';
-  const go = { 'Payments': 'data-act="fees-open" data-p="pay"', 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Verify identity': 'data-go="idv" data-p="welcome"', 'Log out': 'data-act="logout"' };
+  icons['App tour'] = 'sparkles'; icons['Payments'] = 'pay-card';
+  const go = { 'Payments': 'data-act="fees-open" data-p="pay"', 'Notifications': 'data-go="notifications"', 'Calendar': 'data-go="calendar"', 'App tour': 'data-act="tour"', 'Log out': 'data-act="logout"' };
   return `<div class="menu">${items.map(t => `<button ${go[t] || 'data-act="toast" data-p="Coming soon in the prototype"'}>${ic(icons[t], 's20')}${t}</button>`).join('')}</div>`;
 }
 /* Dashboard announcements: swipe between the ones still showing; ✕ or opening one removes it. */
@@ -2400,7 +2412,7 @@ const actions = {
   'idv-start'(step) { go('idv', step); },
   /* Later steps replace the current one, so Back always returns to the choice screen. */
   'idv-next'(step) { S.stack[S.stack.length - 1] = { name: 'idv', p: step }; S.dir = 'fwd'; render(); },
-  /* Opened from the profile menu: finishing returns there instead of signing in again. */
+  /* Opened from Services › Secure access registration: finishing returns there instead of signing in again. */
   'idv-finish'() {
     if (S.stack[0].name === 'roles') return signIn(S.role);
     while (cur().name === 'idv') S.stack.pop();
